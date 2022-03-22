@@ -7,3 +7,8 @@ This repo contains a development prototype of the application, intended to be de
 
 ## Technologies used
 NodeJS, ExpressJS, MongoDB, ReactJS.
+
+## File structure
+The 'client' folder contains all the source code for the client-side application. For example, all ReactJS code is found here.
+
+The 'server' folder contains all the source code for the REST API that serves the client. This includes code for managing HTTP requests and managing the database.
