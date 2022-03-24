@@ -61,3 +61,18 @@ These examples show how responses from the API look.
 	// where should we store login hash etc?
 }
 ```
+
+### Categories
+- Upper extremity
+	- Shoulder + upper arm
+	- Elbow
+	- Forearm
+	- Hand
+- Lower extremity
+	- Hip + thigh
+	- Knee
+	- Lower leg (shin?)
+	- Foot
+- Abdomen
+	- Front
+	- Back
