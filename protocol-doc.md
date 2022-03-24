@@ -36,7 +36,7 @@ These examples show how responses from the API look.
 	"body": "Lorem ipsum",
 	"user-id": "5ae7fcbxk9", // some id string
 	"comments": [],
-	"solved": False
+	"solved": false
 }
 ```
 
