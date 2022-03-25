@@ -9,6 +9,4 @@ This repo contains a development prototype of the application, intended to be de
 NodeJS, ExpressJS, MongoDB, ReactJS.
 
 ## File structure
-The 'client' folder contains all the source code for the client-side application. For example, all ReactJS code is found here.
-
-The 'server' folder contains all the source code for the REST API that serves the client. This includes code for managing HTTP requests and managing the database.
+Inside the 'app' folder there is a NextJS project which has the client-side code located in 'pages', and the api code in 'pages/api'.
