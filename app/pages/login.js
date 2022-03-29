@@ -29,27 +29,23 @@ export default function SignIn() {
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-
-    /* 
-        Skicka till backend
-
-        fetch(resource, {
-          method: "POST",
-          headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify({
-            email: data.get('email),
-            password: parseInt('password')
-          })
-    */
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
-    });
-
-    
+    await fetch('api/users/auth', {
+        method: "POST",
+        headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            email: data.get('email'),
+            password: data.get('password'),
+        })
+    })
+    .then((res) => res.json())
+    .then(data => console.log(data));
+    //console.log({
+    //  email: data.get('email'),
+    //  password: data.get('password'),
+    //});
   };
 
   return (
