@@ -11,11 +11,9 @@ export async function connect() {
 	return db
 }
 
-
+//TODO: remove
 export async function get_posts(db) {
 	var cursor = db.collection('posts').find({});
 	var posts = await cursor.toArray();
 	return posts;
 };
-
-//module.exports = { connect,  };
