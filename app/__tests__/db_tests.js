@@ -8,20 +8,20 @@ describe('DB', () => {
   })
 
   test('adding users', async () => {
-    var db = await connect()
+    var db = await connect('MDB_TEST')
 
-    var username = 'johndoe11'
+    var email = 'johndoe11'
     var name = 'John Doe'
     var country = 'Sweden'
     var pass = 'hello123'
     var user = {
-      'username': username,
+      'email': email,
       'name': name,
       'country': country,
       'pass_hash': pass
     }
-    await add_user(db, user)
-    var user_retrieved = await get_user(db, username, pass, name, country)
+    await add_user(db, email, pass, name, country)
+    var user_retrieved = await get_user(db, email)
     delete user_retrieved._id
 
     expect(user_retrieved).toEqual(user)
