@@ -7,9 +7,10 @@ import Checkbox from '@mui/material/Checkbox';
 import Link from '@mui/material/Link';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
-import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
+import AccountBoxIcon from '@mui/icons-material/AccountBox';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
+
 
 function Copyright(props) {
   return (
@@ -25,28 +26,25 @@ function Copyright(props) {
 }
 
 
-export default function SignIn() {
+export default function SignUp() {
   const handleSubmit = async (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
 
-    await fetch('api/users/auth', {
+    await fetch('api/users/register', {
         method: "POST",
         headers: {
         Accept: "application/json",
         "Content-Type": "application/json"
         },
         body: JSON.stringify({
+            name: data.get('name'),
             email: data.get('email'),
             password: data.get('password'),
         })
     })
     .then((res) => res.json())
     .then(data => console.log(data));
-    //console.log({
-    //  email: data.get('email'),
-    //  password: data.get('password'),
-    //});
 
   };
 
@@ -61,12 +59,22 @@ export default function SignIn() {
           }}
         >
           <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
-            <LockOutlinedIcon />
+            <AccountBoxIcon />
           </Avatar>
           <Typography component="h1" variant="h5">
-            Sign in
+            Sign up
           </Typography>
           <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+            <TextField
+              margin="normal"
+              required
+              fullWidth
+              id="name"
+              label="Your full name"
+              name="name"
+              autoComplete="name"
+              autoFocus
+            />
             <TextField
               margin="normal"
               required
@@ -97,20 +105,8 @@ export default function SignIn() {
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
             >
-              Sign In
+              Sign up
             </Button>
-            <Grid container>
-              <Grid item xs>
-                <Link href="#" variant="body2">
-                  Forgot password?
-                </Link>
-              </Grid>
-              <Grid item>
-                <Link href="/signupconfirmed" variant="body2">
-                  {"Don't have an account? Sign Up"}
-                </Link>
-              </Grid>
-            </Grid>
           </Box>
         </Box>
         <Copyright sx={{ mt: 8, mb: 4 }} />
