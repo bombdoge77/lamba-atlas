@@ -57,7 +57,8 @@ These examples show how responses from the API look.
 	"name": "",
 	"picture": "", // how to store? maybe change to picture-id?
 	"country": "",
-	"description": ""
+	"description": "",
+	"posts": [] //list of post id's
 	// where should we store login hash etc?
 }
 ```
