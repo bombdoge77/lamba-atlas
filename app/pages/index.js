@@ -1,18 +1,25 @@
-import Head from 'next/head'
-import Image from 'next/image'
-import styles from '../styles/Home.module.css'
+import Head from 'next/head';
+import Typography from '@mui/material/Typography';
+import Box from '@mui/material/Box';
 
 export default function Home() {
   return (
-    <div className={styles.container}>
+    <Box
+      sx={{
+        marginTop: 8,
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+      }}
+    >
       <Head>
         <title>Lambå-Atlas</title>
-        <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <main className={styles.main}>
-        Hello World!
-      </main>
-    </div>
+      <Typography component="h1" variant="h5">
+        hello world!
+      </Typography>
+    </Box>
   )
 }
+
