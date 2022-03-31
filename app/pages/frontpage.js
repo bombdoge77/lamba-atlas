@@ -1,13 +1,15 @@
 import Header from '../frontend/Header';
 import Posts from '../frontend/Posts';
-
+import Box from '@mui/material/Box';
+import Container from '@mui/material/Container';
 
 export default function FrontPage() {
     return (
-      <><div className="">
+      <>
         <Header />
-      </div><div className="">
-          <Posts />
-        </div></>
+        <Container maxWidth="xs">
+            <Posts />
+        </Container>
+      </>
     );
   }

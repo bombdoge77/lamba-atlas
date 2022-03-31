@@ -65,7 +65,6 @@ export default function PrimarySearchAppBar() {
 
   const handleProfileMenuOpen = (event) => {
     setAnchorEl(event.currentTarget);
-
   };
 
   const handleMobileMenuClose = () => {
@@ -79,6 +78,10 @@ export default function PrimarySearchAppBar() {
 
   const handleMobileMenuOpen = (event) => {
     setMobileMoreAnchorEl(event.currentTarget);
+  };
+
+  const handleMenuOpen = (event) => {
+    
   };
 
   const menuId = 'primary-search-account-menu';
@@ -164,6 +167,7 @@ export default function PrimarySearchAppBar() {
             edge="start"
             color="inherit"
             aria-label="open drawer"
+            onClick={handleMobileMenuOpen}
             sx={{ mr: 2 }}
           >
             <MenuIcon />
