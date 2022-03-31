@@ -1,34 +1,33 @@
 const bcrypt = require('bcryptjs')
+const isemail = require('isemail')
 
-//TODO: Implement
-async function hash(s) {
-	//var salt = await bcrypt.genSalt(10)
-    //var pass_hash = await bcrypt.hash(pass, salt)
-	return s
-}
+export async function add_user(db, email, pass, name, country, title, bio, contact) {
+	var valid_email = isemail.validate(email, {errorLevel : false})
+	var email_exists = await get_user(db, email) != null
 
-export async function add_user(db, email, pass, name, country) {
+	if (email_exists || !valid_email) return null
+
+	//TODO: try to hash asynchronously
 	var users = db.collection('users')
-	//TODO: check if email is a valid adress
-	var pass_hash = hash(pass)
+	var salt = bcrypt.genSaltSync(10);
+	var hash = bcrypt.hashSync(pass, salt);
 	var user = {
 		'email' : email,
 		'name' : name,
 		'country' : country,
-		'pass_hash' : pass_hash
+		'title' : title,
+		'bio' : bio,
+		'contact' : contact,
+		'pass_hash' : hash
 		//picture?
 	}
+	await users.insertOne(user)
 
-	users.insertOne(user)
+	return user
 }
 
 export async function get_user(db, email) {
-	var user = {
-      'email': 'johndoe11',
-      'name': 'John Doe',
-      'country': 'Sweden',
-      'pass_hash': 'hello123'
-    }
+	var user = db.collection('users').findOne({'email' : email})
 	return user
 }
 
@@ -37,6 +36,7 @@ export async function change_name(db, email, new_name) {
 }
 
 export function auth(db, email, pass) {
-	var res = true
-	return res
+	var user = get_user(db, email)
+	expected_hash = user['pass_hash']
+	return bcrypt.compareSync(pass, expected_hash)
 }
