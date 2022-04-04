@@ -12,18 +12,6 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 
 
-function Copyright(props) {
-  return (
-    <Typography variant="body2" color="text.secondary" align="center" {...props}>
-      {'Copyright © '}
-      <Link color="inherit" href="https://mui.com/">
-        Your Website
-      </Link>{' '}
-      {new Date().getFullYear()}
-      {'.'}
-    </Typography>
-  );
-}
 
 // TODO: what link to fetch from..?hmm
 export default function SignUpConfirmed() {
@@ -38,14 +26,18 @@ export default function SignUpConfirmed() {
         "Content-Type": "application/json"
         },
         body: JSON.stringify({
-            name: data.get('name'),
-            email: data.get('email'),
-            password: data.get('password'),
+            code: data.get('code'),
         })
     })
     .then((res) => res.json())
-    .then(data => console.log(data));    
-    // TODO: Link to signup
+    .then(data => console.log(data)) 
+    /*
+    .then(
+      if (data == TRUE) {
+        //link to /signup
+      }
+
+    ); */
   };
 
   return (
@@ -85,7 +77,6 @@ export default function SignUpConfirmed() {
             </Button>
           </Box>
         </Box>
-        <Copyright sx={{ mt: 8, mb: 4 }} />
       </Container>
   );
 }
