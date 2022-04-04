@@ -33,7 +33,7 @@ const Search = styled('div')(({ theme }) => ({
 }));
 
 const SearchIconWrapper = styled('div')(({ theme }) => ({
-  padding: theme.spacing(0, 2),
+  padding: theme.spacing(0,2),
   height: '100%',
   position: 'absolute',
   pointerEvents: 'none',
@@ -81,7 +81,7 @@ export default function PrimarySearchAppBar() {
   };
 
   const handleMenuOpen = (event) => {
-    
+    console.log(event.currentTarget)
   };
 
   const menuId = 'primary-search-account-menu';
@@ -159,15 +159,18 @@ export default function PrimarySearchAppBar() {
   );
 
   return (
-    <Box sx={{ flexGrow: 1 }}>
-      <AppBar position="static">
+      <AppBar 
+        position="fixed" 
+        sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}
+        elevation={0} 
+      >
         <Toolbar>
           <IconButton
             size="large"
             edge="start"
             color="inherit"
             aria-label="open drawer"
-            onClick={handleMobileMenuOpen}
+            onClick={handleMenuOpen}
             sx={{ mr: 2 }}
           >
             <MenuIcon />
@@ -186,7 +189,6 @@ export default function PrimarySearchAppBar() {
             </SearchIconWrapper>
             <StyledInputBase
               placeholder="Search…"
-              inputProps={{ 'aria-label': 'search' }}
             />
           </Search>
           <Box sx={{ flexGrow: 1 }} />
@@ -220,7 +222,7 @@ export default function PrimarySearchAppBar() {
           <Box sx={{ display: { xs: 'flex', md: 'none' } }}>
             <IconButton
               size="large"
-              aria-label="show more"
+              aria-label="show more"  
               aria-controls={mobileMenuId}
               aria-haspopup="true"
               onClick={handleMobileMenuOpen}
@@ -230,9 +232,8 @@ export default function PrimarySearchAppBar() {
             </IconButton>
           </Box>
         </Toolbar>
+        {renderMobileMenu}
+        {renderMenu}
       </AppBar>
-      {renderMobileMenu}
-      {renderMenu}
-    </Box>
   );
 }

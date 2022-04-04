@@ -13,12 +13,13 @@ import ShareIcon from '@mui/icons-material/Share';
 import MoreVertIcon from '@mui/icons-material/MoreVert'
 import Image from 'next/image'
 import { Box } from '@mui/system';
+import { Container } from '@mui/material';
 
 
 
 export default function RecipeReviewCard() {
-
   return (
+    <Container maxWidth="xs">
       <Card >
         <CardHeader
           avatar={
@@ -47,7 +48,6 @@ export default function RecipeReviewCard() {
           sx={{
             width:150,
             height:150,
-            backgroundColor: 'primary.dark',
             position: 'relative',
           }}
         >
@@ -69,6 +69,7 @@ export default function RecipeReviewCard() {
           </IconButton>
         </CardActions>
       </Card>
+    </Container>
   );
 }
 
