@@ -1,11 +1,12 @@
 import theme from '../frontend/theme';
 import {ThemeProvider } from '@mui/material/styles';
-import CssBaseline from '@mui/material/CssBaseline'; 
+import CssBaseline from '@mui/material/CssBaseline';
+
 
 function MyApp({ Component, pageProps }) {
   return (
       <ThemeProvider theme={theme}>
-        <CssBaseline/>
+        <CssBaseline />
         <Component {...pageProps} />
       </ThemeProvider>
   );
