@@ -1,5 +1,5 @@
 import { add_user, get_user, auth } from '../utils/db/users.js'
-import { connect } from '../utils/db/db.js'
+import { connect, disconnect } from '../utils/db/db.js'
 
 describe('DB Users', () => {
   test('hello world', () => {
@@ -38,6 +38,8 @@ describe('DB Users', () => {
     delete user_retrieved['_id']
 
     expect(user_retrieved).toEqual(user)
+
+    await disconnect(db)
   })
 
   test('adding user with bad email', async () => {
@@ -47,25 +49,27 @@ describe('DB Users', () => {
     var email = 'johndoe11@mail.com'
     var res = await add_user(db, email, pass, name, hospital, country, title, bio, contact)
     var res = await add_user(db, email, pass, name, hospital, country, title, bio, contact)
-    expect(res).toEqual(null)
+    expect(res).toEqual(false)
 
     var email = 'this is not an email'
     user['email'] = email
 
     var res = await add_user(db, email, pass, name, hospital, country, title, bio, contact)
-    expect(res).toEqual(null)
+    expect(res).toEqual(false)
 
     var email = 'this is not@ an email.com'
     user['email'] = email
 
     var res = await add_user(db, email, pass, name, hospital, country, title, bio, contact)
-    expect(res).toEqual(null)
+    expect(res).toEqual(false)
 
     var email = '@@@@@'
     user['email'] = email
 
     var res = await add_user(db, email, pass, name, hospital, country, title, bio, contact)
-    expect(res).toEqual(null)
+    expect(res).toEqual(false)
+
+    await disconnect(db)
   })
 
   //TODO: more add tests
@@ -96,6 +100,8 @@ describe('DB Users', () => {
     expect(res2['email']).toEqual(email2)
     expect(res1['pass_hash']).toEqual(expect.any(String))
     expect(res2['pass_hash']).toEqual(expect.any(String))
+
+    await disconnect(db)
   })
 
   test('get user profile (no email and pwd hash)', async () => {
@@ -113,6 +119,7 @@ describe('DB Users', () => {
     expect(await auth(db, 'asd@mail.com', 'nothello')).toBe(false)
 
     await db.collection('users').deleteMany({})
+    await disconnect(db)
   })
 
   //TODO: edit tests

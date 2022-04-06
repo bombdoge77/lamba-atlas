@@ -2,12 +2,12 @@ const bcrypt = require('bcryptjs')
 const isemail = require('isemail')
 
 export async function add_user(db, email, pass, name, hospital, country, title, bio, contact) {
-	if (email === null || email == '') return null
+	if (email == null || email == '' || pass == null || pass == '') return false
 
 	var valid_email = isemail.validate(email, {errorLevel : false})
 	var email_exists = await get_user(db, email) != null
 
-	if (email_exists || !valid_email) return null
+	if (email_exists || !valid_email) return false
 
 	// TODO: try to hash asynchronously
 	var users = db.collection('users')
@@ -24,9 +24,9 @@ export async function add_user(db, email, pass, name, hospital, country, title, 
 		'pass_hash' : hash
 		//picture?
 	}
-	await users.insertOne(user)
+	var result = await users.insertOne(user)
 
-	return user
+	return result.acknowledged
 }
 
 // private profile information, including password and email
