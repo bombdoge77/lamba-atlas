@@ -11,9 +11,14 @@ export async function connect(name = 'MDB1') {
 	return db
 }
 
-//TODO: remove
+// maybe not needed?
+export async function disconnect() {
+	await client.close()
+}
+
+// TODO: remove
 export async function get_posts(db) {
-	var cursor = db.collection('posts').find({});
-	var posts = await cursor.toArray();
-	return posts;
-};
+	var cursor = db.collection('posts').find({})
+	var posts = await cursor.toArray()
+	return posts
+}

@@ -50,8 +50,11 @@ async function edit_user(db, email, new_user) {
 	return await db.collection('users').findOneAndReplace({'email' : email}, new_user)
 }
 
-export function auth(db, email, pass) {
-	var user = get_user(db, email)
-	expected_hash = user['pass_hash']
+export async function auth(db, email, pass) {
+	var user = await get_user(db, email)
+	if (user == null) return false
+
+	var expected_hash = user['pass_hash']
+	
 	return bcrypt.compareSync(pass, expected_hash)
 }

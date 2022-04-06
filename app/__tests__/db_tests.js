@@ -1,4 +1,4 @@
-import { add_user, get_user } from '../utils/db/users.js'
+import { add_user, get_user, auth } from '../utils/db/users.js'
 import { connect } from '../utils/db/db.js'
 
 describe('DB Users', () => {
@@ -103,6 +103,17 @@ describe('DB Users', () => {
   })
 
   //TODO: auth test
+  test('successful auth', async () => {
+    var db = await connect('MDB_TEST')
+    await db.collection('users').deleteMany({})
+
+    await add_user(db, 'asd@mail.com', 'hello', 'hello', 'hello', 'hello', 'hello', 'hello', 'hello')
+
+    expect(await auth(db, 'asd@mail.com', 'hello')).toBe(true)
+    expect(await auth(db, 'asd@mail.com', 'nothello')).toBe(false)
+
+    await db.collection('users').deleteMany({})
+  })
 
   //TODO: edit tests
 })
