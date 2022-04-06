@@ -10,13 +10,13 @@ import Box from '@mui/material/Box';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
-
+import { useRouter } from 'next/router'
 
 export default function SignIn() {
+  const router = useRouter()
   const handleSubmit = async (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-
     await fetch('api/users/auth', {
         method: "POST",
         headers: {
@@ -26,16 +26,12 @@ export default function SignIn() {
         body: JSON.stringify({
             email: data.get('email'),
             password: data.get('password'),
-            
         })
     })
     .then((res) => res.json())
     .then(data => console.log(data));
-    //console.log({
-    //  email: data.get('email'),
-    //  password: data.get('password'),
-    //});
 
+    router.push("frontpage")
   };
 
   return (

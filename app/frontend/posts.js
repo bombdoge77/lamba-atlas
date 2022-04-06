@@ -22,11 +22,6 @@ export default function RecipeReviewCard() {
     <Container maxWidth="xs">
       <Card >
         <CardHeader
-          avatar={
-            <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
-              R
-            </Avatar>
-          }
           action={
             <IconButton aria-label="settings">
               <MoreVertIcon />
@@ -46,7 +41,7 @@ export default function RecipeReviewCard() {
         />
         <Box
           sx={{
-            width:150,
+            width:'auto',
             height:150,
             position: 'relative',
           }}
@@ -63,9 +58,6 @@ export default function RecipeReviewCard() {
         <CardActions disableSpacing>
           <IconButton aria-label="add to favorites">
             <FavoriteIcon />
-          </IconButton>
-          <IconButton aria-label="share">
-            <ShareIcon />
           </IconButton>
         </CardActions>
       </Card>
