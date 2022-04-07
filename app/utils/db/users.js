@@ -29,10 +29,15 @@ export async function add_user(db, email, pass, name, hospital, country, title, 
 	return result.acknowledged
 }
 
+export async function remove_user(db, email) {
+	var result = await db.collection('users').deleteOne({'email' : email})
+	return result.acknowledged
+}
+
 // private profile information, including password and email
 // TODO: should we ever send the password hash to the client?
 export async function get_user(db, email) {
-	var user = db.collection('users').findOne({'email' : email})
+	var user = await db.collection('users').findOne({'email' : email})
 	return user
 }
 
