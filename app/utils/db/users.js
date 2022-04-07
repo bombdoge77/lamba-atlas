@@ -46,7 +46,8 @@ export async function get_user_profile(db, email) {
 
 // Could be optimized if needed, use updateOne to only update relevant properties
 async function edit_user(db, email, new_user) {
-	if (await get_user(db, email) === null) return null
+	var user = await get_user(db, email)
+	if (user == null) return null
 	return await db.collection('users').findOneAndReplace({'email' : email}, new_user)
 }
 
