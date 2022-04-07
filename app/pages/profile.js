@@ -14,18 +14,30 @@ import { Toolbar } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import { IconButton } from '@mui/material';
 import Dialog from '@mui/material/Dialog';
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
+import ListItemText from '@mui/material/ListItemText';
+import ListItemAvatar from '@mui/material/ListItemAvatar';
+import { ListItemButton } from '@mui/material';
+import Chip from '@mui/material/Chip';
+import ArticleIcon from '@mui/icons-material/Article';
+import Button from '@mui/material/Button';
+import ButtonGroup from '@mui/material/ButtonGroup';
+import Edit from '@mui/icons-material/Edit';
+import Divider from '@mui/material/Divider';
+import TextField from '@mui/material/TextField';
 
 var user = {
-    'email' : "erikaeriksson@mail.com", //string
-    'name' : "Erika Eriksson", //string
-    'hospital' : "Akademiska Hospital",  //string
-    'country' : "Norge",  //string
-    'title' : "Expert",  //string
-    'bio' : "I am from Hell (Norge). Currently working as a plastic surgeon. ",  //string
-    'contact' : {'whatsapp' : '12983767', 'phone' : '12389612'},  
-    //tex {'whatsapp' : '12983767', 'phone' : '12389612'}
-    'pass_hash' : "123"  //string
-    //picture?
+  'email': "erikaeriksson@mail.com", //string
+  'name': "Erika Eriksson", //string
+  'hospital': "Akademiska Hospital",  //string
+  'country': "Norge",  //string
+  'title': "Expert",  //string
+  'bio': "I am from Hell (Norge). Currently working as a plastic surgeon. ",  //string
+  'contact': { 'whatsapp': '12983767', 'phone': '12389612' },
+  //tex {'whatsapp' : '12983767', 'phone' : '12389612'}
+  'pass_hash': "123"  //string
+  //picture?
 }
 
 export default function Profile() {
@@ -42,75 +54,141 @@ export default function Profile() {
   .then((res) => res.json())
   .then(data => console.log(data));
   */
-  const [open, setOpen] = React.useState(false);
+  const [openEdit, setOpenEdit] = React.useState(true);
 
-  const handleClickOpen = () => {
-    setOpen(true);
+  const handleEditOpen = () => {
+    setOpenEdit(false);
   };
 
-  const handleClose = () => {
-    setOpen(false);
+  const handleEditClose = () => {
+    setOpenEdit(true);
   };
   
-  return (
-      <Stack spacing={2}>
-        <Toolbar sx={{backgroundColor: 'primary.light', marginBottom:-2.5}}>
-            <ArrowBackIcon/>
-        </Toolbar>
-        <Box
-            sx={{
-                height: 340,
-                backgroundColor: 'primary.dark',
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
-            }}>
-      
-            <Box>
-                <Container maxWidth="xs" sx={{marginTop: 5, textAlign: 'center', display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',}}>
-                    <Avatar alt="profile picture" 
-                    src="/sonic.jpeg" 
-                    sx={{ width: 150, height: 150 ,textAlign: 'center'}}
-                    />
-                </Container>
-                <Container sx={{textAlign: 'center', flexDirection: 'column', alignItems: 'center'}}>
-                    <Typography component="div">
-                        <Box sx={{ fontSize: 22, marginTop: 2, fontWeight: 'bold', color: 'white' }}>
-                          {user.name}
-                          <IconButton onClick={handleClickOpen}>
-                            <EditIcon sx={{color:'secondary.light'}}/>
-                          </IconButton>
-                          <Dialog
-                            open={open}
-                            onClose={handleClose}
-                          >
-                            <Typography>Edit Profile</Typography>                          
-                          </Dialog>
-                        </Box>
-                        <Box sx={{ fontSize: 14, marginTop: 0, m:2, color: 'white'}}>Title: {user.title}</Box>
-                        <Box sx={{ fontSize: 12, marginTop: 1, color: 'white'}}>
-                            <LocationOnIcon sx={{marginRight:1}}/>
-                            Works at {user.hospital} in {user.country}
-                        </Box>
-                    </Typography>
-                </Container>
-            </Box>
-            
-            <Box sx={{height: 380}}>
-                <Container sx={{}}>
-                    <Typography component="div">
-                        <Box sx={{ fontSize: 18, marginTop: 5, fontWeight: 'bold',}}>About {user.name}</Box>
-                        <Box sx={{ fontSize: 14, marginTop: 1}}>{user.bio}</Box>
-                        <Box sx={{ fontSize: 18, marginTop: 2, fontWeight: 'bold',}}>Contact information</Box>
-                        <Box sx={{ fontSize: 14, marginTop: 1}}> <PhoneIcon/> Phone: {user.contact.phone} </Box>
-                        <Box sx={{ fontSize: 14, marginTop: 1}}><EmailIcon sx={{}}/> Email: {user.email} </Box>
-                    </Typography>
-                </Container>
-            </Box>
+  function SubmitButton() {
+    if (!openEdit) {
+      return (
+        <Box sx={{
+          display:'block',  
+          textAlign: 'center',}}
+        >
+          <Button onClick={handleEditClose} variant="contained" sx={{ mt: 2, mb: 2 }}>
+              Submit changes
+          </Button>
         </Box>
-    </Stack>
-  );
+      )
+    } 
+    return <Box/>;}
+ 
 
+  return (
+    <Box sx={{display: 'flex', flexDirection:'column'}}>
+      <Toolbar sx={{ display: 'flex', backgroundColor: 'primary.light'}}>
+        <ButtonGroup variant="contained" aria-label="outlined primary button group" 
+        sx={{color:'primary.light',
+            minWidth:340,
+            }}
+        >
+          <Button fullWidth="true"><ArrowBackIcon /></Button>
+          <Button fullWidth="true" disabled={!openEdit} onClick={handleEditOpen}><EditIcon />Edit</Button>
+          <Button fullWidth="true"><ArticleIcon/>Post</Button>
+        </ButtonGroup>
+      </Toolbar>
+      <Box
+        sx={{
+          backgroundColor: 'primary.dark',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+        }}
+      >
+        <Box sx={{display:'block'}}> 
+          <Container maxWidth="xs" sx={{
+            textAlign: 'center', 
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            paddingTop:2
+          }}>
+            <Avatar alt="profile picture"
+              src="/sonic.jpeg"
+              sx={{ width: 150, height: 150, textAlign: 'center' }}
+            />
+            <Box hidden={true}>
+              <Button>
+                <input type="file" id="avatar" name="avatar" accept="image/*"/>
+              </Button>
+            </Box>
+          </Container>
+          <Container sx={{ 
+            textAlign: 'center', 
+            flexDirection: 'column', 
+            alignItems: 'center',
+            paddingBottom:2 }}>
+            <Typography component="div">
+              <Box sx={{ fontSize: 22, marginTop: 2, fontWeight: 'bold', color: 'white' }}>
+                {user.name}
+              </Box>
+              <Box sx={{ fontSize: 14, marginTop: 0, color: 'white' }}>Title: {user.title}</Box>
+            </Typography>
+          </Container>
+        </Box>
+      </Box>
+      <Box sx={{display:'block'}}> 
+        <List disablePadding disable sx={{ width: '100%', bgcolor: 'background.paper' }}>
+          <ListItem>
+            <TextField
+              disabled = {openEdit}
+              id="standard-disabled"
+              label="Country"
+              defaultValue={user.country}
+              variant="standard"
+              fullWidth="true"
+            />
+          </ListItem>
+          <ListItem>
+            <TextField
+              disabled = {openEdit}
+              id="standard-disabled"
+              label="Hospital"
+              defaultValue={user.hospital}
+              variant="standard"
+              fullWidth="true"
+            />
+          </ListItem>
+          <ListItem>
+            <TextField
+              disabled = {openEdit}
+              id="standard-disabled"
+              label="Email"
+              defaultValue={user.email}
+              variant="standard"
+              fullWidth="true"
+            />
+          </ListItem>
+          <ListItem>
+            <TextField
+              disabled = {openEdit}
+              id="standard-disabled"
+              label="Phone"
+              defaultValue={user.contact.phone}
+              variant="standard"
+              fullWidth="true"
+            />
+          </ListItem>
+          <ListItem>
+            <TextField
+              disabled = {openEdit}
+              id="standard-disabled"
+              label="Bio"
+              defaultValue={user.bio}
+              variant="standard"
+              fullWidth="true"
+              multiline
+            />
+          </ListItem>
+        </List>
+        <SubmitButton/>
+      </Box>
+    </Box>
+  );
 }
