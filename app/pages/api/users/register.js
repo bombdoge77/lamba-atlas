@@ -1,3 +1,4 @@
+require('dotenv').config()
 import { connect, disconnect } from '../../../utils/db/db.js'
 import { add_user } from '../../../utils/db/users.js'
 

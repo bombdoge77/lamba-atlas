@@ -43,17 +43,18 @@ export async function get_user(db, email) {
 
 // returns all public profile information
 export async function get_user_profile(db, email) {
-	var user = get_user(db, email)
+	var user = await get_user(db, email)
 	delete user['pass_hash']
 	//delete user['email']
 	return user
 }
 
 // Could be optimized if needed, use updateOne to only update relevant properties
-async function edit_user(db, email, new_user) {
+export async function edit_user(db, email, new_user) {
 	var user = await get_user(db, email)
 	if (user == null) return null
-	return await db.collection('users').findOneAndReplace({'email' : email}, new_user)
+	new_user['pass_hash'] = user.pass_hash
+	return await db.collection('users').findOneAndReplace({'email' : email}, new_user).ok
 }
 
 export async function auth(db, email, pass) {
