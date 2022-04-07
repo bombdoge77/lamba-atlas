@@ -40,7 +40,7 @@ export async function get_user(db, email) {
 export async function get_user_profile(db, email) {
 	var user = get_user(db, email)
 	delete user['pass_hash']
-	delete user['email']
+	//delete user['email']
 	return user
 }
 
