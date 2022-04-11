@@ -1,5 +1,6 @@
 const bcrypt = require('bcryptjs')
 const isemail = require('isemail')
+const crypto = require('crypto')
 
 export async function add_user(db, email, pass, name, hospital, country, title, bio, contact) {
 	if (email == null || email == '' || pass == null || pass == '') return false
@@ -64,4 +65,34 @@ export async function auth(db, email, pass) {
 	var expected_hash = user['pass_hash']
 	
 	return bcrypt.compareSync(pass, expected_hash)
+}
+
+function clear_invite_codes(db) {
+	var codes = db.collection('invite_codes')
+	var today = new Date()
+	codes.deleteMany({ expires : { $lt : today.parse() } })
+}
+
+export async function gen_invite_code(db) {
+	var done = false
+	clear_invite_codes(db)
+	
+	while (!done) {
+			crypto.randomBytes(48, (err, buf) => {
+			if (err) throw err
+
+			var code = buf.toString('hex')
+			var codes = db.collection('invite_codes')
+			var code_exists = (codes.findOne({ code : code }) != null)
+			if (!code_exists) {
+				var today = new Date()
+				var tomorrow = new Date(today)
+				tomorrow.setDate(tomorrow.getDate + 1) // increment by one day
+				await codes.insertOne({ code : code, expires : tomorrow.parse() })
+				done = true
+			}
+		});
+	}
+
+	return code
 }
