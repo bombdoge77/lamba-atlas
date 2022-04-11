@@ -78,7 +78,7 @@ export async function gen_invite_code(db) {
 	await clear_invite_codes(db)
 
 	while (!done) {
-			crypto.randomBytes(48, (err, buf) => {
+			crypto.randomBytes(48, async (err, buf) => {
 				if (err) throw err
 
 				var code = buf.toString('hex')
