@@ -17,10 +17,10 @@ export function authenticateToken(token) {
 }
 
 async function authorize(req, res) {
-  const { email, password } = req.body
+  const { email, password } = req.body.payload
 
   if (email === null || email === '' || password === null || password === '') {
-    res.status(400)
+    res.status(400) 
     return
   }
 
