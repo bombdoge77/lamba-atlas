@@ -3,7 +3,7 @@ export function add_user(db, username, pass, name, country) {
 	// hash password
 	var pass_hash = ''
 	var user = {
-		'id' : ,
+		'id' : 0,
 		'name' : name,
 		'country' : country,
 		'pass_hash' : pass_hash
