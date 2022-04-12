@@ -5,6 +5,7 @@ import { add_user } from '../../../utils/db/users.js'
 export default async function regHandler(req, res) {
   if (req.method == 'POST') {
     await register(req, res)
+    res.end()
   }
 }
 

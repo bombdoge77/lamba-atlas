@@ -6,6 +6,7 @@ const jwt = require('jsonwebtoken')
 export default async function authHandler(req, res) {
   if (req.method == 'POST') {
     await authorize(req, res)
+    res.end()
   }
 }
 
@@ -20,8 +21,7 @@ async function authorize(req, res) {
   const { email, password } = req.body.payload
 
   if (email === null || email === '' || password === null || password === '') {
-    res.status(400) 
-    return
+    res.status(400)
   }
 
   var db = await connect(process.env.DB_NAME)
