@@ -6,8 +6,22 @@ const jwt = require('jsonwebtoken')
 export default async function authHandler(req, res) {
   if (req.method == 'POST') {
     await authorize(req, res)
-    res.end()
+  } else if (req.method == 'GET') {
+    jwtHandler(req, res)
   }
+  res.end()
+}
+
+function jwtHandler(req, res) {
+  var jwt = req.body.jwt
+  var jwt_decoded = authenticateToken(jwt)
+
+  if (jwt_decoded == null) {
+    res.status(401)
+    return
+  }
+
+  res.status(200)
 }
 
 export function authenticateToken(token) {
@@ -21,7 +35,7 @@ async function authorize(req, res) {
   const { email, password } = req.body.payload
 
   if (email === null || email === '' || password === null || password === '') {
-    res.status(400)
+    res.status(401)
     return
   }
 

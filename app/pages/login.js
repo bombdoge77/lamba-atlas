@@ -11,6 +11,7 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { useRouter } from 'next/router'
+import { Alert } from '@mui/material';
 
 export default function SignIn() {
   const router = useRouter()
@@ -30,14 +31,34 @@ export default function SignIn() {
           }
         })
     })
-    .then((res) => res.json())
-    .then(data => console.log(data));
+    .then((res) => {
+      console.log(res.status)
 
-    router.push("frontpage")
+      if(res.ok) {
+        localStorage.setItem('jwt', JSON.stringify(res.body.payload.jwt));
+        router.push("frontpage")
+      }
+      else {
+        setLoginStatus(false)
+      }
+    })
   };
+
+  // render alert if false
+  const [loginStatus, setLoginStatus] = React.useState(true);
+
+  function RenderAlert() {
+    if (!loginStatus) {
+      return <Alert severity='error'>Wrong username or password, try again!</Alert>
+    }
+    else {
+      return <Box/>
+    }
+  }
 
   return (
       <Container component="main" maxWidth="xs">
+        <RenderAlert/>
         <Box
           sx={{
             marginTop: 8,
