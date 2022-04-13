@@ -24,8 +24,10 @@ export default function SignIn() {
         "Content-Type": "application/json"
         },
         body: JSON.stringify({
+          payload: {
             email: data.get('email'),
             password: data.get('password'),
+          }
         })
     })
     .then((res) => res.json())

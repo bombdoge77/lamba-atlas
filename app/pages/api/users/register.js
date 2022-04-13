@@ -1,19 +1,30 @@
-const bcrypt = require('bcryptjs')
-import add_user from '../../../utils/db/users.js'
+require('dotenv').config()
+import { connect, disconnect } from '../../../utils/db/db.js'
+import { add_user } from '../../../utils/db/users.js'
 
-export default function handler(req, res) {
+export default async function regHandler(req, res) {
   if (req.method == 'POST') {
-    const { user, pass } = req.body
-    register(user, pass)
-    res.status(200).json({type : 'register user', id : 2})
+    await register(req, res)
+    res.end()
   }
 }
 
-function register(user, pass) {
-  bcrypt.genSalt(10, function(err, salt) {
-    bcrypt.hash("B4c0/\/", salt, function(err, hash) {
-        // Store hash in your password DB.
-        add_user(username, hash)
-    });
-  });
+async function register(req, res) {
+  var db = await connect(process.env.DB_NAME)
+
+  const { payload } = req.body
+  var result = await add_user(
+    db, 
+    payload.email, 
+    payload.password, 
+    payload.name, 
+    payload.hospital, 
+    payload.country, 
+    payload.title, 
+    payload.bio, 
+    payload.contact
+    )
+  res.status(result ? 200 : 500)
+
+  await disconnect(db)
 }

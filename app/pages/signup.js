@@ -24,6 +24,7 @@ export default function SignUp() {
             "Content-Type": "application/json"
             },
             body: JSON.stringify({
+              payload: {
                 email: data.get('email'),
                 name: data.get('name'),
                 hospital: data.get('hospital'),
@@ -31,8 +32,8 @@ export default function SignUp() {
                 title: data.get('title'),
                 bio: data.get('bio'),
                 contact: data.get('contact'),
-                password: data.get('hash'), //eller är det 'pass_hash' : hash
-                
+                password: data.get('password'), //eller är det 'pass_hash' : hash
+              }
             })
         })
         .then((res) => res.json())
