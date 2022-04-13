@@ -7,6 +7,7 @@ export default async function regHandler(req, res) {
   } else if (req.method == 'POST') {
     validate_code(req, res)
   }
+  res.end()
 }
 
 async function gen_code(req, res) {

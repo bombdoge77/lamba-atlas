@@ -22,6 +22,7 @@ async function authorize(req, res) {
 
   if (email === null || email === '' || password === null || password === '') {
     res.status(400)
+    return
   }
 
   var db = await connect(process.env.DB_NAME)

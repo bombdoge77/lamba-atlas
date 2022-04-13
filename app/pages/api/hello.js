@@ -4,7 +4,5 @@ require('dotenv').config()
 
 
 export default async function handler(req, res) {
-  var db = await connect()
-  var posts = await get_posts(db)
-  res.status(200).json(posts)
+  res.status(200).json({hello : 'world'})
 }

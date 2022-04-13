@@ -23,8 +23,10 @@ describe('API User Routes', () => {
 		const { req, res } = createMocks({
 			method: 'POST',
 			body: {
-			  email : 'asd@mail.com',
-			  password : 'hello'
+				payload : {
+					email : 'asd@mail.com',
+			  	password : 'hello'
+				},
 			},
 		})
 		
@@ -45,8 +47,10 @@ describe('API User Routes', () => {
 		const { req, res } = createMocks({
 			method: 'POST',
 			body: {
-			  email : 'asd@mail.com',
-			  password : '123'
+				payload : {
+					email : 'asd@mail.com',
+			  	password : '123'
+				},
 			},
 		})
 		
@@ -59,8 +63,10 @@ describe('API User Routes', () => {
 		const { req, res } = createMocks({
 			method: 'POST',
 			body: {
-			  email : '',
-			  password : ''
+				payload : {
+					email : '',
+			  	password : ''
+				},
 			},
 		})
 		

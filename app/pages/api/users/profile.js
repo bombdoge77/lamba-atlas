@@ -9,6 +9,7 @@ export default async function profileHandler(req, res) {
   } else if (req.method == 'GET') {
     await get(req, res)
   }
+  res.end()
 }
 
 async function edit(req, res) {
