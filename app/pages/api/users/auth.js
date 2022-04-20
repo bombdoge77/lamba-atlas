@@ -46,9 +46,10 @@ async function authorize(req, res) {
     // TODO: create json web token
     var accessToken = jwt.sign( { user : email }, process.env.ACCESS_TOKEN_SECRET, { expiresIn : '1h' })
     var body = {
-      jwt : accessToken,
+      //jwt : accessToken,
       payload : {}
     }
+    res.setHeader('Authorization', accessToken)
     res.status(200).json(body)
   } else {
     res.status(401)
