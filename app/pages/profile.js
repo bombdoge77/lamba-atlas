@@ -13,6 +13,7 @@ import Button from "@mui/material/Button";
 import ButtonGroup from "@mui/material/ButtonGroup";
 import TextField from "@mui/material/TextField";
 import { useRouter } from 'next/router'
+import editProfileRequest from '../frontend/helper/fetchcalls'
 
 
 var user = {
@@ -29,19 +30,6 @@ var user = {
 };
 
 export default function Profile() {
-  /* const user_placeholder = fetch('api/users/register', {
-      method: "POST",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json"
-      },
-      body: {
-        email: "email",
-      }
-  })
-  .then((res) => res.json())
-  .then(data => console.log(data));
-  */
   const [editMode, setEditMode] = React.useState(false);
 
   const router = useRouter()
@@ -50,10 +38,12 @@ export default function Profile() {
     setEditMode(true);
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async (event) => {
     setEditMode(false);
-
-    //Send new profile information to backend
+    const data = new FormData(event.currentTarget);
+    console.log(data);
+    // SEND NEW INFO TO BACKEND
+    //const response = await editProfileRequest(data).then((res) => {return res})
   };
 
   const handleArrowBack = () => {
@@ -65,13 +55,17 @@ export default function Profile() {
     // Go to feed and show posts for this user
 
   }
-
+  
+  
   function SubmitButton() {
+
+    //scroll down to show submit button
     const messagesEndRef = React.useRef(null);
     const scrollToBottom = () => {
       messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
     };
     React.useEffect(scrollToBottom);
+
     if (editMode) {
       return (
         <Box
@@ -80,14 +74,14 @@ export default function Profile() {
             textAlign: "center",
           }}
         >
+          <div ref={messagesEndRef} />
           <Button
-            onClick={handleSubmit}
+            type="submit"
             variant="contained"
             sx={{ mt: 2, mb: 2 }}
           >
             Submit changes
           </Button>
-          <div ref={messagesEndRef} />
         </Box>
       );
     }
@@ -182,7 +176,7 @@ export default function Profile() {
           </Container>
         </Box>
       </Box>
-      <Box sx={{display: "flex", flexDirection: "column", alignItems: "center"}}>
+      <Box component="form" onSubmit={handleSubmit} sx={{display: "flex", flexDirection: "column", alignItems: "center"}}>
         <List
           disablePadding
           sx={{ maxWidth: "sm", width: "80%", bgcolor: "background.paper" }}

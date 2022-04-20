@@ -6,7 +6,7 @@ const jwt = require('jsonwebtoken')
 export default async function authHandler(req, res) {
   if (req.method == 'POST') {
     await authorize(req, res)
-  } else if (req.method == 'GET') {
+  } else if (req.method == 'PUT') {
     jwtHandler(req, res)
   }
   res.end()
@@ -49,6 +49,8 @@ async function authorize(req, res) {
       jwt : accessToken,
       payload : {}
     }
+
+    //res.setHeader('Authorization', `${accessToken}`)
     res.status(200).json(body)
   } else {
     res.status(401)

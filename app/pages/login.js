@@ -12,13 +12,14 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { useRouter } from 'next/router'
 import { Alert } from '@mui/material';
+import { setAccessToken, getAccessToken } from '../frontend/helper/auth'
 
 export default function SignIn() {
   const router = useRouter()
   const handleSubmit = async (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    await fetch('api/users/auth', {
+    var result = await fetch('api/users/auth', {
         method: "POST",
         headers: {
         Accept: "application/json",
@@ -35,13 +36,18 @@ export default function SignIn() {
       console.log(res.status)
 
       if(res.ok) {
-        localStorage.setItem('jwt', JSON.stringify(res.body.payload.jwt));
-        router.push("frontpage")
+        return res.json()
       }
       else {
         setLoginStatus(false)
       }
     })
+
+    if (loginStatus) {
+      var token = result.jwt
+      setAccessToken(token)
+      router.push('frontpage')
+    }
   };
 
   // render alert if false
@@ -61,7 +67,7 @@ export default function SignIn() {
         <RenderAlert/>
         <Box
           sx={{
-            marginTop: 8,
+            marginTop: '5vh',
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
