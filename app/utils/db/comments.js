@@ -43,5 +43,12 @@ export async function get_comment(db, comment_id) {
 	return result
 }
 
+export async function get_comments(db, post_id) {
+	var comments = db.collection('comments')
+
+	var result = await comments.findMany({ 'post_id' : post_id })
+	return result
+}
+
 
 //Ersätta ett fält i ett objekt
