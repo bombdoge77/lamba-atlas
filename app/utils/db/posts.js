@@ -29,12 +29,54 @@ export async function edit_post(db, id, new_post) {
 	return result.ok
 }
 
-export async function star(db, user, post_id) {
+export async function star(db, email, post_id) {
+	var star_list = db.collection('user_stars')
+
+	var user_star = await star_list.findOne({ user : email })
+	
+	var star_count = 1
+	if (user_star == null) {
+		var user_star_new = {
+			'user' : email,
+			'count' : star_count,
+			'posts' : [ post_id ]
+		}
+		var result = await star_list.insertOne(user_star_new)
+		return result.acknowledged
+
+	} else {
+		if (user_star.posts.includes(post_id)) {
+			return false//post already exist and should not be added again
+		}
+		star_count = user_star.count
+		star_count = star_count + 1
+		await star_list.updateOne({ user : email }, {$set:{ 'count' : star_count}})
+		await star_list.updateMany({ user : email }, {$push:{ 'posts' : post_id }})
+		return true
+	}
+
 	// increment star count
 	// add post_id to array of stars in user profile 
 }
 
-export async function unstar(db, user, post_id) {
+export async function unstar(db, email, post_id) {
+	var star_list = db.collection('user_stars')
+
+	var user_star = await star_list.findOne({ user : email })
+	
+	var star_count = 0
+	if (user_star == null) {
+		return false
+	}
+	if (!user_star.posts.includes(post_id)) {
+		return false//post do not exist
+	}
+	star_count = user_star.count
+	star_count = star_count - 1
+	await star_list.updateOne({ user : email }, {$set:{ 'count' : star_count}})
+	await star_list.updateMany({ user : email }, {$pull:{ 'posts' : post_id }})
+
+	return true
 	// decrement star count
 	// remove post_id from array of stars in user profile
 }
