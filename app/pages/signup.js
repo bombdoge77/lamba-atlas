@@ -10,7 +10,7 @@ import Box from '@mui/material/Box';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
-import signUpRequest from './helper/fetchcalls.js';
+import { signUpRequest } from '../frontend/helper/fetchcalls';
 import { useRouter } from 'next/router';
 import { Snackbar, Alert } from '@mui/material';
 
