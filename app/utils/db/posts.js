@@ -15,6 +15,7 @@ export async function remove_post(db, id) {
 	return result.acknowledged
 }
 
+// TODO: get array of posts
 export async function get_post(db, id) {
 	var posts = db.collection('posts')
 
