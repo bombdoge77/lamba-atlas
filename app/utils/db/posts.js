@@ -20,7 +20,7 @@ export async function get_post(db, id) {
 	var posts = db.collection('posts')
 
 	var result = await posts.findOne({ _id : id })
-	return result.acknowledged
+	return result
 }
 
 export async function edit_post(db, id, new_post) {

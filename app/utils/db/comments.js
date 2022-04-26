@@ -20,7 +20,7 @@ export async function make_comment(db, user, post, text, is_reply) {
 	return result.acknowledged
 }
 
-export async function delete_comment(db, comment_id) {
+export async function remove_comment(db, comment_id) {
 	var comments = db.collection('comments')
 
 	// no error handling needed?
@@ -36,6 +36,7 @@ export async function edit_comment(db, comment_id, new_text) {
 	return result.ok
 }
 
+// get single comment
 export async function get_comment(db, comment_id) {
 	var comments = db.collection('comments')
 
@@ -43,10 +44,11 @@ export async function get_comment(db, comment_id) {
 	return result
 }
 
+// get all comments for a post
 export async function get_comments(db, post_id) {
 	var comments = db.collection('comments')
 
-	var result = await comments.findMany({ 'post_id' : post_id })
+	var result = await comments.find({'post_id' : post_id }).toArray()
 	return result
 }
 

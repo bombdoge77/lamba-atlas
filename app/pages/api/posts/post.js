@@ -1,8 +1,19 @@
 require('dotenv').config()
 import { connect, disconnect } from '../../../utils/db/db.js'
-import { create_post, edit_post, get_post } from '../../../utils/db/posts.js'
+import { create_post, edit_post, get_post, remove_post } from '../../../utils/db/posts.js'
+import { authenticateToken } from 'auth.js'
 
 export default async function postHandler(req, res) {
+  var jwt = req.body.jwt
+
+  // check if jwt valid
+  jwt = authenticateToken(jwt_encoded)
+  if (!jwt) {
+    res.status(401)
+    res.end()
+    return
+  }
+
   switch (req.method) {
     case 'PUT':
       await edit(req, res)
@@ -61,7 +72,7 @@ async function get(req, res) {
   var result = await get_post(db, id)
 
   if (result) {
-    res.status(200)
+    res.status(200).json(result)
   } else {
     res.status(500)
   }
