@@ -87,3 +87,50 @@ export async function unstar(db, email, post_id) {
 export async function search_posts(db, params) {
 
 }
+
+export async function upvote_post(db, post_id, email) {
+	var post_vote_list = db.collection('post_vote')
+
+	var post_vote = await post_vote_list.findOne({ id : post_id })
+	
+	var vote_count = 1
+	if (post_vote == null) {
+		var post_vote_new = {
+			'id' : post_id,
+			'count' : vote_count,
+			'emails' : [ email ]
+		}
+		var result = await post_vote_list.insertOne(post_vote_new)
+		return result.acknowledged
+
+	} else {
+		if (post_vote.emails.includes(email)) {
+			return false
+		}
+		vote_count = post_vote.count
+		vote_count = vote_count + 1
+		await post_vote_list.updateOne({ id : post_id }, {$set:{ 'count' : vote_count}})
+		await post_vote_list.updateMany({ id : post_id }, {$push:{ 'emails' : email }})
+		return true
+	}
+}
+
+export async function downvote_post(db, post_id, email) {
+	var post_vote_list = db.collection('post_vote')
+
+	var post_vote = await post_vote_list.findOne({ id : post_id })
+	
+	var vote_count = 1
+	if (post_vote == null) {
+		return false
+	} else {
+		if (!post_vote.emails.includes(email)) {
+			return false
+		}
+		vote_count = post_vote.count
+		vote_count = vote_count - 1
+		await post_vote_list.updateOne({ id : post_id }, {$set:{ 'count' : vote_count}})
+		await post_vote_list.updateMany({ id : post_id }, {$pull:{ 'emails' : email }})
+		return true
+	}
+}

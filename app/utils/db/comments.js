@@ -52,5 +52,52 @@ export async function get_comments(db, post_id) {
 	return result
 }
 
+export async function upvote_comment(db, comment_id, email) {
+	var comment_vote_list = db.collection('comment_vote')
+
+	var comment_vote = await comment_vote_list.findOne({ id : comment_id })
+	
+	var vote_count = 1
+	if (comment_vote == null) {
+		var comment_vote_new = {
+			'id' : comment_id,
+			'count' : vote_count,
+			'emails' : [ email ]
+		}
+		var result = await comment_vote_list.insertOne(comment_vote_new)
+		return result.acknowledged
+
+	} else {
+		if (comment_vote.emails.includes(email)) {
+			return false
+		}
+		vote_count = comment_vote.count
+		vote_count = vote_count + 1
+		await comment_vote_list.updateOne({ id : comment_id }, {$set:{ 'count' : vote_count}})
+		await comment_vote_list.updateMany({ id : comment_id }, {$push:{ 'emails' : email }})
+		return true
+	}
+}
+
+export async function downvote_comment(db, comment_id, email) {
+	var comment_vote_list = db.collection('comment_vote')
+
+	var comment_vote = await comment_vote_list.findOne({ id : comment_id })
+	
+	var vote_count = 1
+	if (comment_vote == null) {
+		return false
+	} else {
+		if (!comment_vote.emails.includes(email)) {
+			return false
+		}
+		vote_count = comment_vote.count
+		vote_count = vote_count - 1
+		await comment_vote_list.updateOne({ id : comment_id }, {$set:{ 'count' : vote_count}})
+		await comment_vote_list.updateMany({ id : comment_id }, {$pull:{ 'emails' : email }})
+		return true
+	}
+}
+
 
 //Ersätta ett fält i ett objekt
