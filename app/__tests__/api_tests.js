@@ -15,6 +15,7 @@ describe('API User Routes', () => {
 		var db = await connect('MDB_TEST')
 		await db.collection('users').deleteMany({})
 		await add_user(db, 'asd@mail.com', 'hello', 'hello', 'hello', 'hello', 'hello', 'hello', 'hello')
+		await disconnect()
 	})
 	
 	var jwt
@@ -32,11 +33,12 @@ describe('API User Routes', () => {
 		
 		await authHandler(req, res)
 
-		var body = JSON.parse(res._getData())
-		var jwt = body.jwt
+		//var body = JSON.parse(res._getData())
+		var jwt = res._getHeaders().authorization
 
 		expect(res._getStatusCode()).toBe(200)
-		expect(authenticateToken(jwt).user).toBe('asd@mail.com')
+		var jwt_decoded = authenticateToken(jwt)
+		expect(jwt_decoded.user).toBe('asd@mail.com')
 	})
 
 	test('JWT auth', async () => {
@@ -72,7 +74,7 @@ describe('API User Routes', () => {
 		
 		await authHandler(req, res)
 
-		expect(res._getStatusCode()).toBe(400)
+		expect(res._getStatusCode()).toBe(401)
 	})
 
 	test('user registration', async () => {
@@ -115,4 +117,6 @@ describe('API User Routes', () => {
 		await db.collection('users').deleteMany({})
 		await disconnect(db)
 	})
+
+	// TODO: invite code tests
 })

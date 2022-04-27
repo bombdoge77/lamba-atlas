@@ -1,31 +1,33 @@
 require('dotenv').config()
-import { connect, disconnect } from '../../../utils/db/db.js'
-import { create_post, edit_post, get_post, remove_post } from '../../../utils/db/posts.js'
-import { authenticateToken } from 'auth.js'
+import { connect, disconnect } from '../../../../utils/db/db.js'
+import { create_post, edit_post, get_post, remove_post } from '../../../../utils/db/posts.js'
+import { authenticateToken } from '../../users/auth.js'
 
 export default async function postHandler(req, res) {
-  var jwt = req.body.jwt
+  var jwt = req.headers.authorization
 
   // check if jwt valid
-  jwt = authenticateToken(jwt_encoded)
+  jwt = authenticateToken(jwt)
   if (!jwt) {
     res.status(401)
     res.end()
     return
   }
 
+  const id = req.query.id
+
   switch (req.method) {
     case 'PUT':
-      await edit(req, res)
+      await edit(req, res, id)
       break
     case 'GET':
-      await get(req, res)
+      await get(req, res, id)
       break
     case 'POST':
       await add(req, res)
       break
     case 'DELETE':
-      await remove(req, res)
+      await remove(req, res, id)
       break
     default:
       res.status(501)
@@ -49,10 +51,9 @@ async function add(req, res) {
   await disconnect() //do we need to await?
 }
 
-async function edit(req, res) {
+async function edit(req, res, id) {
   var db = await connect(process.env.DB_NAME)
 
-  var id = req.body.payload.id
   var new_post = req.body.payload.new_post
   var result = await edit_post(db, id, new_post)
 
@@ -65,10 +66,9 @@ async function edit(req, res) {
   await disconnect() //do we need to await?
 }
 
-async function get(req, res) {
+async function get(req, res, id) {
   var db = await connect(process.env.DB_NAME)
 
-  var id = req.body.payload.id
   var result = await get_post(db, id)
 
   if (result) {
@@ -80,10 +80,9 @@ async function get(req, res) {
   await disconnect() //do we need to await?
 }
 
-async function remove(req, res) {
+async function remove(req, res, id) {
   var db = await connect(process.env.DB_NAME)
 
-  var id = req.body.payload.id
   var result = await remove_post(db, id)
 
   if (result) {
