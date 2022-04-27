@@ -12,41 +12,26 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { useRouter } from 'next/router'
 import { Alert } from '@mui/material';
-import { setAccessToken, getAccessToken } from '../frontend/helper/auth'
+import { setAccessToken, setUser } from '../frontend/helper/auth'
+import { loginRequest } from '../frontend/helper/fetchcalls';
 
 export default function SignIn() {
   const router = useRouter()
+  
   const handleSubmit = async (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    var result = await fetch('api/users/auth', {
-        method: "POST",
-        headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-          payload: {
-            email: data.get('email'),
-            password: data.get('password'),
-          }
-        })
-    })
-    .then((res) => {
-      console.log(res.status)
+    
+    const result = await loginRequest(data)
 
-      if(res.ok) {
-        return res.json()
-      }
-      else {
-        setLoginStatus(false)
-      }
-    })
-
-    if (loginStatus) {
+    if(result) {
       var token = result.jwt
       setAccessToken(token)
-      router.push('frontpage')
+      setUser(data.get('email'))
+      router.push('profile')
+    }
+    else {
+      setLoginStatus(false)
     }
   };
 

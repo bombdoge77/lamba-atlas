@@ -4,7 +4,7 @@ import { Paper } from "@mui/material";
 import AppBar from "../frontend/AppBar";
 import Link from 'next/link'
 import { Box } from "@mui/system";
-import { isLoggedIn, getAccessToken } from '../frontend/helper/auth';
+import { isLoggedIn } from '../frontend/helper/fetchcalls';
 import { useRouter } from "next/router";
 import { useState, useEffect } from "react";
 import { route } from "next/dist/server/router";
@@ -56,18 +56,6 @@ export default function FrontPage() {
       setLoading(false)
     }
   })
-
-  /*
-  const accessToken = getAccessToken()
-  console.log(accessToken)
-  const user = await isLoggedIn()
-  const router = useRouter()
-  
-  if (!user) {
-    router.push('/login')
-    //return <div></div>
-  }
-  */
   if (loading) {
     return null
   } else {
