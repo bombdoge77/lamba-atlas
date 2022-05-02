@@ -15,14 +15,15 @@ import TextField from "@mui/material/TextField";
 import { useRouter } from "next/router";
 import { isLoggedIn, editProfileRequest, getProfileRequest } from "../frontend/helper/fetchcalls";
 
-var user_test = {
-  email: "erikaeriksson@mail.com", //string
-  name: "Erika Eriksson", //string
-  hospital: "Akademiska Hospital", //string
-  country: "Norge", //string
-  title: "Expert", //string
-  bio: "I am from Hell (Norge). Currently working as a plastic surgeon. ", //string
-  contact: "12389612",
+var user = {
+  email: "LisaPersson@mail.com", //string
+  name: "Lisa Persson", //string
+  hospital: "Centralhospital Karlstad", //string
+  country: "Sweden", //string
+  title: "Specialist doctor in plastic surgery", //string
+  bio: "I went to medical school at Umeå university, Umeå, Sweden (2007-2013). After i worked as a AT at Gävle hospital, Gävle, Sweden (2013-2015). I am currently working as a specialist doctor at Centralhospital in Karlstad, Karlstad, Sweden(2015-now).", //string
+  contact: { whatsapp: "12983767", phone: "12389612" },
+
   //tex {'whatsapp' : '12983767', 'phone' : '12389612'}
   pass_hash: "123", //string
   //picture?
@@ -158,7 +159,7 @@ export default function Profile() {
           >
             <Avatar
               alt="profile picture"
-              src="/sonic.jpeg"
+              src="/doctoruser.jpg"
               sx={{ width: 150, height: 150, textAlign: "center" }}
             />
             <EditAvatarButton/>
