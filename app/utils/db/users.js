@@ -55,7 +55,8 @@ export async function edit_user(db, email, new_user) {
 	var user = await get_user(db, email)
 	if (user == null) return null
 	new_user['pass_hash'] = user.pass_hash
-	return await db.collection('users').findOneAndReplace({'email' : email}, new_user).ok
+  var result = await db.collection('users').findOneAndReplace({'email' : email}, new_user)
+  return result.ok
 }
 
 export async function auth(db, email, pass) {

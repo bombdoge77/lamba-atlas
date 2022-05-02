@@ -42,11 +42,12 @@ async function authorize(req, res) {
   var db = await connect(process.env.DB_NAME)
 
   var success = await auth(db, email, password)
+
   if (success) {
     // TODO: create json web token
     var accessToken = jwt.sign( { user : email }, process.env.ACCESS_TOKEN_SECRET, { expiresIn : '1h' })
     var body = {
-      //jwt : accessToken,
+      jwt : accessToken,
       payload : {}
     }
 

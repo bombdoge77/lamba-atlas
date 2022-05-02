@@ -71,18 +71,6 @@ export default function FrontPage() {
       setLoading(false)
     }
   })
-
-  /*
-  const accessToken = getAccessToken()
-  console.log(accessToken)
-  const user = await isLoggedIn()
-  const router = useRouter()
-  
-  if (!user) {
-    router.push('/login')
-    //return <div></div>
-  }
-  */
   if (loading) {
     return null
   } else {

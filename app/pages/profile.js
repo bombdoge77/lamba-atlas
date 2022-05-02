@@ -12,9 +12,8 @@ import ArticleIcon from "@mui/icons-material/Article";
 import Button from "@mui/material/Button";
 import ButtonGroup from "@mui/material/ButtonGroup";
 import TextField from "@mui/material/TextField";
-import { useRouter } from 'next/router'
-import editProfileRequest from '../frontend/helper/fetchcalls'
-
+import { useRouter } from "next/router";
+import { isLoggedIn, editProfileRequest, getProfileRequest } from "../frontend/helper/fetchcalls";
 
 var user = {
   email: "LisaPersson@mail.com", //string
@@ -24,26 +23,28 @@ var user = {
   title: "Specialist doctor in plastic surgery", //string
   bio: "I went to medical school at Umeå university, Umeå, Sweden (2007-2013). After i worked as a AT at Gävle hospital, Gävle, Sweden (2013-2015). I am currently working as a specialist doctor at Centralhospital in Karlstad, Karlstad, Sweden(2015-now).", //string
   contact: { whatsapp: "12983767", phone: "12389612" },
+
   //tex {'whatsapp' : '12983767', 'phone' : '12389612'}
   pass_hash: "123", //string
   //picture?
 };
 
 export default function Profile() {
-  const [editMode, setEditMode] = React.useState(false);
-
   const router = useRouter()
+  const [loading, setLoading] = React.useState(true)
+  const [editMode, setEditMode] = React.useState(false)
+  const [user, setUser] = React.useState(null)
 
   const handleEditOpen = () => {
     setEditMode(true);
   };
 
   const handleSubmit = async (event) => {
-    setEditMode(false);
-    const data = new FormData(event.currentTarget);
-    console.log(data);
-    // SEND NEW INFO TO BACKEND
-    //const response = await editProfileRequest(data).then((res) => {return res})
+    event.preventDefault()
+    setEditMode(false)
+    const data = new FormData(event.currentTarget)
+    const result = await editProfileRequest(data)
+    console.log(result)
   };
 
   const handleArrowBack = () => {
@@ -51,14 +52,10 @@ export default function Profile() {
   }
 
   const handlePosts = () => {
-    
     // Go to feed and show posts for this user
-
   }
   
-  
   function SubmitButton() {
-
     //scroll down to show submit button
     const messagesEndRef = React.useRef(null);
     const scrollToBottom = () => {
@@ -103,7 +100,24 @@ export default function Profile() {
     )
   }
 
-  return (
+  React.useEffect(async () => {
+    var loggedIn = await isLoggedIn()
+    if (!loggedIn) {
+      router.push('login')
+    }
+    else {
+      var data = await getProfileRequest()
+      var user = data.payload.user_profile
+      setLoading(false)
+      setUser(user)
+    }
+  }, []);
+
+  if(loading) {
+    return <Box>... loading</Box>
+  }
+  else {
+    return (
     <Box sx={{ display: "flex", flexDirection: "column" }}>
       <Toolbar sx={{display: "flex", backgroundColor: "primary.light" }}>
         <ButtonGroup
@@ -167,16 +181,16 @@ export default function Profile() {
                   color: "white",
                 }}
               >
-                {user.name}
+                {user && user.name}
               </Box>
               <Box sx={{ fontSize: 14, marginTop: 0, color: "white" }}>
-                Title: {user.title}
+                Title: {user && user.title}
               </Box>
             </Typography>
           </Container>
         </Box>
       </Box>
-      <Box component="form" onSubmit={handleSubmit} sx={{display: "flex", flexDirection: "column", alignItems: "center"}}>
+      <Box component="form" noValidate onSubmit={handleSubmit} sx={{display: "flex", flexDirection: "column", alignItems: "center"}}>
         <List
           disablePadding
           sx={{ maxWidth: "sm", width: "80%", bgcolor: "background.paper" }}
@@ -185,56 +199,89 @@ export default function Profile() {
             <TextField
               disabled={!editMode}
               id="standard-disabled"
-              label="Country"
-              defaultValue={user.country}
-              variant="standard"
-              fullWidth
-            />
-          </ListItem>
-          <ListItem>
-            <TextField
-              disabled={!editMode}
-              id="standard-disabled"
-              label="Hospital"
-              defaultValue={user.hospital}
-              variant="standard"
-              fullWidth
-            />
-          </ListItem>
-          <ListItem>
-            <TextField
-              disabled={!editMode}
-              id="standard-disabled"
-              label="Email"
-              defaultValue={user.email}
-              variant="standard"
-              fullWidth
-            />
-          </ListItem>
-          <ListItem>
-            <TextField
-              disabled={!editMode}
-              id="standard-disabled"
-              label="Phone"
-              defaultValue={user.contact.phone}
-              variant="standard"
-              fullWidth
-            />
-          </ListItem>
-          <ListItem>
-            <TextField
-              disabled={!editMode}
-              id="standard-disabled"
-              label="Bio"
-              defaultValue={user.bio}
+              name="name"
+              label="Name"
+              defaultValue={user && user.name}
               variant="standard"
               fullWidth
               multiline
             />
           </ListItem>
-        </List>
+          <ListItem>
+            <TextField
+              disabled={!editMode}
+              id="standard-disabled"
+              name="title"
+              label="Title"
+              defaultValue={user && user.title}
+              variant="standard"
+              fullWidth
+              multiline
+            />
+          </ListItem>
+          <ListItem>
+            <TextField
+              disabled={!editMode}
+              id="standard-disabled"
+              name="country"
+              label="Country"
+              defaultValue={user && user.country}
+              variant="standard"
+              fullWidth
+              multiline
+            />
+          </ListItem>
+          <ListItem>
+            <TextField
+              disabled={!editMode}
+              id="standard-disabled"
+              name="hospital"
+              label="Hospital"
+              defaultValue={user && user.hospital}
+              variant="standard"
+              fullWidth
+              multiline
+            />
+          </ListItem>
+          <ListItem>
+            <TextField
+              disabled={!editMode}
+              id="standard-disabled"
+              name="email"
+              label="Email"
+              defaultValue={user && user.email}
+              variant="standard"
+              fullWidth
+              multiline
+            />
+          </ListItem>
+          <ListItem>
+            <TextField
+              disabled={!editMode}
+              id="standard-disabled"
+              name="contact"
+              label="Contact"
+              defaultValue={user && user.contact}
+              variant="standard"
+              fullWidth
+              multiline
+            />
+          </ListItem>
+          <ListItem>
+            <TextField
+              disabled={!editMode}
+              id="standard-disabled"
+              name="bio"
+              label="Bio"
+              defaultValue={user && user.bio}
+              variant="standard"
+              fullWidth
+              multiline
+            />
+          </ListItem>
+          </List>
         <SubmitButton/>
       </Box>
-    </Box>
-  );
+    </Box> );
+  }
 }

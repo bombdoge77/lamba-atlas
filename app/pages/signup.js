@@ -22,7 +22,7 @@ export default function SignUp() {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
 
-    const response = await signUpRequest(data).then((res) => {return res})
+    const response = await signUpRequest(data)
 
     if(response.ok) {
       router.push('login')
