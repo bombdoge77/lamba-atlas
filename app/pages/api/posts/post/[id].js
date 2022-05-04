@@ -2,6 +2,8 @@ require('dotenv').config()
 import { connect, disconnect } from '../../../../utils/db/db.js'
 import { create_post, edit_post, get_post, remove_post } from '../../../../utils/db/posts.js'
 import { authenticateToken } from '../../users/auth.js'
+const multer = require('multer')
+const GridFsStorage = require('multer-gridfs-storage')
 
 export default async function postHandler(req, res) {
   var jwt = req.headers.authorization
@@ -38,11 +40,21 @@ export default async function postHandler(req, res) {
 
 async function add(req, res) {
   var db = await connect(process.env.DB_NAME)
+  const fs = new GridFsStorage({
+    db : db
+  })
+  const upload = multer({ storage })
 
   var post = req.body.payload
   var result = await create_post(db, post)
+  var post_id = result.insertedId
 
-  if (result) {
+  // use multer gridfs to store images in db
+  // save post id in picture metadata
+  // add type as metadata (eg. type : postOp)
+  // types are: 'postOp', 'preOp', 'inOp'
+
+  if (result.acknowledged) {
     res.status(200)
   } else {
     res.status(500)

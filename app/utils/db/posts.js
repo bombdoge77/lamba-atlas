@@ -4,7 +4,7 @@ export async function create_post(db, post) {
 	// error handling
 	// store pictures?
 	var result = await posts.insertOne(post)
-	return result.acknowledged
+	return result
 }
 
 export async function remove_post(db, id) {
