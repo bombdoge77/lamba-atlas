@@ -71,6 +71,18 @@ export default function FrontPage() {
       setLoading(false)
     }
   })
+
+  /*
+  const accessToken = getAccessToken()
+  console.log(accessToken)
+  const user = await isLoggedIn()
+  const router = useRouter()
+  
+  if (!user) {
+    router.push('/login')
+    //return <div></div>
+  }
+  */
   if (loading) {
     return null
   } else {
@@ -78,7 +90,7 @@ export default function FrontPage() {
         <Box>
           <AppBar/>
           <Toolbar/>
-          <Container sx={{padding:2, backgroundColor:'#e8f5e9'}}>
+          <Container sx={{padding:2, }}>
           <Grid container spacing={2}>
             <Grid item xs={6}>
               <Link href='/feed'>

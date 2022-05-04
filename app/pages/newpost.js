@@ -1,5 +1,4 @@
 import * as React from 'react';
-
 import AppBar from "../frontend/AppBar";
 import Toolbar from "@mui/material/Toolbar";
 import Box from '@mui/material/Box';
@@ -8,7 +7,6 @@ import ListItem from "@mui/material/ListItem";
 import ListItemText from "@mui/material/ListItemText"
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
-
 import Radio from '@mui/material/Radio';
 import RadioGroup from '@mui/material/RadioGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
@@ -33,21 +31,41 @@ const categories =[
 
                   ]
 
+/** TODO: Kolla in senare
+ * Tags?
+ * Infoga fler bilder än en.
+ * 
+ */
+
 export default function NewPost() {
-
-  const [chipData, setchipData] = React.useState([]);
-  const [receivers, setReceivers] = React.useState([]);
-  console.log(receivers);
   
-  const [value, setValue] = React.useState('');
+  // receivers är lista med alla tags som fyllts i
+  const [receivers, setReceivers] = React.useState([]);
 
-  const handleChange = (event) => {
-    setValue(event.target.value);
-    //tmp = event.target.value
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    const data = new FormData(event.currentTarget);
+    console.log(data.get('gender'))
+  }
 
-  };
-
-  const handleSubmit = 0;
+  /** Saker som vi behöver lagra:
+   *  - fallets ID
+   *  - kön
+   *  - ålder
+   *  - vikt
+   *  - längd
+   *  - Bilder
+   *      - Pre-op
+   *      - During-op
+   *      - Post-op
+   *  - medicinsk bakrund(medical history)
+   *  - nuvarande behandling(current treatment)
+   *  - aktuell bedömning(Assessment)
+   *  - fråga (Recomendation)
+   *  - fallets kategori
+   *  - taggar(tags)
+   *  - att patienten har consentat
+   */
 
   return (
     <Box sx={{ display: "flex", flexDirection: "column" }}>
@@ -65,7 +83,7 @@ export default function NewPost() {
           Please enter information about your case here! This rapport will follow the SBAR style.
         </Typography>
       </Box>
-      <Box sx={{display: "flex", flexDirection: "column", alignItems: "center"}}>
+      <Box component="form" noValidate onSubmit={handleSubmit} sx={{display: "flex", flexDirection: "column", alignItems: "center"}}>
         <List
           disablePadding
           sx={{ maxWidth: "sm", width: "90%", bgcolor: "background.paper" }}
@@ -74,13 +92,25 @@ export default function NewPost() {
             Situation 
           </Typography>
           <ListItem>
+            <TextField
+              name="situation"
+              label="Describe your situation"
+              variant="filled"
+              minRows={2}
+              fullWidth
+              multiline
+            />
+          </ListItem>
+        <Typography sx={{ mt: 1}} variant="h6" component="div">
+            Background
+          </Typography>
+          <ListItem>
             <FormControl>
               <FormLabel id="demo-radio-buttons-group-label">Gender</FormLabel>
               <RadioGroup
+                name="gender" 
                 aria-labelledby="demo-radio-buttons-group-label"
                 defaultValue="female"
-                name="radio-buttons-group"
-                
               >
                 <FormControlLabel value="female" control={<Radio />} label="Female" />
                 <FormControlLabel value="male" control={<Radio />} label="Male" />
@@ -90,19 +120,19 @@ export default function NewPost() {
           </ListItem>
           <ListItem>
             <TextField
-              id="standard-disabled"
+              name="age"
               label="Age"
               variant="standard"
               fullWidth
               type="number"
               sx={{ 
-                   'input[type=number]': {'-moz-appearance': 'textfield'}
+                   'input[type=number]': {'MozAppearance': 'textfield'}
                   }}
             />
           </ListItem>
           <ListItem>
             <TextField
-              id="standard-disabled"
+              name="weight"
               label="Weight"
               variant="standard"
               fullWidth
@@ -111,13 +141,13 @@ export default function NewPost() {
               }}
               type="number"
               sx={{ 
-                   'input[type=number]': {'-moz-appearance': 'textfield'}
+                   'input[type=number]': {'MozAppearance': 'textfield'}
                   }}
             />
           </ListItem>
           <ListItem>
             <TextField
-              id="standard-disabled"
+              name="height"
               label="Height"
               variant="standard"
               fullWidth
@@ -126,52 +156,13 @@ export default function NewPost() {
                 endAdornment: <InputAdornment position="end">cm</InputAdornment>,
               }}
               sx={{ 
-                   'input[type=number]': {'-moz-appearance': 'textfield'}
+                   'input[type=number]': {'MozAppearance': 'textfield'}
                   }}
             />
           </ListItem>
-          <Typography sx={{ mt: 1,color:'rgba(0, 0, 0, 0.6);', fontSize:'1rem',fontWeight: 400}}  component="div">
-            Please add the pictures that are relevant to the case.
-          </Typography>
-          <ListItem>
-          
-            <ListItemText
-              primary="Pictures pre-operation"
-              primaryTypographyProps={{color:'rgba(0, 0, 0, 0.6);', fontSize:'1rem',fontWeight: 400}}
-              secondary={
-                          <Button>
-                            <input type="file" id="pic1" name="avatar" accept="image/*" />
-                          </Button>
-                        }
-            />
-          </ListItem>
-          <ListItem>
-            <ListItemText
-              primary="Pictures during operation"
-              primaryTypographyProps={{color:'rgba(0, 0, 0, 0.6);', fontSize:'1rem',fontWeight: 400}}
-              secondary={
-                          <Button>
-                            <input type="file" id="pic2" name="avatar" accept="image/*" />
-                          </Button>
-                        }
-            />
-          </ListItem>
-          <ListItem>
-            <ListItemText
-              primary="Pictures post-operation"
-              primaryTypographyProps={{color:'rgba(0, 0, 0, 0.6);', fontSize:'1rem',fontWeight: 400}}
-              secondary={
-                          <Button>
-                            <input type="file" id="pic3" name="avatar" accept="image/*" />
-                          </Button>
-                        }
-            />
-          </ListItem>
-        <Typography sx={{ mt: 1}} variant="h6" component="div">
-            Background
-          </Typography>
           <ListItem>
             <TextField
+              name="med_history"
               label="Medical history"
               variant="filled"
               fullWidth
@@ -183,6 +174,7 @@ export default function NewPost() {
           </ListItem>
           <ListItem>
             <TextField
+              name="current_treatment"
               label="Current treatment"
               variant="filled"
               minRows={2}
@@ -190,11 +182,48 @@ export default function NewPost() {
               multiline
             />
           </ListItem>
+          <Typography sx={{ mt: 1,color:'rgba(0, 0, 0, 0.6);', fontSize:'1rem',fontWeight: 400}}  component="div">
+            Please add the pictures that are relevant to the case.
+          </Typography>
+          <ListItem>
+            <ListItemText
+              primary="Pictures pre-operation"
+              primaryTypographyProps={{color:'rgba(0, 0, 0, 0.6);', fontSize:'1rem',fontWeight: 400}}
+              secondary={
+                          <Button>
+                            <input type="file" id="pic1" name="picture_1" accept="image/*" multiple/>
+                          </Button>
+                        }
+            />
+          </ListItem>
+          <ListItem>
+            <ListItemText
+              primary="Pictures during operation"
+              primaryTypographyProps={{color:'rgba(0, 0, 0, 0.6);', fontSize:'1rem',fontWeight: 400}}
+              secondary={
+                          <Button>
+                            <input type="file" id="pic2" name="picture_2" accept="image/*" multiple/>
+                          </Button>
+                        }
+            />
+          </ListItem>
+          <ListItem>
+            <ListItemText
+              primary="Pictures post-operation"
+              primaryTypographyProps={{color:'rgba(0, 0, 0, 0.6);', fontSize:'1rem',fontWeight: 400}}
+              secondary={
+                          <Button>
+                            <input type="file" id="pic3" name="picture_3" accept="image/*" multiple/>
+                          </Button>
+                        }
+            />
+          </ListItem>
           <Typography sx={{ mt: 1}} variant="h6" component="div">
             Assessment
           </Typography>
           <ListItem>
             <TextField
+              name="analysis"
               label="Analysis and considerations of options"
               variant="filled"
               fullWidth
@@ -208,6 +237,7 @@ export default function NewPost() {
           </Typography>
           <ListItem>
             <TextField
+              name="recommendation"
               label="Your question"
               variant="filled"
               fullWidth
@@ -221,41 +251,42 @@ export default function NewPost() {
             Case category 
           </Typography>
           <ListItem>
-          <Autocomplete
-            id="grouped-demo"
-            options={categories}
-            groupBy={(option) => option.bodyCategory}
-            getOptionLabel={(option) => option.bodyPart}
-            sx={{ width: 300 }}
-            renderInput={(params) => <TextField {...params} label="With categories" />}
-          />
+            <Autocomplete
+              id="grouped-demo"
+              name="category"
+              options={categories}
+              groupBy={(option) => option.bodyCategory}
+              getOptionLabel={(option) => option.bodyPart}
+              sx={{ width: 300 }}
+              renderInput={(params) => <TextField {...params} name="category" label="With categories" />}
+            />
           </ListItem>
 
           <Typography sx={{ mt: 1}} variant="h6" component="div">
             Tags 
           </Typography>
           <Typography sx={{ mt: 1,color:'rgba(0, 0, 0, 0.6);', fontSize:'1rem',fontWeight: 400}}  component="div">
-            Please choose tags that you think relate to your case to help others find the case. 
+            Please choose tags that you think relate to your case to help others find the case. Press enter to submit a tag.
           </Typography>
-          
           <ListItem>
-          <Autocomplete
-            multiple
-            fullWidth
-            id="tags-filled"
-            options={[]}
-            defaultValue={[]}
-            freeSolo
-            onChange={(e, value) => setReceivers((state) => value)}
-            renderInput={(params) => (
+            <Autocomplete
+              multiple
+              fullWidth
+              //id="tags-filled"
+              options={[]}
+              defaultValue={[]}
+              freeSolo
+              onChange={(e, value) => setReceivers((state) => value)}
+              renderInput={(params) => (
                 <TextField
                   {...params}
                   variant="standard"
                   label="Enter tags"
-                  placeholder="Enter tags"
+                  //placeholder="Enter tags"
+                  //helperText="Press enter to submit a tag"
                 />
               )}
-          />
+            />
           </ListItem>
 
           <Typography sx={{ mt: 1}} variant="h6" component="div">
@@ -266,23 +297,27 @@ export default function NewPost() {
             Please make sure your patient have consented by filling our the consentform: [Insert link to consent document].
           </Typography>
           <ListItem>
-            <FormControlLabel control={<Checkbox defaultChecked />} label="I hereby promise i have my patient consent to use their patientdata." />
+            <FormControlLabel 
+              name="consent"
+              control={<Checkbox defaultChecked />} 
+              label="I hereby promise i have my patient consent to use their patientdata." 
+            />
           </ListItem>
           <Box
           sx={{
             display: "block",
             textAlign: "center",
           }}
-        >
-          <Button
-            type="submit"
-            variant="contained"
-            sx={{ mt: 2, mb: 2 }}
-            //onSubmit={handleSubmit}
           >
-            Submit post
-          </Button>
-        </Box>
+            <Button
+              type="submit"
+              variant="contained"
+              sx={{ mt: 2, mb: 2 }}
+              //onSubmit={handleSubmit}
+            >
+              Submit post
+            </Button>
+          </Box>
         </List>
       </Box>
     </Box>
