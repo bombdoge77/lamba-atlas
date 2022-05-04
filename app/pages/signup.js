@@ -17,17 +17,39 @@ import { Snackbar, Alert } from '@mui/material';
 export default function SignUp() {
   const router = useRouter()
   const [submitFailed, setSubmitFailed] = React.useState(false)
+  const [submitErrorMsg, setSubmitErrorMsg] = React.useState('');
+
+  const validate = (data) => {
+    let formKeys = ['name', 'title', 'email', 'country', 'contact', 'hospital', 'bio', 'password']
+    for (let i of formKeys) {
+      if(data.get(i) == false){
+        return false
+      }
+    }
+    if(!data.get('email').includes('@', 1)) {
+      return false
+    }
+    return true
+  }
 
   const handleSubmit = async (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
+    const isValid = validate(data);
 
-    const response = await signUpRequest(data)
+    if(isValid){
+      const response = await signUpRequest(data)
 
-    if(response.ok) {
-      router.push('login')
+      if(response.ok) {
+        router.push('login')
+      }
+      else {
+        setSubmitErrorMsg('Network Error')
+        setSubmitFailed(true)
+      }
     }
     else {
+      setSubmitErrorMsg('Form contains empty fields')
       setSubmitFailed(true)
     }
   };
@@ -35,7 +57,7 @@ export default function SignUp() {
   return (
     <Container component="main" maxWidth="xs">
       <Snackbar anchorOrigin={{vertical:'top', horizontal:'center'}} open={submitFailed}>
-        <Alert severity="error">Oh no something went wrong!</Alert>
+        <Alert severity="error"> {submitErrorMsg} </Alert>
       </Snackbar>
       <Box
         sx={{ 
