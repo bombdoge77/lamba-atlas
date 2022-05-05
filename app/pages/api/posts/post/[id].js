@@ -46,13 +46,30 @@ async function add(req, res) {
   const upload = multer({ storage })
 
   var post = req.body.payload
-  var result = await create_post(db, post)
-  var post_id = result.insertedId
+  const { postOp, preOp, inOp } = post.pictures
 
-  // use multer gridfs to store images in db
-  // save post id in picture metadata
-  // add type as metadata (eg. type : postOp)
-  // types are: 'postOp', 'preOp', 'inOp'
+  for (var arr of post.pictures) {
+    var result = arr.some(x => { x.type != 'image/jpeg' && x.type != 'image/png' })
+    if (result == false) {
+      res.status(400)
+      return
+    }
+  }
+
+  //save picture ids for each category of picture
+  upload.array(postOp)
+  post.pictures.postOp = req.files.map(file => { return file.id })
+  req.files = []
+
+  upload.array(preOp)
+  post.pictures.preOp = req.files.map(file => { return file.id })
+  req.files = []
+
+  upload.array(inOp)
+  post.pictures.inOp = req.files.map(file => { return file.id })
+  req.files = []
+
+  var result = await create_post(db, post)
 
   if (result.acknowledged) {
     res.status(200)
