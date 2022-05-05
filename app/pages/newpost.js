@@ -16,6 +16,11 @@ import Typography from '@mui/material/Typography';
 import InputAdornment from '@mui/material/InputAdornment';
 import { Autocomplete } from '@mui/material';
 import Checkbox from '@mui/material/Checkbox';
+import { newPostRequest } from '../frontend/helper/fetchcalls';
+import { Snackbar } from '@mui/material';
+import { Alert } from '@mui/material';
+import IconButton from '@mui/material/IconButton';
+import CloseIcon from '@mui/icons-material/Close';
 
 const categories =[
                     {bodyCategory: "Upper extremity", bodyPart: "Shoulder + upper arm"}, 
@@ -41,11 +46,41 @@ export default function NewPost() {
   
   // receivers är lista med alla tags som fyllts i
   const [receivers, setReceivers] = React.useState([]);
+  const [submitFailed, setSubmitFailed] = React.useState(false)
+  const [submitErrorMsg, setSubmitErrorMsg] = React.useState('');
 
-  const handleSubmit = (event) => {
+  const handleClose = () => {
+    setSubmitFailed(false);
+  };
+
+  const validate = (data) => {
+    for (var value of data.values()) {
+      console.log(value);
+   }
+  }
+
+  const handleSubmit = async (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    console.log(data.get('gender'))
+    data.append('tags',receivers)
+
+    const isValid = validate(data)
+
+    if(isValid){
+      const response = await newPostRequest(data)
+
+      if(response.ok) {
+        router.push('login')
+      }
+      else {
+        setSubmitErrorMsg('Network Error')
+        setSubmitFailed(true)
+      }
+    }
+    else {
+      setSubmitErrorMsg('Form contains empty fields')
+      setSubmitFailed(true)
+    }
   }
 
   /** Saker som vi behöver lagra:
@@ -79,6 +114,14 @@ export default function NewPost() {
           alignItems: "center",
         }}
       >
+        <Snackbar 
+          anchorOrigin={{vertical:'top', horizontal:'center'}} 
+          sx={{ top: 60}}  
+          open={submitFailed}
+          onClose={handleClose}
+        >
+          <Alert onClose={handleClose} severity="error"> {submitErrorMsg} </Alert>
+        </Snackbar>
         <Typography sx={{textAlign:'center', marginTop: 2, marginBottom:2}}>
           Please enter information about your case here! This rapport will follow the SBAR style.
         </Typography>
