@@ -1,14 +1,29 @@
-export async function create_post(db, post) {
+import { add_images, remove_images } from './images.js'
+
+// pictures must be JSON object where each field is an array of File objects
+export async function create_post(db, post, pictures) {
 	var posts = db.collection('posts')
 
 	// error handling
-	// store pictures?
+	// upload pictures
+  for (var key in post.pictures) {
+    post.pictures.key = await add_images(arr)
+  }
+
 	var result = await posts.insertOne(post)
 	return result
 }
 
 export async function remove_post(db, id) {
 	var posts = db.collection('posts')
+
+	var post = await posts.findOne({ _id : id})
+	if (post == null) return false
+
+	// remove images
+	for (var key in post.pictures) {
+    await remove_images(db, post.pictures.key)
+  }
 
 	// no error handling needed?
 	var result = await posts.deleteOne({ _id : id })

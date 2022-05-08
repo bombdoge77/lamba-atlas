@@ -2,8 +2,6 @@ require('dotenv').config()
 import { connect, disconnect } from '../../../../utils/db/db.js'
 import { create_post, edit_post, get_post, remove_post } from '../../../../utils/db/posts.js'
 import { authenticateToken } from '../../users/auth.js'
-const multer = require('multer')
-const GridFsStorage = require('multer-gridfs-storage')
 
 export default async function postHandler(req, res) {
   var jwt = req.headers.authorization
@@ -40,14 +38,11 @@ export default async function postHandler(req, res) {
 
 async function add(req, res) {
   var db = await connect(process.env.DB_NAME)
-  const fs = new GridFsStorage({
-    db : db
-  })
-  const upload = multer({ storage })
 
   var post = req.body.payload
   const { postOp, preOp, inOp } = post.pictures
 
+  // check if there are any non-image files, send error status if true
   for (var arr of post.pictures) {
     var result = arr.some(x => { x.type != 'image/jpeg' && x.type != 'image/png' })
     if (result == false) {
@@ -56,20 +51,7 @@ async function add(req, res) {
     }
   }
 
-  //save picture ids for each category of picture
-  upload.array(postOp)
-  post.pictures.postOp = req.files.map(file => { return file.id })
-  req.files = []
-
-  upload.array(preOp)
-  post.pictures.preOp = req.files.map(file => { return file.id })
-  req.files = []
-
-  upload.array(inOp)
-  post.pictures.inOp = req.files.map(file => { return file.id })
-  req.files = []
-
-  var result = await create_post(db, post)
+  var result = await create_post(db, post, pictures)
 
   if (result.acknowledged) {
     res.status(200)
@@ -99,6 +81,8 @@ async function get(req, res, id) {
   var db = await connect(process.env.DB_NAME)
 
   var result = await get_post(db, id)
+
+  // TODO: download pictures
 
   if (result) {
     res.status(200).json(result)
