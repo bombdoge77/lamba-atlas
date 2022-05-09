@@ -14,6 +14,7 @@ import ButtonGroup from "@mui/material/ButtonGroup";
 import TextField from "@mui/material/TextField";
 import { useRouter } from "next/router";
 import { isLoggedIn, editProfileRequest, getProfileRequest } from "../frontend/helper/fetchcalls";
+import { Snackbar, Alert } from "@mui/material";
 
 var user_test = {
   email: "erikaeriksson@mail.com", //string
@@ -33,6 +34,11 @@ export default function Profile() {
   const [loading, setLoading] = React.useState(true)
   const [editMode, setEditMode] = React.useState(false)
   const [user, setUser] = React.useState(null)
+  const [success, setSuccess] = React.useState(null)
+
+  const handleClose = () => {
+    setSuccess(null);
+  };
 
   const handleEditOpen = () => {
     setEditMode(true);
@@ -43,7 +49,12 @@ export default function Profile() {
     setEditMode(false)
     const data = new FormData(event.currentTarget)
     const result = await editProfileRequest(data)
-    console.log(result)
+    if (result) {
+      setSuccess(true)
+    }
+    else {
+      setSuccess(false)
+    }
   };
 
   const handleArrowBack = () => {
@@ -137,13 +148,24 @@ export default function Profile() {
           </Button>
         </ButtonGroup>
       </Toolbar>
+      <Snackbar 
+          anchorOrigin={{vertical:'top', horizontal:'center'}} 
+          sx={{ top: 50}}  
+          open={success}
+          onClose={handleClose}
+        >
+          <Alert onClose={handleClose} severity="success"> Profile was updated </Alert>
+        </Snackbar>
       <Box
+        component="form" 
         sx={{
           backgroundColor: "primary.dark",
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
         }}
+        noValidate 
+        onSubmit={handleSubmit} 
       >
         <Box sx={{ display: "block" }}>
           <Container
@@ -154,6 +176,7 @@ export default function Profile() {
               flexDirection: "column",
               alignItems: "center",
               paddingTop: 2,
+              paddingBottom: 2,
             }}
           >
             <Avatar
@@ -163,33 +186,7 @@ export default function Profile() {
             />
             <EditAvatarButton/>
           </Container>
-          <Container
-            sx={{
-              textAlign: "center",
-              flexDirection: "column",
-              alignItems: "center",
-              paddingBottom: 2,
-            }}
-          >
-            <Typography component="div">
-              <Box
-                sx={{
-                  fontSize: 22,
-                  marginTop: 2,
-                  fontWeight: "bold",
-                  color: "white",
-                }}
-              >
-                {user && user.name}
-              </Box>
-              <Box sx={{ fontSize: 14, marginTop: 0, color: "white" }}>
-                Title: {user && user.title}
-              </Box>
-            </Typography>
-          </Container>
         </Box>
-      </Box>
-      <Box component="form" noValidate onSubmit={handleSubmit} sx={{display: "flex", flexDirection: "column", alignItems: "center"}}>
         <List
           disablePadding
           sx={{ maxWidth: "sm", width: "80%", bgcolor: "background.paper" }}
