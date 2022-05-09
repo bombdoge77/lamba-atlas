@@ -1,7 +1,7 @@
 require('dotenv').config()
 import { createMocks } from 'node-mocks-http'
 import postHandler from '../pages/api/posts/post/[id].js'
-import commentHandler from '../pages/api/posts/comment.js'
+import commentHandler from '../pages/api/posts/comment/[id].js'
 import { connect, disconnect } from '../utils/db/db.js'
 import { add_user } from '../utils/db/users.js'
 import authHandler from '../pages/api/users/auth.js'
@@ -49,7 +49,11 @@ describe('API for posts and comments', () => {
 			},
 			background : 'this is the medical history of the patient',
 			current_treatment : 'current treatment of the patient',
-			pics : [],
+			pictures : {
+				postOp : null,
+				preOp : null,
+				inOp : null
+			},
 			question : 'this is the question'
 		}
 

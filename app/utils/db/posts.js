@@ -40,7 +40,9 @@ export async function get_post(db, id) {
 
 	if (post) {
 		for (var key in post.pictures) {
-    	post.pictures[key] = await get_images(db, post.pictures[key])
+			if (post.pictures[key]) {
+				post.pictures[key] = await get_images(db, post.pictures[key])
+			}
   	}
 	}
 

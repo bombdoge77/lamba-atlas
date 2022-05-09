@@ -43,11 +43,13 @@ async function add(req, res) {
   const { postOp, preOp, inOp } = post.pictures
 
   // check if there are any non-image files, send error status if true
-  for (var arr of post.pictures) {
-    var result = arr.some(x => { x.type != 'image/jpeg' && x.type != 'image/png' })
-    if (result == false) {
-      res.status(400)
-      return
+  for (var key in post.pictures) {
+    if (post.pictures[key]) {
+      var result = post.pictures[key].some(x => { x.type != 'image/jpeg' && x.type != 'image/png' })
+      if (result == false) {
+        res.status(400)
+        return
+      }
     }
   }
 

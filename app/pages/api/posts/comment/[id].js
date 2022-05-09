@@ -1,7 +1,7 @@
 require('dotenv').config()
-import { connect, disconnect } from '../../../utils/db/db.js'
-import { make_comment, edit_comment, get_comments, remove_comment } from '../../../utils/db/comments.js'
-import { authenticateToken } from '../users/auth.js'
+import { connect, disconnect } from '../../../../utils/db/db.js'
+import { make_comment, edit_comment, get_comments, remove_comment } from '../../../../utils/db/comments.js'
+import { authenticateToken } from '../../users/auth.js'
 
 export default async function commentHandler(req, res) {
   var jwt = req.body.jwt
