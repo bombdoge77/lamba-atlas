@@ -25,10 +25,11 @@ export default function SignIn() {
     const result = await loginRequest(data)
 
     if(result) {
-      var token = result.jwt
+      var token = result.headers.get('Authorization')
       setAccessToken(token)
-      setUser(data.get('email'))
-      router.push('profile')
+      var body = await result.json()
+      setUser(body.user)
+      router.push('frontpage')
     }
     else {
       setLoginStatus(false)

@@ -55,9 +55,13 @@ var test_post = {
  *
  */
 
+export async getStaticProps(ctx) {
+  return {
+    props : {}
+  }
+}
 
-export default function Post() {
-
+export default function Post(props) {
   const showtags = (test_post.tags).map((tag) =>  <Chip label={tag}/>);
   const [rating, setRating] = React.useState(2);
 

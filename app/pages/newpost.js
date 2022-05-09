@@ -19,20 +19,7 @@ import Checkbox from '@mui/material/Checkbox';
 import { newPostRequest } from '../frontend/helper/fetchcalls';
 import { Snackbar } from '@mui/material';
 import { Alert } from '@mui/material';
-
-
-const categories =[
-                    {bodyCategory: "Upper extremity", bodyPart: "Shoulder + upper arm"}, 
-                    {bodyCategory:"Upper extremity", bodyPart:"Elbow"}, 
-                    {bodyCategory:"Upper extremity", bodyPart: "Forearm"}, 
-                    {bodyCategory:"Upper extremity", bodyPart: "Hand" },
-                    {bodyCategory:"Lower extremity", bodyPart: "Hip + thigh"}, 
-                    {bodyCategory:"Lower extremity", bodyPart:"Knee"}, 
-                    {bodyCategory:"Lower extremity", bodyPart: "Lower leg"}, 
-                    {bodyCategory:"Lower extremity", bodyPart: "Foot" },
-                    {bodyCategory:"Abdomen", bodyPart: "Front"}, 
-                    {bodyCategory:"Abdomen", bodyPart: "Back" },
-                  ]
+import categories from '../frontend/helper/categories.js'
 
 /** TODO: Kolla in senare
  * Tags

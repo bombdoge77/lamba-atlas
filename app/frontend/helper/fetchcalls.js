@@ -72,10 +72,9 @@ export async function isLoggedIn() {
     headers: {
     Accept: "application/json",
     "Content-Type": "application/json",
-    //"Authorization": `Bearer ${accessToken}`
+    "Authorization": accessToken
     },
     body: JSON.stringify({
-      jwt : accessToken,
       payload: {}
     })
   })
@@ -97,7 +96,7 @@ export async function loginRequest(data) {
       }
     })
   })
-  .then((res) => {return res.ok ? res.json() : null})
+  .then((res) => {return res.ok ? res : null})
   return response
 }
 
@@ -133,4 +132,8 @@ export async function newPostRequest(data) {
   })
   .then((res) => {return res.ok ? res.status : null})
   return response
-} 
+}
+
+export async function searchPosts(text, category) {
+
+}

@@ -12,6 +12,7 @@ import Drawer from "@mui/material/Drawer";
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { List, ListItem, ListItemButton, ListItemText } from '@mui/material';
 import Link from 'next/link'
+import SearchBar from './SearchBar.js'
 
 const drawerWidthMobile = "70vw";
 const drawerWidthDesktop = "20vw";
@@ -53,7 +54,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
   },
 }));
 
-export default function PrimarySearchAppBar() {
+export default function PrimarySearchAppBar(props) {
   const [open, setOpen] = React.useState(false);
   const toggleDrawer = () => {
     setOpen(!open);
@@ -90,14 +91,15 @@ export default function PrimarySearchAppBar() {
           >
             MedStack
           </Typography>
-          <Search>
+          <SearchBar onSearch={props.onSearch}/>
+          {/*<Search>
             <SearchIconWrapper>
               <SearchIcon />
             </SearchIconWrapper>
             <StyledInputBase
               placeholder="Search…"
             />
-          </Search>
+          </Search>*/}
         </Toolbar>
       </AppBar>
       <Drawer

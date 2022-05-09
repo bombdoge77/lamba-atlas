@@ -40,7 +40,7 @@ async function add(req, res) {
   var db = await connect(process.env.DB_NAME)
 
   var post = req.body.payload
-  const { postOp, preOp, inOp } = post.pictures
+  //const { postOp, preOp, inOp } = post.pictures
 
   // check if there are any non-image files, send error status if true
   for (var key in post.pictures) {

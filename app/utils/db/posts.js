@@ -8,7 +8,7 @@ export async function create_post(db, post) {
 	// upload pictures
 	for (var key in post.pictures) {
 		if (post.pictures[key] != null) {
-			post.pictures[key] = await add_images(arr)
+			post.pictures[key] = await add_images(post.pictures[key])
 		}
 	}
 
@@ -109,7 +109,7 @@ export async function unstar(db, email, post_id) {
 }
 
 // params should be JSON containing category and text
-// maybe only get post id, title, likes, comments, etc.
+// category looks like : {bodyCategory : 'Upper extremity', bodyPart : 'Shoulder + upper arm'}
 export async function search_posts(db, text, category) {
 	var posts = db.collection('posts')
 	var result = posts.find({ category : category, title : { $regex : text } })

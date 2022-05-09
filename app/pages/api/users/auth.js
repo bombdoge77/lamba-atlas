@@ -13,7 +13,7 @@ export default async function authHandler(req, res) {
 }
 
 function jwtHandler(req, res) {
-  var jwt = req.body.jwt
+  var jwt = req.headers.authorization //req.body.jwt
   var jwt_decoded = authenticateToken(jwt)
 
   if (jwt_decoded == null) {
@@ -48,6 +48,7 @@ async function authorize(req, res) {
     var accessToken = jwt.sign( { user : email }, process.env.ACCESS_TOKEN_SECRET, { expiresIn : '1h' })
     var body = {
       //jwt : accessToken
+      user : email
     }
     res.setHeader('Authorization', accessToken)
 
