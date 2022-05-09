@@ -100,3 +100,37 @@ export async function loginRequest(data) {
   .then((res) => {return res.ok ? res.json() : null})
   return response
 }
+
+export async function newPostRequest(data) {
+  var token = getAccessToken()
+  const response = await fetch('api/users/profile', {
+    method: 'POST',
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json"
+      },
+    body: JSON.stringify({
+      jwt: token,
+      payload: {
+        gender: data.get('gender'),
+        age: data.get('age'),
+        weight: data.get('weight'),
+        height: data.get('height'),
+        pictures: {
+          pre_op: data.getAll('picture_1'),
+          during_op: data.getAll('picture_2'),
+          post_op: data.getAll('picture_3')
+        },
+        med_history: data.get('med_history'),
+        current_treatment: data.get('current_treatment'),
+        analysis: data.get('analysis'),
+        recommendation: data.get('recommendation'),
+        category: data.get('category'),
+        tags: data.get('tags'),
+        consent: data.get('consent')
+      }
+    })
+  })
+  .then((res) => {return res.ok ? res.status : null})
+  return response
+} 
