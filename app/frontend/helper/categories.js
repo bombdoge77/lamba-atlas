@@ -35,4 +35,4 @@ const format = {
 }
 
 export default categories
-export format, category_tree
+export { format, category_tree }
