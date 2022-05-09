@@ -19,8 +19,6 @@ import Checkbox from '@mui/material/Checkbox';
 import { newPostRequest } from '../frontend/helper/fetchcalls';
 import { Snackbar } from '@mui/material';
 import { Alert } from '@mui/material';
-import IconButton from '@mui/material/IconButton';
-import CloseIcon from '@mui/icons-material/Close';
 
 const categories =[
                     {bodyCategory: "Upper extremity", bodyPart: "Shoulder + upper arm"}, 
@@ -33,7 +31,6 @@ const categories =[
                     {bodyCategory:"Lower extremity", bodyPart: "Foot" },
                     {bodyCategory:"Abdomen", bodyPart: "Front"}, 
                     {bodyCategory:"Abdomen", bodyPart: "Back" },
-
                   ]
 
 /** TODO: Kolla in senare
