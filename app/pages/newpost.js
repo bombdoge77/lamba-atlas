@@ -20,6 +20,7 @@ import { newPostRequest } from '../frontend/helper/fetchcalls';
 import { Snackbar } from '@mui/material';
 import { Alert } from '@mui/material';
 
+
 const categories =[
                     {bodyCategory: "Upper extremity", bodyPart: "Shoulder + upper arm"}, 
                     {bodyCategory:"Upper extremity", bodyPart:"Elbow"}, 
@@ -36,6 +37,7 @@ const categories =[
 /** TODO: Kolla in senare
  * Tags
  * Infoga fler bilder än en.
+ * Göra consent obligatorisk
  */
 
 export default function NewPost() {
@@ -83,6 +85,7 @@ export default function NewPost() {
 
   /** Saker som vi behöver lagra:
    *  - fallets ID
+   *  - title
    *  - situation
    *  - kön
    *  - ålder
@@ -130,6 +133,16 @@ export default function NewPost() {
           disablePadding
           sx={{ maxWidth: "sm", width: "90%", bgcolor: "background.paper" }}
         >
+          <Typography sx={{ mt: 1}} variant="h6" component="div">
+            Titel 
+          </Typography>
+          <TextField
+              name="title"
+              label="Add a titel to your new post"
+              variant="filled"
+              fullWidth
+              multiline
+            />
           <Typography sx={{ mt: 1}} variant="h6" component="div">
             Situation 
           </Typography>
@@ -341,6 +354,7 @@ export default function NewPost() {
           <ListItem>
             <FormControlLabel 
               name="consent"
+              required
               control={<Checkbox defaultChecked />} 
               label="I hereby promise i have my patient consent to use their patientdata." 
             />
