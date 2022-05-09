@@ -51,7 +51,7 @@ async function add(req, res) {
     }
   }
 
-  var result = await create_post(db, post, pictures)
+  var result = await create_post(db, post)
 
   if (result.acknowledged) {
     res.status(200)
@@ -81,8 +81,6 @@ async function get(req, res, id) {
   var db = await connect(process.env.DB_NAME)
 
   var result = await get_post(db, id)
-
-  // TODO: download pictures
 
   if (result) {
     res.status(200).json(result)

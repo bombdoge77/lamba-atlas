@@ -1,14 +1,16 @@
-import { add_images, remove_images } from './images.js'
+import { add_images, remove_images, get_images } from './images.js'
 
 // pictures must be JSON object where each field is an array of File objects
-export async function create_post(db, post, pictures) {
+export async function create_post(db, post) {
 	var posts = db.collection('posts')
 
 	// error handling
 	// upload pictures
-  for (var key in post.pictures) {
-    post.pictures.key = await add_images(arr)
-  }
+	for (var key in post.pictures) {
+		if (post.pictures[key] != null) {
+			post.pictures[key] = await add_images(arr)
+		}
+	}
 
 	var result = await posts.insertOne(post)
 	return result
@@ -22,7 +24,7 @@ export async function remove_post(db, id) {
 
 	// remove images
 	for (var key in post.pictures) {
-    await remove_images(db, post.pictures.key)
+    await remove_images(db, post.pictures[key])
   }
 
 	// no error handling needed?
@@ -34,8 +36,15 @@ export async function remove_post(db, id) {
 export async function get_post(db, id) {
 	var posts = db.collection('posts')
 
-	var result = await posts.findOne({ _id : id })
-	return result
+	var post = await posts.findOne({ _id : id })
+
+	if (post) {
+		for (var key in post.pictures) {
+    	post.pictures[key] = await get_images(db, post.pictures[key])
+  	}
+	}
+
+	return post
 }
 
 export async function edit_post(db, id, new_post) {
@@ -99,8 +108,10 @@ export async function unstar(db, email, post_id) {
 
 // params should be JSON containing category and text
 // maybe only get post id, title, likes, comments, etc.
-export async function search_posts(db, params) {
-
+export async function search_posts(db, text, category) {
+	var posts = db.collection('posts')
+	var result = posts.find({ category : category, title : { $regex : text } })
+	return result.toArray()
 }
 
 export async function upvote_post(db, post_id, email) {

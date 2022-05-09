@@ -14,18 +14,20 @@ export default async function commentHandler(req, res) {
     return
   }
 
+  const id = req.query.id
+
   switch (req.method) {
     case 'PUT':
-      await edit(req, res)
+      await edit(req, res, id)
       break
     case 'GET':
-      await get(req, res)
+      await get(req, res, id)
       break
     case 'POST':
       await add(req, res)
       break
     case 'DELETE':
-      await remove(req, res)
+      await remove(req, res, id)
       break
     default:
       res.status(501)
@@ -50,10 +52,10 @@ async function add(req, res) {
   await disconnect() //do we need to await?
 }
 
-async function edit(req, res) {
+async function edit(req, res, id) {
   var db = await connect(process.env.DB_NAME)
   
-  var { id, new_text } = req.body.payload
+  var { new_text } = req.body.payload
   var result = await edit_comment(db, id, new_text)
 
   if (result) {
@@ -66,11 +68,11 @@ async function edit(req, res) {
 }
 
 // gets all comments for one post, returns array
-async function get(req, res) {
+async function get(req, res, id) {
   var db = await connect(process.env.DB_NAME)
 
-  var post_id = req.body.payload.post_id
-  var result = await get_comments(db, post_id)
+  //var post_id = req.body.payload.post_id
+  var result = await get_comments(db, id)
 
   //does this work?
   if (result.length() != 0) {
@@ -82,11 +84,11 @@ async function get(req, res) {
   await disconnect() //do we need to await?
 }
 
-async function remove(req, res) {
+async function remove(req, res, id) {
   var db = await connect(process.env.DB_NAME)
 
-  var post_id = req.body.payload.post_id
-  var result = await remove_comment(db, post_id)
+  //var post_id = req.body.payload.post_id
+  var result = await remove_comment(db, id)
 
   if (result) {
     res.status(200)
