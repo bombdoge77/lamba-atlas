@@ -4,20 +4,29 @@ import Toolbar from "@mui/material/Toolbar";
 import Box from '@mui/material/Box';
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
-import ListItemText from "@mui/material/ListItemText"
-import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import Typography from '@mui/material/Typography';
-import InputAdornment from '@mui/material/InputAdornment';
 import Paper from '@mui/material/Paper';
 import Grid from '@mui/material/Grid';
 import Container from '@mui/material/Container';
-import Divider from '@mui/material/Divider';
 import Chip from '@mui/material/Chip';
 import { Autocomplete } from '@mui/material';
-
+import Card from '@mui/material/Card';
+import CardHeader from '@mui/material/CardHeader';
+import CardContent from '@mui/material/CardContent';
+import CardActions from '@mui/material/CardActions';
+import Avatar from '@mui/material/Avatar';
+import IconButton from '@mui/material/IconButton';
+import Rating from '@mui/material/Rating';
+import ThumbUpIcon from '@mui/icons-material/ThumbUp';
+import InputLabel from '@mui/material/InputLabel';
+import FormControl from '@mui/material/FormControl';
+import NativeSelect from '@mui/material/NativeSelect';
+import Stack from '@mui/material/Stack';
+import Button from '@mui/material/Button';
 
 var test_post = {
+  title: "this is the title for the post",
   //Situation
   situation: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Morbi tristique senectus et netus et malesuada. Fringilla phasellus faucibus scelerisque eleifend donec pretium vulputate. ", 
   //Background
@@ -42,24 +51,15 @@ var test_post = {
 
 /** TODO:
  * - Fixa en stack av images
+ * - 
  *
  */
 
 
 export default function Post() {
-  
-  function ShowTags() {
-    /*
-    return (
-      for (x in test_post.tags){
-        <Chip label={x}/>
-      }
-    );*/
-    return(
-      <Box></Box>
-    );
-  }
 
+  const showtags = (test_post.tags).map((tag) =>  <Chip label={tag}/>);
+  const [rating, setRating] = React.useState(2);
 
   return(
     <Box sx={{ display: "flex", flexDirection: "column" }}>
@@ -68,11 +68,9 @@ export default function Post() {
       <Container sx={{ height:'100%', width:'100%', backgroundColor:'primary.light2',}}>
         
         <Paper elevation={3} sx={{ mt:2, width:'99%', height:'100%', justifyContent: 'center',}}>
-        
-          <Paper elevation={3} sx={{ height:50, justifyContent: 'center', backgroundColor:'primary.dark'}}>
-            
-            <Typography sx={{ alignItems:'center', padding:2, color:'white'}} variant="h5" component="div">
-              {test_post.situation} 
+          <Paper elevation={3} sx={{ height:50, justifyContent: 'center', backgroundColor:'primary.dark', height:'auto'}}>
+            <Typography sx={{ alignItems:'center', padding:2, color:'white',}} variant="h5" component="div">
+              {test_post.title} 
             </Typography>
           </Paper>
           <Box  sx={{ display: "flex", flexDirection: "column", alignItems: "center"}}>
@@ -83,11 +81,11 @@ export default function Post() {
               <Typography sx={{ mt: 1}} variant="h6" component="div">
                 Situation 
               </Typography>
-         
-              <Typography sx={{ mt: 1}} variant="subtitle3" component="div">
-                {test_post.situation}
-              </Typography>
-              
+              <ListItem>
+                <Typography sx={{ mt: 1}} variant="subtitle3" component="div">
+                  {test_post.situation}
+                </Typography>
+              </ListItem>
               <Typography sx={{ mt: 2, mb:1}} variant="h6" component="div">
                 Background 
               </Typography>
@@ -137,47 +135,53 @@ export default function Post() {
               <Typography variant="subtitle1" sx={{mt:1}} component="div">
                 Medical history:
               </Typography>
+              <ListItem>
               <Typography sx={{ mt: 0,}} variant="subtitle3" component="div">
                 {test_post.med_history}
               </Typography>
+              </ListItem>
               <Typography sx={{mt:1}} variant="subtitle1" component="div">
                 Current Treatment:
               </Typography>
-              <Typography sx={{ mt: 0}} variant="subtitle3" component="div">
-                {test_post.current_treatment}
-              </Typography>
-
+              <ListItem>
+                <Typography sx={{ mt: 0}} variant="subtitle3" component="div">
+                  {test_post.current_treatment}
+                </Typography> 
+              </ListItem>
               <Typography sx={{mt:2}} variant="subtitle1" component="div">
                 Pictures from pre-operation:
               </Typography>
-              <img src="https://loremflickr.com/100/100/medicine" />
-              <Box sx={{ml:3, backgroundColor:'rgba(0, 0, 0, 0.2);', height:'100px', width:'100px', mt:-13.4 }}/>
-              <Box sx={{ml:1.5, backgroundColor:'rgba(0, 0, 0, 0.1);', height:'100px', width:'100px', mt:-12.3 }}/>
+              <ListItem>
+                <img src="https://loremflickr.com/100/100/medicine" />
+              </ListItem>
               <Typography sx={{mt:1}} variant="subtitle1" component="div">
                 Pictures from during the operation:
               </Typography>
-              <img src="https://loremflickr.com/100/100/" />
-              <Box sx={{ml:3, backgroundColor:'rgba(0, 0, 0, 0.2);', height:'100px', width:'100px', mt:-13.4 }}/>
-              <Box sx={{ml:1.5, backgroundColor:'rgba(0, 0, 0, 0.1);', height:'100px', width:'100px', mt:-12.3 }}/>
+              <ListItem>
+                <img src="https://loremflickr.com/100/100/" />
+              </ListItem>
               <Typography sx={{mt:1}}  variant="subtitle1" component="div">
                 Pictures from post-operation:
               </Typography>
-              <img src="https://loremflickr.com/100/100/doctor" />
-              <Box sx={{ml:3, backgroundColor:'rgba(0, 0, 0, 0.2);', height:'100px', width:'100px', mt:-13.4 }}/>
-              <Box sx={{ml:1.5, backgroundColor:'rgba(0, 0, 0, 0.1);', height:'100px', width:'100px', mt:-12.3 }}/>
-
+                <ListItem>
+                <img src="https://loremflickr.com/100/100/doctor" />
+              </ListItem>
               <Typography sx={{ mt: 2}} variant="h6" component="div">
                 Assessment 
               </Typography>
-              <Typography sx={{ mt: 0}} variant="subtitle3" component="div">
-                {test_post.analysis}
-              </Typography>
+              <ListItem>
+                <Typography sx={{ mt: 0}} variant="subtitle3" component="div">
+                  {test_post.analysis}
+                </Typography>
+              </ListItem>
               <Typography sx={{ mt: 2}} variant="h6" component="div">
                 Recommendation (question)
               </Typography>
-              <Typography variant="subtitle3" component="div">
-                {test_post.recommendation}
-              </Typography>
+              <ListItem>
+                <Typography variant="subtitle3" component="div">
+                  {test_post.recommendation}
+                </Typography>
+              </ListItem>
               <Typography sx={{ mt: 1}} variant="h6" component="div">
                 Case category 
               </Typography>
@@ -195,10 +199,84 @@ export default function Post() {
               <Typography sx={{ mt: 1}} variant="h6" component="div">
                 Tags 
               </Typography>
-              <ShowTags/>
+              <ListItem>
+                {showtags}
+              </ListItem>
+              <Typography sx={{ mt: 1}} variant="h6" component="div">
+                Consent 
+              </Typography>
+              <ListItem>
+                <Typography sx={{ mt: 1, mb:2, color:'rgba(0, 0, 0, 0.6);', fontSize:'1rem',fontWeight: 400}}  component="div">
+                  I have my patients' consent to use their information in this post.
+                </Typography>
+              </ListItem>
             </List>
           </Box>
         </Paper>
+        <Box  sx={{ mt:2, width:'99%', height:'100%', justifyContent: 'center',}}>
+          <Stack direction="row" spacing={2}>
+            <Typography sx={{ mt: 1, mb:2}} variant="h5" component="div">
+              Comments 
+            </Typography>
+
+            <Button variant="contained" sx={{width:100, height:45}} >Add comment</Button>
+
+            <Box sx={{ minWidth: 50 }}>
+              <FormControl >
+                <InputLabel variant="standard" htmlFor="uncontrolled-native">
+                  Sort
+                </InputLabel>
+                <NativeSelect
+                  defaultValue={10}
+                  inputProps={{
+                    name: 'recent',
+                  }}
+                >
+                  <option value={10}>Most recent</option>
+                  <option value={20}>Most Liked</option>
+                </NativeSelect>
+              </FormControl>
+            </Box>
+        </Stack>
+          <List
+              disablePadding
+              sx={{ maxWidth: "sm", width: "90%", mb:2}}
+            >
+            
+            <Card sx={{ width: "100%" }}>
+              <CardHeader
+                avatar={
+                  <Avatar sx={{ bgcolor: "red"}} src="/sonic.jpeg">
+                    
+                  </Avatar>
+                }
+                title="This is my title to my comment"
+                subheader="September 14, 2016"
+              />
+              <CardContent>
+                <Typography variant="body2" color="text.secondary">
+                  This impressive paella is a perfect party dish and a fun meal to cook
+                  together with your guests. Add 1 cup of frozen peas along with the mussels,
+                  if you like.
+                </Typography>
+              </CardContent>
+
+              <CardActions disableSpacing>
+              <IconButton aria-label="add to favorites">
+              <Rating
+                  name="simple-controlled"
+                  value={rating}
+                  onChange={(event, newRating) => {
+                    setRating(newRating);
+                  }}
+                />
+              </IconButton>
+              </CardActions>
+            </Card>
+
+
+          </List>      
+        </Box>
       </Container>
     </Box>
   );
