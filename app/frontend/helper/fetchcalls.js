@@ -116,9 +116,11 @@ export async function newPostRequest(data) {
         age: data.get('age'),
         weight: data.get('weight'),
         height: data.get('height'),
-        picture_1: data.get('picture_1'),
-        picture_2: data.get('picture_2'),
-        picture_3: data.get('picture_3'),
+        pictures: {
+          pre_op: data.getAll('picture_1'),
+          during_op: data.getAll('picture_2'),
+          post_op: data.getAll('picture_3')
+        },
         med_history: data.get('med_history'),
         current_treatment: data.get('current_treatment'),
         analysis: data.get('analysis'),
