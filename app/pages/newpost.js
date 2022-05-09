@@ -32,7 +32,7 @@ const categories =[
                   ]
 
 /** TODO: Kolla in senare
- * Tags?
+ * Tags
  * Infoga fler bilder än en.
  * 
  */
@@ -50,6 +50,7 @@ export default function NewPost() {
 
   /** Saker som vi behöver lagra:
    *  - fallets ID
+   *  - situation
    *  - kön
    *  - ålder
    *  - vikt
