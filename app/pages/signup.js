@@ -37,7 +37,7 @@ export default function SignUp() {
     const data = new FormData(event.currentTarget);
     const isValid = validate(data);
 
-    if(isValid){
+    if(isValid) {
       const response = await signUpRequest(data)
 
       if(response.ok) {

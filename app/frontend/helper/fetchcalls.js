@@ -103,14 +103,14 @@ export async function loginRequest(data) {
 
 export async function newPostRequest(data) {
   var token = getAccessToken()
-  const response = await fetch('api/users/profile', {
+  const response = await fetch('api/posts/post/', {
     method: 'POST',
     headers: {
       Accept: "application/json",
-      "Content-Type": "application/json"
+      "Content-Type": "application/json",
+      "Authorization": token
       },
     body: JSON.stringify({
-      jwt: token,
       payload: {
         gender: data.get('gender'),
         age: data.get('age'),

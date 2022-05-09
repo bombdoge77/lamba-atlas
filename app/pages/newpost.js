@@ -36,7 +36,6 @@ const categories =[
 /** TODO: Kolla in senare
  * Tags
  * Infoga fler bilder än en.
- * 
  */
 
 export default function NewPost() {
@@ -62,6 +61,8 @@ export default function NewPost() {
     data.append('tags',receivers)
 
     const isValid = validate(data)
+
+    isValid = true
 
     if(isValid){
       const response = await newPostRequest(data)
