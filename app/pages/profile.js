@@ -12,48 +12,38 @@ import ArticleIcon from "@mui/icons-material/Article";
 import Button from "@mui/material/Button";
 import ButtonGroup from "@mui/material/ButtonGroup";
 import TextField from "@mui/material/TextField";
-import { useRouter } from 'next/router'
+import { useRouter } from "next/router";
+import { isLoggedIn, editProfileRequest, getProfileRequest } from "../frontend/helper/fetchcalls";
 
-
-var user = {
+var user_test = {
   email: "erikaeriksson@mail.com", //string
   name: "Erika Eriksson", //string
   hospital: "Akademiska Hospital", //string
   country: "Norge", //string
   title: "Expert", //string
   bio: "I am from Hell (Norge). Currently working as a plastic surgeon. ", //string
-  contact: { whatsapp: "12983767", phone: "12389612" },
+  contact: "12389612",
   //tex {'whatsapp' : '12983767', 'phone' : '12389612'}
   pass_hash: "123", //string
   //picture?
 };
 
 export default function Profile() {
-  /* const user_placeholder = fetch('api/users/register', {
-      method: "POST",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json"
-      },
-      body: {
-        email: "email",
-      }
-  })
-  .then((res) => res.json())
-  .then(data => console.log(data));
-  */
-  const [editMode, setEditMode] = React.useState(false);
-
   const router = useRouter()
+  const [loading, setLoading] = React.useState(true)
+  const [editMode, setEditMode] = React.useState(false)
+  const [user, setUser] = React.useState(null)
 
   const handleEditOpen = () => {
     setEditMode(true);
   };
 
-  const handleSubmit = () => {
-    setEditMode(false);
-
-    //Send new profile information to backend
+  const handleSubmit = async (event) => {
+    event.preventDefault()
+    setEditMode(false)
+    const data = new FormData(event.currentTarget)
+    const result = await editProfileRequest(data)
+    console.log(result)
   };
 
   const handleArrowBack = () => {
@@ -61,17 +51,17 @@ export default function Profile() {
   }
 
   const handlePosts = () => {
-    
     // Go to feed and show posts for this user
-
   }
-
+  
   function SubmitButton() {
+    //scroll down to show submit button
     const messagesEndRef = React.useRef(null);
     const scrollToBottom = () => {
       messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
     };
     React.useEffect(scrollToBottom);
+
     if (editMode) {
       return (
         <Box
@@ -80,14 +70,14 @@ export default function Profile() {
             textAlign: "center",
           }}
         >
+          <div ref={messagesEndRef} />
           <Button
-            onClick={handleSubmit}
+            type="submit"
             variant="contained"
             sx={{ mt: 2, mb: 2 }}
           >
             Submit changes
           </Button>
-          <div ref={messagesEndRef} />
         </Box>
       );
     }
@@ -109,7 +99,24 @@ export default function Profile() {
     )
   }
 
-  return (
+  React.useEffect(async () => {
+    var loggedIn = await isLoggedIn()
+    if (!loggedIn) {
+      router.push('login')
+    }
+    else {
+      var data = await getProfileRequest()
+      var user = data.payload.user_profile
+      setLoading(false)
+      setUser(user)
+    }
+  }, []);
+
+  if(loading) {
+    return <Box>... loading</Box>
+  }
+  else {
+    return (
     <Box sx={{ display: "flex", flexDirection: "column" }}>
       <Toolbar sx={{display: "flex", backgroundColor: "primary.light" }}>
         <ButtonGroup
@@ -173,16 +180,16 @@ export default function Profile() {
                   color: "white",
                 }}
               >
-                {user.name}
+                {user && user.name}
               </Box>
               <Box sx={{ fontSize: 14, marginTop: 0, color: "white" }}>
-                Title: {user.title}
+                Title: {user && user.title}
               </Box>
             </Typography>
           </Container>
         </Box>
       </Box>
-      <Box sx={{display: "flex", flexDirection: "column", alignItems: "center"}}>
+      <Box component="form" noValidate onSubmit={handleSubmit} sx={{display: "flex", flexDirection: "column", alignItems: "center"}}>
         <List
           disablePadding
           sx={{ maxWidth: "sm", width: "80%", bgcolor: "background.paper" }}
@@ -191,56 +198,89 @@ export default function Profile() {
             <TextField
               disabled={!editMode}
               id="standard-disabled"
-              label="Country"
-              defaultValue={user.country}
-              variant="standard"
-              fullWidth
-            />
-          </ListItem>
-          <ListItem>
-            <TextField
-              disabled={!editMode}
-              id="standard-disabled"
-              label="Hospital"
-              defaultValue={user.hospital}
-              variant="standard"
-              fullWidth
-            />
-          </ListItem>
-          <ListItem>
-            <TextField
-              disabled={!editMode}
-              id="standard-disabled"
-              label="Email"
-              defaultValue={user.email}
-              variant="standard"
-              fullWidth
-            />
-          </ListItem>
-          <ListItem>
-            <TextField
-              disabled={!editMode}
-              id="standard-disabled"
-              label="Phone"
-              defaultValue={user.contact.phone}
-              variant="standard"
-              fullWidth
-            />
-          </ListItem>
-          <ListItem>
-            <TextField
-              disabled={!editMode}
-              id="standard-disabled"
-              label="Bio"
-              defaultValue={user.bio}
+              name="name"
+              label="Name"
+              defaultValue={user && user.name}
               variant="standard"
               fullWidth
               multiline
             />
           </ListItem>
-        </List>
+          <ListItem>
+            <TextField
+              disabled={!editMode}
+              id="standard-disabled"
+              name="title"
+              label="Title"
+              defaultValue={user && user.title}
+              variant="standard"
+              fullWidth
+              multiline
+            />
+          </ListItem>
+          <ListItem>
+            <TextField
+              disabled={!editMode}
+              id="standard-disabled"
+              name="country"
+              label="Country"
+              defaultValue={user && user.country}
+              variant="standard"
+              fullWidth
+              multiline
+            />
+          </ListItem>
+          <ListItem>
+            <TextField
+              disabled={!editMode}
+              id="standard-disabled"
+              name="hospital"
+              label="Hospital"
+              defaultValue={user && user.hospital}
+              variant="standard"
+              fullWidth
+              multiline
+            />
+          </ListItem>
+          <ListItem>
+            <TextField
+              disabled={!editMode}
+              id="standard-disabled"
+              name="email"
+              label="Email"
+              defaultValue={user && user.email}
+              variant="standard"
+              fullWidth
+              multiline
+            />
+          </ListItem>
+          <ListItem>
+            <TextField
+              disabled={!editMode}
+              id="standard-disabled"
+              name="contact"
+              label="Contact"
+              defaultValue={user && user.contact}
+              variant="standard"
+              fullWidth
+              multiline
+            />
+          </ListItem>
+          <ListItem>
+            <TextField
+              disabled={!editMode}
+              id="standard-disabled"
+              name="bio"
+              label="Bio"
+              defaultValue={user && user.bio}
+              variant="standard"
+              fullWidth
+              multiline
+            />
+          </ListItem>
+          </List>
         <SubmitButton/>
       </Box>
-    </Box>
-  );
+    </Box> );
+  }
 }

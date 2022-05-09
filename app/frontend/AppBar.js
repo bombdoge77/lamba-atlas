@@ -67,6 +67,7 @@ export default function PrimarySearchAppBar() {
           //zIndex: (theme) => theme.zIndex.drawer + 1,
           display: "block",
           float: "none",
+          backgroundColor:'primary.main'
         }}
         elevation={0} 
       >
@@ -87,7 +88,7 @@ export default function PrimarySearchAppBar() {
             component="div"
             sx={{ display: { xs: 'none', sm: 'block' } }}
           >
-            Grupp 1
+            MedStack
           </Typography>
           <Search>
             <SearchIconWrapper>
@@ -102,7 +103,7 @@ export default function PrimarySearchAppBar() {
       <Drawer
         PaperProps={{
           sx: {
-            backgroundColor: "pink",
+            backgroundColor: "primary.light",
             color: "black",
           },
           boxSizing: "border-box"
@@ -116,7 +117,7 @@ export default function PrimarySearchAppBar() {
               component="div"
               sx={{ display: {sm: 'block' } }}
             >
-              Grupp 1
+              MedStack
           </Typography>
           <Box sx={{flexGrow:1}}
           ></Box>
@@ -143,9 +144,11 @@ export default function PrimarySearchAppBar() {
                 </Link>
               </ListItem>
               <ListItem >
-                <ListItemButton sx={{border:1, borderRadius: 1}}>
-                  <ListItemText primary="Profile" />
-                </ListItemButton>
+                <Link href="/profile">
+                  <ListItemButton sx={{border:1, borderRadius: 1}}>
+                    <ListItemText primary="Profile" />
+                  </ListItemButton>
+                </Link>
               </ListItem>
               <ListItem >
                 <ListItemButton sx={{border:1, borderRadius: 1}}>

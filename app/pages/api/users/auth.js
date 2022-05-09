@@ -6,7 +6,7 @@ const jwt = require('jsonwebtoken')
 export default async function authHandler(req, res) {
   if (req.method == 'POST') {
     await authorize(req, res)
-  } else if (req.method == 'GET') {
+  } else if (req.method == 'PUT') {
     jwtHandler(req, res)
   }
   res.end()
@@ -42,6 +42,7 @@ async function authorize(req, res) {
   var db = await connect(process.env.DB_NAME)
 
   var success = await auth(db, email, password)
+
   if (success) {
     // TODO: create json web token
     var accessToken = jwt.sign( { user : email }, process.env.ACCESS_TOKEN_SECRET, { expiresIn : '1h' })
@@ -49,6 +50,7 @@ async function authorize(req, res) {
       //jwt : accessToken
     }
     res.setHeader('Authorization', accessToken)
+
     res.status(200).json(body)
   } else {
     res.status(401)

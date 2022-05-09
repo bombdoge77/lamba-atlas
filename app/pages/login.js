@@ -12,36 +12,27 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { useRouter } from 'next/router'
 import { Alert } from '@mui/material';
+import { setAccessToken, setUser } from '../frontend/helper/auth'
+import { loginRequest } from '../frontend/helper/fetchcalls';
 
 export default function SignIn() {
   const router = useRouter()
+  
   const handleSubmit = async (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    await fetch('api/users/auth', {
-        method: "POST",
-        headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-          payload: {
-            email: data.get('email'),
-            password: data.get('password'),
-          }
-        })
-    })
-    .then((res) => {
-      console.log(res.status)
+    
+    const result = await loginRequest(data)
 
-      if(res.ok) {
-        localStorage.setItem('jwt', JSON.stringify(res.body.payload.jwt));
-        router.push("frontpage")
-      }
-      else {
-        setLoginStatus(false)
-      }
-    })
+    if(result) {
+      var token = result.jwt
+      setAccessToken(token)
+      setUser(data.get('email'))
+      router.push('profile')
+    }
+    else {
+      setLoginStatus(false)
+    }
   };
 
   // render alert if false
@@ -61,7 +52,7 @@ export default function SignIn() {
         <RenderAlert/>
         <Box
           sx={{
-            marginTop: 8,
+            marginTop: '5vh',
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
