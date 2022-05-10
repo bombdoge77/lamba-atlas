@@ -135,5 +135,19 @@ export async function newPostRequest(data) {
 }
 
 export async function searchPosts(text, category) {
-
+  var token = getAccessToken()
+  const response = await fetch('/api/posts/search', {
+    method: "POST",
+    headers: {
+    Accept: "application/json",
+    "Content-Type": "application/json",
+    "Authorization": token
+    },
+    body: JSON.stringify({
+      text: text,
+      category: category,
+    })
+  })
+  .then((res) => {return res.ok ? res.json() : null})
+  return response
 }

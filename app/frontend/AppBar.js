@@ -68,9 +68,10 @@ export default function PrimarySearchAppBar(props) {
           //zIndex: (theme) => theme.zIndex.drawer + 1,
           display: "block",
           float: "none",
-          backgroundColor:'primary.main'
+          backgroundColor:'primary.white',
+          color : 'primary.black'
         }}
-        elevation={0} 
+        elevation={1}
       >
         <Toolbar>
           <IconButton
@@ -105,7 +106,7 @@ export default function PrimarySearchAppBar(props) {
       <Drawer
         PaperProps={{
           sx: {
-            backgroundColor: "primary.light",
+            backgroundColor: "primary.white",
             color: "black",
           },
           boxSizing: "border-box"

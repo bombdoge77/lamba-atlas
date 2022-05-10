@@ -19,14 +19,13 @@ export default function SearchBar(props) {
   return (
     <Paper
       component="form"
-      elevation={0}
+      elevation={1}
       id="paper"
       onSubmit={(e) => sendRequest(e)}
       sx={{
-        ml : 1,
+        ml : 2,
         mr : 0,
         pl : 1,
-
       }}
     >
       <InputBase
