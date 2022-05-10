@@ -112,7 +112,13 @@ export async function unstar(db, email, post_id) {
 // category looks like : {bodyCategory : 'Upper extremity', bodyPart : 'Shoulder + upper arm'}
 export async function search_posts(db, text, category) {
 	var posts = db.collection('posts')
-	var result = posts.find({ category : category, title : { $regex : text } })
+	var result = posts.find({ 
+		category : category, 
+		{ $or : 
+			[ title : { $regex : text }, 
+			tags : { $all : [text] } ] 
+		} 
+	})
 	return result.toArray()
 }
 
