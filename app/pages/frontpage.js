@@ -141,20 +141,7 @@ export default function FrontPage() {
                 </Paper>
               </Link>
             </Grid>
-            <Grid item xs={6} >
-              <Link href='/'>
-                <Paper 
-                  sx={{
-                    textAlign: 'center',
-                    bgcolor:color,
-                    height: paperspecs,
-                    }} 
-                  >
-                  {/**/}
-
-                </Paper>
-              </Link>
-            </Grid>
+            
           </Grid>
           </Container>
         </Box>

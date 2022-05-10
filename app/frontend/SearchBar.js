@@ -26,7 +26,7 @@ export default function SearchBar(props) {
         ml : 1,
         mr : 0,
         pl : 1,
-
+        width:"100%"
       }}
     >
       <InputBase

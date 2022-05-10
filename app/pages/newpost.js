@@ -343,7 +343,7 @@ export default function NewPost() {
               name="consent"
               required
               control={<Checkbox defaultChecked />} 
-              label="I hereby promise i have my patient consent to use their patientdata." 
+              label="I hereby promise I have my patient consent to use their patientdata." 
             />
           </ListItem>
           <Box
