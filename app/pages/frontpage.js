@@ -77,7 +77,7 @@ export default function FrontPage(props) {
               IconProp={AccessTimeIcon} 
               settings={buttonSettings}
               />
-
+              
               <DashboardButton 
               link='/category/all/all' 
               text='Liked Posts'

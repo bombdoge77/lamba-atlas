@@ -160,10 +160,10 @@ export default function SignUp() {
               />
             </Grid>
           </Grid>
-          <FormControlLabel
+          {/** <FormControlLabel
             control={<Checkbox value="remember" color="primary" />}
             label="Remember me"
-          />
+          />*/}
           <Button
             type="submit"
             fullWidth
