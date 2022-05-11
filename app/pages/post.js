@@ -116,7 +116,7 @@ export default function Post(props) {
       setSubmitFailed(true)
     }
     */
-  }
+  
 
   const [rating, setRating] = React.useState(2);
   return(
