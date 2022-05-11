@@ -127,7 +127,7 @@ export async function search_posts(db, text, category) {
 	} else {
 		var result = await posts.find({ 
 			category : category, 
-			$or : [ { title : { $regex : text } }, { tags : { $all : [text] } } ]
+			$or : [ { title : { $regex : text, $options : 'i' } }, { tags : { $regex : text, $options : 'i' } } ]
 		})
 	}
 	return result.toArray()
