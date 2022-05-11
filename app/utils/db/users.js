@@ -45,6 +45,7 @@ export async function get_user(db, email) {
 // returns all public profile information
 export async function get_user_profile(db, email) {
 	var user = await get_user(db, email)
+	if (!user) return null
 	delete user['pass_hash']
 	//delete user['email']
 	return user

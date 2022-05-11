@@ -40,13 +40,17 @@ async function edit(req, res, email) {
 
 async function get(req, res) {
   //var body = JSON.parse(req._getData())
-
-  var db = await connect(process.env.DB_NAME)
   
   var email = req.body.user
+
+  var db = await connect(process.env.DB_NAME)
   var user_profile = await get_user_profile(db, email)
-
-  res.status(200).json({ payload : { user_profile }})
-
   await disconnect(db)
+
+  if (user_profile) {
+    res.status(200).json({ payload : { user_profile }})
+  } else {
+    res.status(404)
+  }
+
 }

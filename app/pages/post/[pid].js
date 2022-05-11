@@ -76,11 +76,11 @@ export default function Post() {
 
   React.useEffect(async () => {
       const res = await getProfileRequest(post.user)
-      if (res) {
-        setDispName(res.payload.user_profile.name)
-      } else {
+      if (!res) {
         setSpin(!spin)
+        return
       }
+      setDispName(res.payload.user_profile.name)
   }, [spin])
   
   const handleSubmit = async (event) => {
