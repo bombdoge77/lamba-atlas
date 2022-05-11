@@ -1,3 +1,4 @@
+import { ObjectId } from 'mongodb'
 import { add_images, remove_images, get_images } from './images.js'
 
 // pictures must be JSON object where each field is an array of File objects
@@ -35,6 +36,8 @@ export async function remove_post(db, id) {
 // TODO: get array of posts
 export async function get_post(db, id) {
 	var posts = db.collection('posts')
+  
+  var id = ObjectId(id)
 
 	var post = await posts.findOne({ _id : id })
 

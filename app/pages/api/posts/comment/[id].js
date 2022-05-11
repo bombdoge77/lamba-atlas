@@ -4,15 +4,15 @@ import { make_comment, edit_comment, get_comments, remove_comment } from '../../
 import { authenticateToken } from '../../users/auth.js'
 
 export default async function commentHandler(req, res) {
-  var jwt = req.body.jwt
+  // var jwt = req.body.jwt
 
-  // check if jwt valid
-  jwt = authenticateToken(jwt)
-  if (!jwt) {
-    res.status(401)
-    res.end()
-    return
-  }
+  // // check if jwt valid
+  // jwt = authenticateToken(jwt)
+  // if (!jwt) {
+  //   res.status(401)
+  //   res.end()
+  //   return
+  // }
 
   const id = req.query.id
 
@@ -75,7 +75,7 @@ async function get(req, res, id) {
   var result = await get_comments(db, id)
 
   //does this work?
-  if (result.length() != 0) {
+  if (result) {
     res.status(200).json(result)
   } else {
     res.status(204)
