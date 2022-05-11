@@ -3,7 +3,7 @@ import { format, format_inverse } from './categories.js'
 import categories from './categories.js'
 
 export async function signUpRequest(data) {
-  const response = await fetch('api/users/register', {
+  const response = await fetch('/api/users/register', {
     method: "POST",
     headers: {
     Accept: "application/json",
@@ -26,16 +26,17 @@ export async function signUpRequest(data) {
   return response
 }
 
-export async function getProfileRequest() {
+export async function getProfileRequest(user) {
   var token = getAccessToken()
-  const response = await fetch('api/users/profile', {
+  const response = await fetch('/api/users/profile', {
     method: 'PUT',
     headers: {
       Accept: 'application/json',
-      'Content-Type': 'application/json'
+      'Content-Type': 'application/json',
+      'Authorization' : token
     },
     body: JSON.stringify({
-      jwt: token,
+      user: user,
     })
   })
   .then((res) => {return res.ok ? res.json() : null})
@@ -44,14 +45,14 @@ export async function getProfileRequest() {
 
 export async function editProfileRequest(data) {
   var token = getAccessToken()
-  const response = await fetch('api/users/profile', {
+  const response = await fetch('/api/users/profile', {
     method: 'POST',
     headers: {
       Accept: "application/json",
-      "Content-Type": "application/json"
+      "Content-Type": "application/json",
+      'Authorization' : token
       },
     body: JSON.stringify({
-      jwt: token,
       payload: {
         email: data.get('email'),
         name: data.get('name'),
@@ -69,7 +70,7 @@ export async function editProfileRequest(data) {
 
 export async function isLoggedIn() {
   const accessToken = getAccessToken()
-  const result = await fetch('api/users/auth', {
+  const result = await fetch('/api/users/auth', {
     method: "PUT",
     headers: {
     Accept: "application/json",
@@ -85,7 +86,7 @@ export async function isLoggedIn() {
 }
 
 export async function loginRequest(data) {
-  const response = await fetch('api/users/auth', {
+  const response = await fetch('/api/users/auth', {
     method: "POST",
     headers: {
     Accept: "application/json",
@@ -112,7 +113,7 @@ export async function newPostRequest(data) {
 
   if (!category_fmt) return
 
-  const response = await fetch('api/posts/post/1', {
+  const response = await fetch('/api/posts/post/1', {
     method: 'POST',
     headers: {
       Accept: "application/json",
@@ -151,7 +152,7 @@ export async function newPostRequest(data) {
 }
 
 export async function getPostRequest(pid) {
-  const response = await fetch(`http://localhost:3000/api/posts/post/${pid}`, {
+  const response = await fetch(`/api/posts/post/${pid}`, {
     method : 'GET',
     headers : {
       Accept: "application/json",
@@ -164,7 +165,7 @@ export async function getPostRequest(pid) {
 }
 
 export async function getCommentsRequest(pid) {
-  const response = await fetch(`http://localhost:3000/api/posts/comment/${pid}`, {
+  const response = await fetch(`/api/posts/comment/${pid}`, {
     method : 'GET',
     headers : {
       Accept: "application/json",
@@ -176,8 +177,8 @@ export async function getCommentsRequest(pid) {
   return response
 }
 
-export async function addCommentsRequest(formData) {
-  const response = await fetch('http://localhost:3000/api/posts/comment/1', {
+export async function addCommentsRequest(data) {
+  const response = await fetch('/api/posts/comment/makecomment', {
     method: 'POST',
     headers: {
       Accept: "application/json",
@@ -185,12 +186,7 @@ export async function addCommentsRequest(formData) {
       "Authorization": getAccessToken()
       },
     body: JSON.stringify({
-      payload: {
-        post_id: formData.get('post_id'),
-        user: formData.get('user'),
-        text: formData.get('text'),
-        is_reply: formData.get('is_reply')
-      }
+      payload: data
     })
   })
   .then((res) => {return res.status})

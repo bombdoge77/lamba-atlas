@@ -13,6 +13,7 @@ import Button from "@mui/material/Button";
 import ButtonGroup from "@mui/material/ButtonGroup";
 import TextField from "@mui/material/TextField";
 import { useRouter } from "next/router";
+import { getUser } from "../frontend/helper/auth.js";
 import { isLoggedIn, editProfileRequest, getProfileRequest } from "../frontend/helper/fetchcalls";
 import { Snackbar, Alert } from "@mui/material";
 import HamburgerMenu from "../frontend/HamburgerMenu";
@@ -121,7 +122,7 @@ export default function Profile() {
       router.push('login')
     }
     else {
-      var data = await getProfileRequest()
+      var data = await getProfileRequest(getUser())
       var user = data.payload.user_profile
       setLoading(false)
       setUser(user)
@@ -252,8 +253,7 @@ export default function Profile() {
             </ListItem>
             <ListItem>
               <TextField
-                //disabled={!editMode}
-                disabled
+                disabled={!editMode}
                 id="standard-disabled"
                 name="email"
                 label="Email"
