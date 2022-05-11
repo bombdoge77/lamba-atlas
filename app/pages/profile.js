@@ -16,6 +16,9 @@ import { useRouter } from "next/router";
 import { isLoggedIn, editProfileRequest, getProfileRequest } from "../frontend/helper/fetchcalls";
 import { Snackbar, Alert } from "@mui/material";
 import HamburgerMenu from "../frontend/HamburgerMenu";
+import AppBar from "../frontend/AppBar";
+import CircularProgress from '@mui/material/CircularProgress';
+import { Paper } from "@mui/material";
 
 
 var user_test = {
@@ -126,31 +129,38 @@ export default function Profile() {
   }, []);
 
   if(loading) {
-    return <Box>... loading</Box>
+    return (
+      <Box sx={{
+        height: "100%",
+        width: "100%",
+        display: "flex",
+        position: "fixed",
+        alignItems: "center",
+        justifyContent: "center",
+        }}>
+        <CircularProgress color="secondary"/>
+      </Box>
+    )
   }
   else {
     return (
     <Box sx={{ display: "flex", flexDirection: "column" }}>
-    
-      <Toolbar sx={{display: "flex", backgroundColor: "primary.main",}}>
-        <ButtonGroup
-          //variant="contained"
-          //aria-label="outlined primary button group"
-          sx={{ color: "primary.light", width: "100%", height:4}}
+    <AppBar/>
+      <Toolbar/>
+      <ButtonGroup
+          sx={{ color: "primary.light", width: "100%", height:45}}
         >
-          <Button fullWidth onClick={handleArrowBack} variant="text" sx={{color:"black", ml:-4}}>
-            <HamburgerMenu />
-          </Button>
-          <Button fullWidth disabled={editMode} onClick={handleEditOpen} variant="text" sx={{color:"black"}}>
+
+          <Button fullWidth disabled={editMode} onClick={handleEditOpen} variant="contained" sx={{color:"black"}}>
             <EditIcon />
             Edit
           </Button>
-          <Button fullWidth onClick={handlePosts} variant="text" sx={{color:"black"}}>
+          <Button fullWidth onClick={handlePosts} variant="contained" sx={{color:"black"}}>
             <ArticleIcon />
             Posts
           </Button>
         </ButtonGroup>
-      </Toolbar>
+      
       <Snackbar 
           anchorOrigin={{vertical:'top', horizontal:'center'}} 
           sx={{ top: 50}}  
@@ -190,95 +200,95 @@ export default function Profile() {
             <EditAvatarButton/>
           </Container>
         </Box>
-        <List
-          disablePadding
-          sx={{ maxWidth: "sm", width: "80%", bgcolor: "background.paper" }}
-        >
-          <ListItem>
-            <TextField
-              disabled={!editMode}
-              id="standard-disabled"
-              name="name"
-              label="Name"
-              defaultValue={user && user.name}
-              variant="standard"
-              fullWidth
-              multiline
-            />
-          </ListItem>
-          <ListItem>
-            <TextField
-              disabled={!editMode}
-              id="standard-disabled"
-              name="title"
-              label="Title"
-              defaultValue={user && user.title}
-              variant="standard"
-              fullWidth
-              multiline
-            />
-          </ListItem>
-          <ListItem>
-            <TextField
-              disabled={!editMode}
-              id="standard-disabled"
-              name="country"
-              label="Country"
-              defaultValue={user && user.country}
-              variant="standard"
-              fullWidth
-              multiline
-            />
-          </ListItem>
-          <ListItem>
-            <TextField
-              disabled={!editMode}
-              id="standard-disabled"
-              name="hospital"
-              label="Hospital"
-              defaultValue={user && user.hospital}
-              variant="standard"
-              fullWidth
-              multiline
-            />
-          </ListItem>
-          <ListItem>
-            <TextField
-              disabled={!editMode}
-              id="standard-disabled"
-              name="email"
-              label="Email"
-              defaultValue={user && user.email}
-              variant="standard"
-              fullWidth
-              multiline
-            />
-          </ListItem>
-          <ListItem>
-            <TextField
-              disabled={!editMode}
-              id="standard-disabled"
-              name="contact"
-              label="Contact"
-              defaultValue={user && user.contact}
-              variant="standard"
-              fullWidth
-              multiline
-            />
-          </ListItem>
-          <ListItem>
-            <TextField
-              disabled={!editMode}
-              id="standard-disabled"
-              name="bio"
-              label="Bio"
-              defaultValue={user && user.bio}
-              variant="standard"
-              fullWidth
-              multiline
-            />
-          </ListItem>
-          </List>
+        <Paper elevation={10} sx={{ mt:2, width:'80%', height:'100%', justifyContent: 'center',}}>
+          <List>
+            <ListItem>
+              <TextField
+                disabled={!editMode}
+                id="standard-disabled"
+                name="name"
+                label="Name"
+                defaultValue={user && user.name}
+                variant="standard"
+                fullWidth
+                multiline
+              />
+            </ListItem>
+            <ListItem>
+              <TextField
+                disabled={!editMode}
+                id="standard-disabled"
+                name="title"
+                label="Title"
+                defaultValue={user && user.title}
+                variant="standard"
+                fullWidth
+                multiline
+              />
+            </ListItem>
+            <ListItem>
+              <TextField
+                disabled={!editMode}
+                id="standard-disabled"
+                name="country"
+                label="Country"
+                defaultValue={user && user.country}
+                variant="standard"
+                fullWidth
+                multiline
+              />
+            </ListItem>
+            <ListItem>
+              <TextField
+                disabled={!editMode}
+                id="standard-disabled"
+                name="hospital"
+                label="Hospital"
+                defaultValue={user && user.hospital}
+                variant="standard"
+                fullWidth
+                multiline
+              />
+            </ListItem>
+            <ListItem>
+              <TextField
+                //disabled={!editMode}
+                disabled
+                id="standard-disabled"
+                name="email"
+                label="Email"
+                defaultValue={user && user.email}
+                variant="standard"
+                fullWidth
+                multiline
+              />
+            </ListItem>
+            <ListItem>
+              <TextField
+                disabled={!editMode}
+                id="standard-disabled"
+                name="contact"
+                label="Contact"
+                defaultValue={user && user.contact}
+                variant="standard"
+                fullWidth
+                multiline
+              />
+            </ListItem>
+            <ListItem>
+              <TextField
+                disabled={!editMode}
+                id="standard-disabled"
+                name="bio"
+                label="Bio"
+                defaultValue={user && user.bio}
+                variant="standard"
+                fullWidth
+                multiline
+              />
+            </ListItem>
+            </List>
+          </Paper>
         <SubmitButton/>
       </Box>
     </Box> );

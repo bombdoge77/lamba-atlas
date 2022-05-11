@@ -68,7 +68,7 @@ export default function PrimarySearchAppBar(props) {
           //zIndex: (theme) => theme.zIndex.drawer + 1,
           display: "block",
           float: "none",
-          backgroundColor:'primary.white',
+          backgroundColor:'primary.main',
           color : 'primary.black'
         }}
         elevation={1}
@@ -106,7 +106,7 @@ export default function PrimarySearchAppBar(props) {
       <Drawer
         PaperProps={{
           sx: {
-            backgroundColor: "primary.white",
+            backgroundColor: "primary.light",
             color: "black",
           },
           boxSizing: "border-box"
@@ -152,11 +152,6 @@ export default function PrimarySearchAppBar(props) {
                     <ListItemText primary="Profile" />
                   </ListItemButton>
                 </Link>
-              </ListItem>
-              <ListItem >
-                <ListItemButton sx={{border:1, borderRadius: 1}}>
-                  <ListItemText primary="Settings" />
-                </ListItemButton>
               </ListItem>
               <ListItem >
                 <Link href="/login">

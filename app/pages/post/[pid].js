@@ -114,7 +114,7 @@ export default function Post() {
       <AppBar/>
       <Toolbar/>
       <Container sx={{ height:'100%', width:'100%',}}>
-        <Paper elevation={3} sx={{ mt:2, width:'99%', height:'100%', justifyContent: 'center',}}>
+        <Paper elevation={7} sx={{ mt:2, width:'99%', height:'100%', justifyContent: 'center',}}>
           <Paper elevation={3} sx={{ borderRadius : 1, height:50, justifyContent: 'center', backgroundColor:'primary.main', height:'auto'}}>
             <Typography sx={{ alignItems:'center', padding:2, color:'white',}} variant="h5" component="div">
               {post.title} 
