@@ -116,4 +116,3 @@ export default function Feed(props) {
     </Box>
   )
 }
-

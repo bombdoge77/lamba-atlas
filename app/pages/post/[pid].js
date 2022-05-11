@@ -27,6 +27,7 @@ import Button from '@mui/material/Button';
 import { useRouter } from 'next/router';
 import { getCommentsRequest, addCommentsRequest, getPostRequest } from '../../frontend/helper/fetchcalls';
 import { Fragment } from 'react';
+import { format } from '../../frontend/helper/categories.js'
 
 var test_post = {
   title: "this is the title for the post",
@@ -112,14 +113,14 @@ export default function Post() {
     <Box sx={{ display: "flex", flexDirection: "column" }}>
       <AppBar/>
       <Toolbar/>
-      <Container sx={{ height:'100%', width:'100%', backgroundColor:'primary.light2',}}>
+      <Container sx={{ height:'100%', width:'100%',}}>
         <Paper elevation={3} sx={{ mt:2, width:'99%', height:'100%', justifyContent: 'center',}}>
-          <Paper elevation={3} sx={{ height:50, justifyContent: 'center', backgroundColor:'primary.dark', height:'auto'}}>
+          <Paper elevation={3} sx={{ borderRadius : 1, height:50, justifyContent: 'center', backgroundColor:'primary.main', height:'auto'}}>
             <Typography sx={{ alignItems:'center', padding:2, color:'white',}} variant="h5" component="div">
               {post.title} 
             </Typography>
           </Paper>
-          <Box  sx={{ display: "flex", flexDirection: "column", alignItems: "center"}}>
+          <Box  sx={{ mt : 3, display: "flex", flexDirection: "column", alignItems: "center"}}>
             <List
               disablePadding
               sx={{ maxWidth: "sm", width: "90%", }}
@@ -238,7 +239,10 @@ export default function Post() {
                   disabled
                   sx={{ width: 300 }}
                   renderInput={(params) => (
-                    <TextField {...params} label={post.category} variant="standard" />
+                    <TextField 
+                    {...params} 
+                    label={format[post.category.bodyCategory] + ' / ' + format[post.category.bodyPart]} 
+                    variant="standard" />
                    )}
                 />
               </ListItem>

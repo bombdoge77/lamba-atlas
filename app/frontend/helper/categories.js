@@ -1,12 +1,12 @@
 const categories =[
-                    {bodyCategory:"Upper extremity", bodyPart: "Shoulder + upper arm"}, 
-                    {bodyCategory:"Upper extremity", bodyPart:"Elbow"}, 
-                    {bodyCategory:"Upper extremity", bodyPart: "Forearm"}, 
-                    {bodyCategory:"Upper extremity", bodyPart: "Hand" },
-                    {bodyCategory:"Lower extremity", bodyPart: "Hip + thigh"}, 
-                    {bodyCategory:"Lower extremity", bodyPart:"Knee"}, 
-                    {bodyCategory:"Lower extremity", bodyPart: "Lower leg"}, 
-                    {bodyCategory:"Lower extremity", bodyPart: "Foot" },
+                    {bodyCategory:"Upper Extremity", bodyPart: "Shoulder + Upper Arm"}, 
+                    {bodyCategory:"Upper Extremity", bodyPart:"Elbow"}, 
+                    {bodyCategory:"Upper Extremity", bodyPart: "Forearm"}, 
+                    {bodyCategory:"Upper Extremity", bodyPart: "Hand" },
+                    {bodyCategory:"Lower Extremity", bodyPart: "Hip + Thigh"}, 
+                    {bodyCategory:"Lower Extremity", bodyPart:"Knee"}, 
+                    {bodyCategory:"Lower Extremity", bodyPart: "Lower Leg"}, 
+                    {bodyCategory:"Lower Extremity", bodyPart: "Foot" },
                     {bodyCategory:"Abdomen", bodyPart: "Front"}, 
                     {bodyCategory:"Abdomen", bodyPart: "Back" },
                   ]
@@ -34,5 +34,7 @@ const format = {
   'back' : 'Back'
 }
 
+const format_inverse = Object.fromEntries(Object.entries(format).map(a => a.reverse()))
+
 export default categories
-export { format, category_tree }
+export { format, format_inverse, category_tree }

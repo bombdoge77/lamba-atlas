@@ -1,4 +1,6 @@
 import { getAccessToken, getUser } from "./auth"
+import { format, format_inverse } from './categories.js'
+import categories from './categories.js'
 
 export async function signUpRequest(data) {
   const response = await fetch('api/users/register', {
@@ -102,15 +104,24 @@ export async function loginRequest(data) {
 
 export async function newPostRequest(data) {
   var token = getAccessToken()
+
+  const subcategory = data.get('category')
+  const subcategory_fmt = format_inverse[subcategory]
+  const category = categories.find(elem => elem.bodyPart === subcategory).bodyCategory
+  const category_fmt = format_inverse[category]
+
+  if (!category_fmt) return
+
   const response = await fetch('api/posts/post/1', {
     method: 'POST',
     headers: {
       Accept: "application/json",
       "Content-Type": "application/json",
-      //"Authorization": token
+      "Authorization": token
       },
     body: JSON.stringify({
       payload: {
+        user: getUser(),
         title: data.get('title'),
         situation: data.get('situation'),
         gender: data.get('gender'),
@@ -126,7 +137,10 @@ export async function newPostRequest(data) {
         current_treatment: data.get('current_treatment'),
         analysis: data.get('analysis'),
         recommendation: data.get('recommendation'),
-        category: data.get('category'),
+        category: {
+          bodyCategory : category_fmt,
+          bodyPart : subcategory_fmt
+        },
         tags: data.get('tags'),
         consent: data.get('consent')
       }
@@ -137,13 +151,27 @@ export async function newPostRequest(data) {
 }
 
 export async function getPostRequest(pid) {
-  const response = await fetch(`http://localhost:3000/api/posts/post/${pid}`)
+  const response = await fetch(`http://localhost:3000/api/posts/post/${pid}`, {
+    method : 'GET',
+    headers : {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+      "Authorization": getAccessToken()
+    }
+  })
   .then((res) => {return res.ok ? res.json() : null})
   return response
 }
 
 export async function getCommentsRequest(pid) {
-  const response = await fetch(`http://localhost:3000/api/posts/comment/${pid}`)
+  const response = await fetch(`http://localhost:3000/api/posts/comment/${pid}`, {
+    method : 'GET',
+    headers : {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+      "Authorization": getAccessToken()
+    }
+  })
   .then((res) => {return res.ok ? res.json() : null})
   return response
 }
@@ -154,7 +182,7 @@ export async function addCommentsRequest(formData) {
     headers: {
       Accept: "application/json",
       "Content-Type": "application/json",
-      //"Authorization": token
+      "Authorization": getAccessToken()
       },
     body: JSON.stringify({
       payload: {

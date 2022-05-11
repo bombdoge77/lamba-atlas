@@ -118,16 +118,18 @@ export async function search_posts(db, text, category) {
 
 	if (!text) text = ''
 
+	var options = 'i'
+
 	if (category.bodyCategory == 'all' && category.bodyPart == 'all' && text == '') {
 		var result = await posts.find({})
 	} else if (category.bodyCategory == 'all' && category.bodyPart == 'all') {
 		var result = await posts.find({
-			$or : [ { title : { $regex : text } }, { tags : { $all : [text] } } ]
+			$or : [ { title : { $regex : text, $options : options } }, { tags : { $regex : text, $options : options } } ]
 		})
 	} else {
 		var result = await posts.find({ 
 			category : category, 
-			$or : [ { title : { $regex : text, $options : 'i' } }, { tags : { $regex : text, $options : 'i' } } ]
+			$or : [ { title : { $regex : text, $options : options } }, { tags : { $regex : text, $options : options } } ]
 		})
 	}
 	return result.toArray()
