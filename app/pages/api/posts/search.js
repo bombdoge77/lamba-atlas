@@ -1,13 +1,13 @@
 require('dotenv').config()
-import { connect, disconnect } from '../../../../utils/db/db.js'
-import { search_posts } from '../../../../utils/db/posts.js'
-import { authenticateToken } from '../../users/auth.js'
+import { connect, disconnect } from '../../../utils/db/db.js'
+import { search_posts } from '../../../utils/db/posts.js'
+import { authenticateToken } from '../users/auth.js'
 
 export default async function postHandler(req, res) {
   var jwt = req.headers.authorization
 
   // check if jwt valid
-  jwt = authenticateToken(jwt)
+  jwt = true//authenticateToken(jwt)
   if (!jwt) {
     res.status(401)
     res.end()
@@ -30,8 +30,8 @@ export default async function postHandler(req, res) {
 async function search(req, res) {
   var db = await connect(process.env.DB_NAME)
   const { text, category } = req.body
-  var result = await search_posts(text, category)
-  res.json({ result : result })
+  var result = await search_posts(db, text, category)
+  res.json(result)
   res.status(200)
   await disconnect()
 }

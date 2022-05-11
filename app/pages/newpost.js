@@ -20,6 +20,7 @@ import { newPostRequest } from '../frontend/helper/fetchcalls';
 import { Snackbar } from '@mui/material';
 import { Alert } from '@mui/material';
 import categories from '../frontend/helper/categories.js'
+import { useRouter } from 'next/router';
 
 /** TODO: Kolla in senare
  * Tags
@@ -30,9 +31,10 @@ import categories from '../frontend/helper/categories.js'
 export default function NewPost() {
   
   // receivers är lista med alla tags som fyllts i
-  const [receivers, setReceivers] = React.useState([]);
+  const [receivers, setReceivers] = React.useState([])
   const [submitFailed, setSubmitFailed] = React.useState(false)
-  const [submitErrorMsg, setSubmitErrorMsg] = React.useState('');
+  const [submitErrorMsg, setSubmitErrorMsg] = React.useState('')
+  const router = useRouter()
 
   const handleClose = () => {
     setSubmitFailed(false);
@@ -49,15 +51,15 @@ export default function NewPost() {
     const data = new FormData(event.currentTarget);
     data.append('tags',receivers)
 
-    const isValid = validate(data)
+    //const isValid = validate(data)
 
-    isValid = true
+    const isValid = true
 
     if(isValid){
       const response = await newPostRequest(data)
 
-      if(response.ok) {
-        router.push('login')
+      if(response == 200) {
+        router.push('feed')
       }
       else {
         setSubmitErrorMsg('Network Error')

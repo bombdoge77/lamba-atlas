@@ -1,3 +1,4 @@
+import { ObjectId } from 'mongodb'
 import { add_images, remove_images, get_images } from './images.js'
 
 // pictures must be JSON object where each field is an array of File objects
@@ -35,6 +36,8 @@ export async function remove_post(db, id) {
 // TODO: get array of posts
 export async function get_post(db, id) {
 	var posts = db.collection('posts')
+  
+  var id = ObjectId(id)
 
 	var post = await posts.findOne({ _id : id })
 
@@ -112,13 +115,21 @@ export async function unstar(db, email, post_id) {
 // category looks like : {bodyCategory : 'Upper extremity', bodyPart : 'Shoulder + upper arm'}
 export async function search_posts(db, text, category) {
 	var posts = db.collection('posts')
-	var result = posts.find({ 
-		category : category, 
-		{ $or : 
-			[ title : { $regex : text }, 
-			tags : { $all : [text] } ] 
-		} 
-	})
+
+	if (!text) text = ''
+
+	if (category.bodyCategory == 'all' && category.bodyPart == 'all' && text == '') {
+		var result = await posts.find({})
+	} else if (category.bodyCategory == 'all' && category.bodyPart == 'all') {
+		var result = await posts.find({
+			$or : [ { title : { $regex : text } }, { tags : { $all : [text] } } ]
+		})
+	} else {
+		var result = await posts.find({ 
+			category : category, 
+			$or : [ { title : { $regex : text } }, { tags : { $all : [text] } } ]
+		})
+	}
 	return result.toArray()
 }
 

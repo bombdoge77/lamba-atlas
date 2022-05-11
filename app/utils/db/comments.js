@@ -13,8 +13,8 @@ export async function make_comment(db, user, post, text, is_reply) {
         is_reply : is_reply
         //Date
     }
-
-	// error handling
+  
+  // error handling
 	// store pictures?
 	var result = await comments.insertOne(comment)
 	return result.acknowledged

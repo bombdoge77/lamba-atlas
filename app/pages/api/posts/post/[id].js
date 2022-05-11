@@ -4,15 +4,15 @@ import { create_post, edit_post, get_post, remove_post } from '../../../../utils
 import { authenticateToken } from '../../users/auth.js'
 
 export default async function postHandler(req, res) {
-  var jwt = req.headers.authorization
+  // var jwt = req.headers.authorization
 
-  // check if jwt valid
-  jwt = authenticateToken(jwt)
-  if (!jwt) {
-    res.status(401)
-    res.end()
-    return
-  }
+  // // check if jwt valid
+  // jwt = authenticateToken(jwt)
+  // if (!jwt) {
+  //   res.status(401)
+  //   res.end()
+  //   return
+  // }
 
   const id = req.query.id
 
@@ -40,18 +40,18 @@ async function add(req, res) {
   var db = await connect(process.env.DB_NAME)
 
   var post = req.body.payload
-  //const { postOp, preOp, inOp } = post.pictures
+  // const { postOp, preOp, inOp } = post.pictures
 
-  // check if there are any non-image files, send error status if true
-  for (var key in post.pictures) {
-    if (post.pictures[key]) {
-      var result = post.pictures[key].some(x => { x.type != 'image/jpeg' && x.type != 'image/png' })
-      if (result == false) {
-        res.status(400)
-        return
-      }
-    }
-  }
+  // //check if there are any non-image files, send error status if true
+  // for (var key in post.pictures) {
+  //   if (post.pictures[key]) {
+  //       var result = post.pictures[key].some(x => { x.type != 'image/jpeg' && x.type != 'image/png'})
+  //       if (result == false) {
+  //         res.status(400)
+  //         return
+  //       }
+  //   }
+  // }
 
   var result = await create_post(db, post)
 

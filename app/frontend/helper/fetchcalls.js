@@ -102,24 +102,26 @@ export async function loginRequest(data) {
 
 export async function newPostRequest(data) {
   var token = getAccessToken()
-  const response = await fetch('api/posts/post/', {
+  const response = await fetch('api/posts/post/1', {
     method: 'POST',
     headers: {
       Accept: "application/json",
       "Content-Type": "application/json",
-      "Authorization": token
+      //"Authorization": token
       },
     body: JSON.stringify({
       payload: {
+        title: data.get('title'),
+        situation: data.get('situation'),
         gender: data.get('gender'),
         age: data.get('age'),
         weight: data.get('weight'),
         height: data.get('height'),
-        pictures: {
-          pre_op: data.getAll('picture_1'),
-          during_op: data.getAll('picture_2'),
-          post_op: data.getAll('picture_3')
-        },
+        // pictures: {
+        //   pre_op: data.getAll('picture_1'),
+        //   during_op: data.getAll('picture_2'),
+        //   post_op: data.getAll('picture_3')
+        // },
         med_history: data.get('med_history'),
         current_treatment: data.get('current_treatment'),
         analysis: data.get('analysis'),
@@ -134,6 +136,53 @@ export async function newPostRequest(data) {
   return response
 }
 
-export async function searchPosts(text, category) {
+export async function getPostRequest(pid) {
+  const response = await fetch(`http://localhost:3000/api/posts/post/${pid}`)
+  .then((res) => {return res.ok ? res.json() : null})
+  return response
+}
 
+export async function getCommentsRequest(pid) {
+  const response = await fetch(`http://localhost:3000/api/posts/comment/${pid}`)
+  .then((res) => {return res.ok ? res.json() : null})
+  return response
+}
+
+export async function addCommentsRequest(formData) {
+  const response = await fetch('http://localhost:3000/api/posts/comment/1', {
+    method: 'POST',
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+      //"Authorization": token
+      },
+    body: JSON.stringify({
+      payload: {
+        post_id: formData.get('post_id'),
+        user: formData.get('user'),
+        text: formData.get('text'),
+        is_reply: formData.get('is_reply')
+      }
+    })
+  })
+  .then((res) => {return res.status})
+  return response
+}
+
+export async function searchPosts(text, category) {
+  var token = getAccessToken()
+  const response = await fetch('/api/posts/search', {
+    method: "POST",
+    headers: {
+    Accept: "application/json",
+    "Content-Type": "application/json",
+    "Authorization": token
+    },
+    body: JSON.stringify({
+      text: text,
+      category: category,
+    })
+  })
+  .then((res) => {return res.ok ? res.json() : null})
+  return response
 }

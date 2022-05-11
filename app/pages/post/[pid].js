@@ -1,5 +1,5 @@
 import * as React from 'react';
-import AppBar from "../frontend/AppBar";
+import AppBar from "../../frontend/AppBar";
 import Toolbar from "@mui/material/Toolbar";
 import Box from '@mui/material/Box';
 import List from "@mui/material/List";
@@ -24,20 +24,16 @@ import FormControl from '@mui/material/FormControl';
 import NativeSelect from '@mui/material/NativeSelect';
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
-import Comment from '../frontend/comment'
-import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
-import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
-import DialogTitle from '@mui/material/DialogTitle';
-
+import { useRouter } from 'next/router';
+import { getCommentsRequest, addCommentsRequest, getPostRequest } from '../../frontend/helper/fetchcalls';
+import { Fragment } from 'react';
 
 var test_post = {
   title: "this is the title for the post",
   //Situation
   situation: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Morbi tristique senectus et netus et malesuada. Fringilla phasellus faucibus scelerisque eleifend donec pretium vulputate. ", 
   //Background
-  gender: "Female", 
+  gender: "Femael", 
   age: "30", 
   height: "160", 
   weight: "60", 
@@ -51,85 +47,76 @@ var test_post = {
   //Recommendation
   recommendation: "What do I do?", //question
   category:"Lower extremity: Knee",
-  tags:  ["leg", "wound"],
-  
-  
+  tags:  "leg,wound",
 }
+
+var test_comments = [{_id:'000', body:'vada'},{_id:'001', body:'vada'},{_id:'002', body:'vada'}]
 
 /** TODO:
  * - Fixa en stack av images
  * - 
  *
- 
+ */
 
+export default function Post() {
 
-// export async getStaticProps(ctx) {
-//   return {
-//     props : {}
-//   }
-// }
-
-
-export default function Post(props) {
-  const showtags = (test_post.tags).map((tag) =>  <Chip label={tag}/>);
-
-  const [open, setOpen] = React.useState(false);
-
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
-
-  const handleClose = () => {
-    setOpen(false);
-  };
+  const router = useRouter()
+  const [post, setPost] = React.useState(test_post);
+  const [comments, setComments] = React.useState(test_comments);
+  const showtags = post.tags ? (post.tags).split(',').map((tag) =>  <Chip key={tag} label={tag}/>) : null;
+  //const [rating, setRating] = React.useState(2);
   
+  const handleSubmit = async (event) => {
+    const { pid } = router.query
+    event.preventDefault()
+    const data = new FormData(event.currentTarget)
+    data.append('post_id', pid)
+    data.append('user','placeholder')
+    data.append('is_reply','placeholder')
 
-  const handleSubmitComment = async (event) => {
-    event.preventDefault();
-    //Taking todays date to add to a comment
-    const timeElapsed = Date.now();
-    const today = new Date(timeElapsed);
+    var result = await addCommentsRequest(data)
 
-    const data = new FormData(event.currentTarget);
-    data.append('date',today.toUTCString())
-    /*
-    const data = new FormData(event.currentTarget);
-    data.append('tags',receivers)
-
-    const isValid = validate(data)
-
-    isValid = true
-
-    if(isValid){
-      const response = await newPostRequest(data)
-
-      if(response.ok) {
-        router.push('login')
-      }
-      else {
-        setSubmitErrorMsg('Network Error')
-        setSubmitFailed(true)
-      }
+    if(result == 200) {
+      var comments = await getCommentsRequest(pid)
+      setComments(comments)
     }
-    else {
-      setSubmitErrorMsg('Form contains empty fields')
-      setSubmitFailed(true)
-    }
-    */
   }
 
-  const [rating, setRating] = React.useState(2);
+  function Comments() {
+    const renderedComments = comments.map((comment) => 
+      <ListItem key={comment._id} sx={{display:'block'}}>
+        <Typography>
+          Comment {comment._id}
+        </Typography>
+        <Typography>
+          {comment.body}
+        </Typography>
+      </ListItem>
+    )
+    return (
+      renderedComments
+    )
+  }
+
+  React.useEffect(async () => {
+    if(router.isReady){
+      const { pid } = router.query
+      var post = await getPostRequest(pid)
+      var comments = await getCommentsRequest(pid)
+      setPost(post)
+      setComments(comments)
+    }
+  }, [router.isReady]);
+
   return(
-    
     <Box sx={{ display: "flex", flexDirection: "column" }}>
       <AppBar/>
       <Toolbar/>
       <Container sx={{ height:'100%', width:'100%', backgroundColor:'primary.light2',}}>
-        
         <Paper elevation={3} sx={{ mt:2, width:'99%', height:'100%', justifyContent: 'center',}}>
           <Paper elevation={3} sx={{ height:50, justifyContent: 'center', backgroundColor:'primary.dark', height:'auto'}}>
             <Typography sx={{ alignItems:'center', padding:2, color:'white',}} variant="h5" component="div">
-              {test_post.title} 
+              {post.title} 
             </Typography>
           </Paper>
           <Box  sx={{ display: "flex", flexDirection: "column", alignItems: "center"}}>
@@ -142,7 +129,7 @@ export default function Post(props) {
               </Typography>
               <ListItem>
                 <Typography sx={{ mt: 1}} variant="subtitle3" component="div">
-                  {test_post.situation}
+                  {post.situation}
                 </Typography>
               </ListItem>
               <Typography sx={{ mt: 2, mb:1}} variant="h6" component="div">
@@ -156,7 +143,7 @@ export default function Post(props) {
                 </Grid>
                 <Grid item xs={2}>
                   <Typography sx={{ ml:-4}} variant="subtitle3" component="div">
-                    {test_post.gender}
+                    {post.gender}
                   </Typography>
                 </Grid>
                 <Grid item xs={4}>
@@ -166,7 +153,7 @@ export default function Post(props) {
                 </Grid>
                 <Grid item xs={2}>
                   <Typography sx={{ ml:-6}} variant="subtitle3" component="div">
-                    {test_post.age}
+                    {post.age}
                   </Typography>
                 </Grid>
                 <Grid item xs={4}>
@@ -176,7 +163,7 @@ export default function Post(props) {
                 </Grid>
                 <Grid item xs={2}>
                   <Typography sx={{ ml:-6}} variant="subtitle3" component="div">
-                    {test_post.height} cm
+                    {post.height} cm
                   </Typography>
                 </Grid>
                 <Grid item xs={4}>
@@ -186,7 +173,7 @@ export default function Post(props) {
                 </Grid>
                 <Grid item xs={2}>
                   <Typography sx={{ml:-6, color:'rgba(0, 0, 0, 0.6);', fontSize:'1rem',fontWeight: 400}} component="div">
-                  {test_post.weight} kg
+                  {post.weight} kg
                   </Typography>
                 </Grid>
               </Grid>
@@ -196,7 +183,7 @@ export default function Post(props) {
               </Typography>
               <ListItem>
               <Typography sx={{ mt: 0,}} variant="subtitle3" component="div">
-                {test_post.med_history}
+                {post.med_history}
               </Typography>
               </ListItem>
               <Typography sx={{mt:1}} variant="subtitle1" component="div">
@@ -204,7 +191,7 @@ export default function Post(props) {
               </Typography>
               <ListItem>
                 <Typography sx={{ mt: 0}} variant="subtitle3" component="div">
-                  {test_post.current_treatment}
+                  {post.current_treatment}
                 </Typography> 
               </ListItem>
               <Typography sx={{mt:2}} variant="subtitle1" component="div">
@@ -222,7 +209,7 @@ export default function Post(props) {
               <Typography sx={{mt:1}}  variant="subtitle1" component="div">
                 Pictures from post-operation:
               </Typography>
-                <ListItem>
+              <ListItem>
                 <img src="https://loremflickr.com/100/100/doctor" />
               </ListItem>
               <Typography sx={{ mt: 2}} variant="h6" component="div">
@@ -230,7 +217,7 @@ export default function Post(props) {
               </Typography>
               <ListItem>
                 <Typography sx={{ mt: 0}} variant="subtitle3" component="div">
-                  {test_post.analysis}
+                  {post.analysis}
                 </Typography>
               </ListItem>
               <Typography sx={{ mt: 2}} variant="h6" component="div">
@@ -238,7 +225,7 @@ export default function Post(props) {
               </Typography>
               <ListItem>
                 <Typography variant="subtitle3" component="div">
-                  {test_post.recommendation}
+                  {post.recommendation}
                 </Typography>
               </ListItem>
               <Typography sx={{ mt: 1}} variant="h6" component="div">
@@ -251,7 +238,7 @@ export default function Post(props) {
                   disabled
                   sx={{ width: 300 }}
                   renderInput={(params) => (
-                    <TextField {...params} label={test_post.category} variant="standard" />
+                    <TextField {...params} label={post.category} variant="standard" />
                    )}
                 />
               </ListItem>
@@ -270,117 +257,76 @@ export default function Post(props) {
                 </Typography>
               </ListItem>
             </List>
-          </Box>
+          </Box> 
         </Paper>
+
+        {/* COMMENT SECTION */}
         <Box  sx={{ mt:2, width:'99%', height:'100%', justifyContent: 'center',}}>
-          <Grid container spacing={2}>
-            <Grid item xs={4}>
-              <Typography sx={{ mt: 1, mb:2}} variant="h5" component="div">
-                Comments 
-              </Typography>
-            </Grid>
-            <Grid item xs={4}>
-            <Button onClick={handleClickOpen} variant="contained" sx={{width:85, height:45}} >Add comment</Button>
-              <Dialog open={open} onClose={handleClose} >
-                <Box component="form" noValidate onSubmit={handleSubmitComment} sx={{backgroundColor:"white"}}>
-                  <DialogTitle>Add a new comment</DialogTitle>
-                  <DialogContent sx={{minWidth:400}}>
-                  {/**<DialogContentText>
-                      Here yo can add a new comment
-                    </DialogContentText> 
-                    */} 
-                    <TextField
-                      name="comment_title"
-                      autoFocus
-                      margin="dense"
-                      label="Title"
-                      //type="title"
-                      fullWidth
-                      variant="standard"
-                      sx={{width:"80%"}}
-                    />
-                    <TextField
-                      name="comment_text"
-                      label="Write your comment here"
-                      variant="filled"
-                      minRows={2}
-                      fullWidth
-                      multiline
-                      sx={{width:"80%", mt:2}}
-                    />
-                    {/**Eventuelly add pictures:
-                    <Typography sx={{ mt: 1}} variant="subsection3" component="div">
-                      Add a picture 
-                    </Typography>
-                       <Button>
-                          <input type="file" name="picture" accept="image/*" multiple/>
-                        </Button>
-                     */}
-                  </DialogContent>
-                  <DialogActions>
-                    {/*<Button onClick={handleClose}>Cancel</Button>*/}
-                    <Button type="submit" onClick={handleClose}>Submit</Button>
-                  </DialogActions>
-                </Box>
-              </Dialog>
-            </Grid>
-            <Grid item xs={4}>
-              <Box sx={{ minWidth: 50}}>
-                <FormControl >
-                  <InputLabel variant="standard" htmlFor="uncontrolled-native">
-                    Sort
-                  </InputLabel>
-                  <NativeSelect
-                    defaultValue={10}
-                    inputProps={{
-                      name: 'recent',
-                    }}
-                  >
-                    <option value={10}>Recent</option>
-                    <option value={20}>Most Liked</option>
-                  </NativeSelect>
-                </FormControl>
-              </Box>
-            </Grid>
-          </Grid>
-          <List
-              disablePadding
-              sx={{ maxWidth: "sm", width: "90%", mb:2}}
-            >
-              <Card sx={{ width: "100%" }}>
-                <CardHeader
-                  avatar={
-                    <Avatar sx={{ bgcolor: "red"}} src="/sonic.jpeg">
-                      
-                    </Avatar>
-                  }
-                  title="This is my title to my comment"
-                  subheader="September 14, 2016"
+          <Stack direction="row" spacing={2}>
+            <Typography sx={{ mt: 1, mb:2}} variant="h5" component="div">
+              Comments 
+            </Typography>
+            <Button variant="contained" sx={{width:100, height:45}} >Add comment</Button>
+            <Box sx={{ minWidth: 50 }}>
+              <FormControl >
+                <InputLabel variant="standard" htmlFor="uncontrolled-native">
+                  Sort
+                </InputLabel>
+                <NativeSelect
+                  defaultValue={10}
+                  inputProps={{
+                    name: 'recent',
+                  }}
+                >
+                  <option value={10}>Most recent</option>
+                  <option value={20}>Most Liked</option>
+                </NativeSelect>
+              </FormControl>
+            </Box>
+          </Stack> 
+          {/*
+             <Card sx={{ width: "100%" }}>
+               <CardHeader
+                avatar={
+                  <Avatar sx={{ bgcolor: "red"}} src="/sonic.jpeg">
+                    
+                  </Avatar>
+                }
+                title="This is my title to my comment"
+                subheader="September 14, 2016"
+              />
+              <CardContent>
+                <Typography variant="body2" color="text.secondary">
+                  This impressive paella is a perfect party dish and a fun meal to cook
+                  together with your guests. Add 1 cup of frozen peas along with the mussels,
+                  if you like.
+                </Typography>
+              </CardContent>
+
+              <CardActions disableSpacing>
+              <IconButton aria-label="add to favorites">
+              <Rating
+                  name="simple-controlled"
+                  value={rating}
+                  onChange={(event, newRating) => {
+                    setRating(newRating);
+                  }}
                 />
-                <CardContent>
-                  <Typography variant="body2" color="text.secondary">
-                    This impressive paella is a perfect party dish and a fun meal to cook
-                    together with your guests. Add 1 cup of frozen peas along with the mussels,
-                    if you like.
-                  </Typography>
-                </CardContent>
+              </IconButton>
+              </CardActions>
+            </Card>*/}
+          {comments
+          ? <List>
+              <Comments/>
+            </List>
+          : <></>
+          }
+        </Box> 
 
-                <CardActions disableSpacing>
-                <IconButton aria-label="add to favorites">
-                <Rating
-                    name="simple-controlled"
-                    value={rating}
-                    onChange={(event, newRating) => {
-                      setRating(newRating);
-                    }}
-                  />
-                </IconButton>
-                </CardActions>
-              </Card>
-
-          </List>      
+        <Box component='form' onSubmit={handleSubmit}>
+          <TextField name='text' variant='outlined'></TextField>
+          <Button variant='contained' type='submit'>Enter</Button>
         </Box>
       </Container>
     </Box>
-  );
-}
+  ); }

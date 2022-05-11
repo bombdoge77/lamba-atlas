@@ -3,7 +3,7 @@ import Posts from '../../../frontend/Posts.js';
 import ShortPost from '../../../frontend/ShortPost.js';
 import Container from '@mui/material/Container';
 import { Box, Toolbar, Typography, IconButton } from '@mui/material';
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useRouter } from 'next/router';
 import categories from '../../../frontend/helper/categories.js'
 import { searchPosts } from '../../../frontend/helper/fetchcalls.js'
@@ -11,18 +11,7 @@ import CategoryDisplay from '../../../frontend/CategoryDisplay.js'
 import ClearIcon from '@mui/icons-material/Clear'
 
 const loremipsum = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam orci dui, porta maximus ante eu, maximus ullamcorper lectus. Phasellus non risus massa. In ut orci sed ex convallis tincidunt. Proin fermentum sapien ac enim finibus, vitae iaculis velit molestie. In hac habitasse platea dictumst. Pellentesque rutrum auctor purus, nec cursus nunc semper non. Maecenas vel ornare quam. In at condimentum lorem, ac vehicula lectus. Ut bibendum, turpis eu efficitur commodo, lorem odio scelerisque dolor, ut congue ipsum nunc ut sapien. Aliquam ac diam pellentesque, dictum dui sed, consequat sapien. Duis id diam purus. Nulla id lectus pellentesque, pharetra orci ut.'
-
-export default function Feed(props) {
-  const router = useRouter()
-
-  const { category, subcategory, search } = router.query
-  const [searchText, setSearch] = useState(search)
-  const _category = {
-    bodyCategory : category,
-    bodyPart : subcategory
-  }
-
-  const mockPost = {
+const mockPost = {
     _id : '123123',
     gender: 'm',
     age: 22,
@@ -42,8 +31,41 @@ export default function Feed(props) {
     tags: ['lorem', 'ipsum'],
     consent: true //do we need this?
   }
-  const posts = [mockPost, mockPost, mockPost, mockPost, mockPost]
-  const post_elems = posts.map(post => (<ShortPost data={post}/>))
+//const posts = [mockPost, mockPost, mockPost, mockPost, mockPost]
+
+export default function Feed(props) {
+  const router = useRouter()
+
+  const [searchText, setSearch] = useState(null)
+  const [isLoading, setLoading] = useState(true)
+  const [posts, setPosts] = useState([])
+  const [categoryObj, setCategory] = useState({})
+  /*const categoryObj = {
+    bodyCategory : category,
+    bodyPart : subcategory
+  }*/
+  
+  useEffect(async () => {
+    if (router.isReady) {
+      setSearch(router.query.search ? router.query.search : '')
+      setCategory({
+        bodyCategory : router.query.category,
+        bodyPart : router.query.subcategory
+      })
+    }
+  }, [router.isReady])
+
+  useEffect(async () => {
+    if (! (router.query.category && router.query.subcategory)) return
+    console.log(searchText, categoryObj)
+    var res = await searchPosts(searchText, categoryObj)
+    setPosts(res)
+    setLoading(false)
+  }, [searchText])
+
+  if (isLoading) return (<Box>Loading ...</Box>)
+
+  var post_elems = posts ? posts.map(post => (<ShortPost data={post}/>)) : null
 
   return (
     <Box>
@@ -58,7 +80,7 @@ export default function Feed(props) {
         <CategoryDisplay 
         size={20}
         primary={true}
-        category={_category}
+        category={categoryObj}
         sx = {{m : 3, fontSize : 30}}
         />
         {
