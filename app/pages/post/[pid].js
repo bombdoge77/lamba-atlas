@@ -112,8 +112,8 @@ export default function Post() {
     <Box sx={{ display: "flex", flexDirection: "column" }}>
       <AppBar/>
       <Toolbar/>
-      <Container sx={{ height:'100%', width:'100%', backgroundColor:'primary.light2',}}>
-        <Paper elevation={3} sx={{ mt:2, width:'99%', height:'100%', justifyContent: 'center',}}>
+      <Container sx={{ height:'100%', width:'100%', backgroundColor:'primary.white',}}>
+        <Paper elevation={7} sx={{ mt:2, width:'99%', height:'100%', justifyContent: 'center',}}>
           <Paper elevation={3} sx={{ height:50, justifyContent: 'center', backgroundColor:'primary.dark', height:'auto'}}>
             <Typography sx={{ alignItems:'center', padding:2, color:'white',}} variant="h5" component="div">
               {post.title} 
