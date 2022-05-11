@@ -15,16 +15,36 @@ import AddIcon from '@mui/icons-material/Add';
 import { isLoggedIn } from "../frontend/helper/fetchcalls";
 import { useRouter } from "next/router";
 import { useState, useEffect } from "react";
+import DashboardButton from '../frontend/DashboardButton.js'
+import HailIcon from '@mui/icons-material/Hail';
+import AirlineSeatLegroomExtraIcon from '@mui/icons-material/AirlineSeatLegroomExtra';
+import AccessibilityIcon from '@mui/icons-material/Accessibility';
+import { format, category_tree } from '../frontend/helper/categories.js'
 
 const paperspecs = 180;
 
-const color = 'secondary.main';
+const color = 'primary.main';
 const iconSize = 90;
 const textSize = 20;
 
-export default function FrontPage() {
+const buttonSettings = {
+  color : color,
+  iconSize : iconSize,
+  textSize : textSize,
+  paperspecs : paperspecs
+}
+
+const categoryButtonSettings = {
+  color : 'primary.main',
+  iconSize : iconSize,
+  textSize : textSize,
+  paperspecs : paperspecs
+}
+
+export default function FrontPage(props) {
   const router = useRouter()
   const [loading, setLoading] = useState(true)
+  const [query, setQuery] = useState('')
 
   useEffect(async () => {
     var loggedIn = await isLoggedIn()
@@ -36,129 +56,100 @@ export default function FrontPage() {
     }
   })
 
+  useEffect(async () => {
+    if (router.isReady) {
+      setQuery(router.query.query ? router.query.query : '')
+    }
+  }, [router.isReady])
+
   if (loading) {
     return <Box>... loading</Box>
-  } else {
+  } else if (query == '') {
       return(
         <Box>
           <AppBar/>
           <Toolbar/>
           <Container sx={{padding:2, }}>
-          <Grid container spacing={2}>
-            <Grid item xs={6}>
-              <Link href='/feed'>
-                <Paper 
-                  sx={{
-                    textAlign: 'center',
-                    bgcolor: color,
-                    height: paperspecs,
-                    }} 
-                  >
-                    {/**Feed */}
-                      <StarIcon  
-                        sx={{ 
-                          fontSize: iconSize, 
-                          position: 'relative', 
-                          top: 30, 
-                          color:'white'}} />
-                      <Typography  
-                        sx={{ 
-                        fontSize: textSize, 
-                        position: 'relative', 
-                        top: 30,
+            <Grid container spacing={2}>
+              <DashboardButton 
+              link='/category/all/all' 
+              text='Recent Posts' 
+              IconProp={AccessTimeIcon} 
+              settings={buttonSettings}
+              />
+              
+              <DashboardButton 
+              link='/category/all/all' 
+              text='Liked Posts'
+              IconProp={ThumbUpIcon} 
+              settings={buttonSettings}
+              />
 
-                        color:'white'}} >
-                      Feed
-                    </Typography>
-                </Paper>
-              </Link>
-            </Grid>
-            <Grid item xs={6} >
-              <Link href='/'>
-                <Paper 
-                  sx={{
-                    textAlign: 'center',
-                    bgcolor: color,
-                    height: paperspecs,
-                   }} 
-                  >
-                    {/**Recent posts */}
-                    <AccessTimeIcon  sx={{ fontSize: iconSize, position: 'relative', top: 30, color:'white'}} />
-                    <Typography  sx={{ fontSize: textSize, position: 'relative', top: 30, color:'white'}} >
-                      Recent posts
-                    </Typography>
-                </Paper>
-              </Link>
-            </Grid>
-            <Grid item xs={6} >
-              <Link href='/'>
-                <Paper 
-                  sx={{
-                    textAlign: 'center',
-                    bgcolor: color,
-                    height: paperspecs,
-                    }} 
-                  >
-                  {/*Liked posts*/}
-                  <ThumbUpIcon  sx={{ fontSize: iconSize, position: 'relative', top: 30, color:'white'}} />
-                  <Typography  sx={{ fontSize: textSize, position: 'relative', top: 30, color:'white'}} >
-                    Liked posts
-                  </Typography>
-                </Paper>
-              </Link>
-            </Grid>
-            <Grid item xs={6} >
-              <Link href='/'>
-                <Paper 
-                  sx={{
-                    textAlign: 'center',
-                    bgcolor: color,
-                    height: paperspecs,
-                    }} 
-                  >
-                  {/*Patients*/}
-                  <AddIcon  sx={{ fontSize: iconSize, position: 'relative', top: 30, color:'white'}} />
-                  <Typography  sx={{ fontSize: textSize, position: 'relative', top: 30, color:'white'}} >
-                    New post
-                  </Typography>
-                </Paper>
-              </Link>
-            </Grid>
-            <Grid item xs={6} >
-              <Link href='/'>
-                <Paper 
-                  sx={{
-                    textAlign: 'center',
-                    bgcolor:color,
-                    height: paperspecs,
-                    }} 
-                  >
-                  {/* */}
-                  <FaceIcon  sx={{ fontSize: iconSize, position: 'relative', top: 30, color:'white'}} />
-                  <Typography  sx={{ fontSize: textSize, position: 'relative', top: 30, color:'white'}} >
-                    Patients
-                  </Typography>
-                </Paper>
-              </Link>
-            </Grid>
-            <Grid item xs={6} >
-              <Link href='/'>
-                <Paper 
-                  sx={{
-                    textAlign: 'center',
-                    bgcolor:color,
-                    height: paperspecs,
-                    }} 
-                  >
-                  {/**/}
+              <DashboardButton 
+              link='/newpost'
+              text='New Post'
+              IconProp={AddIcon}
+              settings={buttonSettings}
+              />
 
-                </Paper>
-              </Link>
+              {/*
+              <DashboardButton 
+              link='/'
+              text='Patients'
+              IconProp={FaceIcon} 
+              settings={buttonSettings}
+              />
+              */}
+
+              <DashboardButton 
+              link='/category?query=upper-extremity'
+              text={format['upper-extremity']}
+              IconProp={HailIcon} 
+              settings={categoryButtonSettings}
+              />
+
+              <DashboardButton 
+              link='/category?query=abdomen'
+              text={format['abdomen']}
+              IconProp={AccessibilityIcon} 
+              settings={categoryButtonSettings}
+              />
+
+              <DashboardButton 
+              link='/category?query=lower-extremity'
+              text={format['lower-extremity']}
+              IconProp={AirlineSeatLegroomExtraIcon} 
+              settings={categoryButtonSettings}
+              />
             </Grid>
-          </Grid>
           </Container>
         </Box>
       );
+    } else {
+      console.log(query)
+      const subcategories = category_tree[query]
+      const subcategoryButtons = subcategories.map(category => {
+        return(
+          <DashboardButton 
+          link={`/category/${query}/${category}`}
+          text={format[category]}
+          IconProp={AccessibilityIcon}
+          settings={categoryButtonSettings}
+          />
+          )
+      })
+
+      return(
+        <Box>
+          <AppBar/>
+          <Toolbar/>
+          <Container sx={{padding:2, }}>
+            <Grid container spacing={2}>
+              {subcategoryButtons}
+            </Grid>
+          </Container>
+        </Box>
+        )
     }
 
 };

@@ -12,101 +12,42 @@ import Drawer from "@mui/material/Drawer";
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { List, ListItem, ListItemButton, ListItemText } from '@mui/material';
 import Link from 'next/link'
-import SearchBar from './SearchBar.js'
 
 const drawerWidthMobile = "70vw";
 const drawerWidthDesktop = "20vw";
 
-const Search = styled('div')(({ theme }) => ({
-  position: 'relative',
-  borderRadius: theme.shape.borderRadius,
-  backgroundColor: alpha(theme.palette.common.white, 0.15),
-  '&:hover': {
-    backgroundColor: alpha(theme.palette.common.white, 0.25),
-  },
-  marginRight: theme.spacing(2),
-  marginLeft: 0,
-  width: '100%',
-  [theme.breakpoints.up('sm')]: {
-    marginLeft: theme.spacing(3),
-    width: 'auto',
-  },
-}));
-
-const SearchIconWrapper = styled('div')(({ theme }) => ({
-  padding: theme.spacing(0,2),
-  height: '100%',
-  position: 'absolute',
-  pointerEvents: 'none',
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-}));
-
-const StyledInputBase = styled(InputBase)(({ theme }) => ({
-  color: 'inherit',
-  '& .MuiInputBase-input': {
-    padding: theme.spacing(1, 1, 1, 0),
-    // vertical padding + font size from searchIcon
-    paddingLeft: `calc(1em + ${theme.spacing(4)})`,
-    transition: theme.transitions.create('width'),
-    width: '100%',
-  },
-}));
-
-export default function PrimarySearchAppBar(props) {
+export default function HamburgerMenu() {
   const [open, setOpen] = React.useState(false);
   const toggleDrawer = () => {
     setOpen(!open);
   };
 
   return (
-    <Box>
-      <AppBar 
-        position='fixed'
-        sx={{ 
-          //zIndex: (theme) => theme.zIndex.drawer + 1,
-          display: "block",
-          float: "none",
-          backgroundColor:'primary.white',
-          color : 'primary.black'
-        }}
-        elevation={1}
-      >
-        <Toolbar>
-          <IconButton
-            size="large"
-            edge="start"
-            color="inherit"
-            aria-label="open drawer"
-            onClick={toggleDrawer}
-            sx={{ mr: 2 }}
-          >
-            <MenuIcon />
-          </IconButton>
-          <Typography
-            variant="h6"
-            noWrap
-            component="div"
-            sx={{ display: { xs: 'none', sm: 'block' } }}
-          >
-            MedStack
-          </Typography>
-          <SearchBar onSearch={props.onSearch}/>
-          {/*<Search>
-            <SearchIconWrapper>
-              <SearchIcon />
-            </SearchIconWrapper>
-            <StyledInputBase
-              placeholder="Search…"
-            />
-          </Search>*/}
-        </Toolbar>
-      </AppBar>
+    <Box sx={{alignItem:'left'}}>
+      <Toolbar>
+        <IconButton
+          size="large"
+          edge="start"
+          color="inherit"
+          aria-label="open drawer"
+          onClick={toggleDrawer}
+          sx={{ mr: 2 }}
+        >
+          <MenuIcon />
+        </IconButton>
+        <Typography
+          variant="h6"
+          noWrap
+          component="div"
+          sx={{ display: { xs: 'none', sm: 'block' } }}
+        >
+          MedStack
+        </Typography>
+      </Toolbar>
       <Drawer
         PaperProps={{
           sx: {
-            backgroundColor: "primary.white",
+            backgroundColor: "primary.light",
             color: "black",
           },
           boxSizing: "border-box"
@@ -152,11 +93,6 @@ export default function PrimarySearchAppBar(props) {
                     <ListItemText primary="Profile" />
                   </ListItemButton>
                 </Link>
-              </ListItem>
-              <ListItem >
-                <ListItemButton sx={{border:1, borderRadius: 1}}>
-                  <ListItemText primary="Settings" />
-                </ListItemButton>
               </ListItem>
               <ListItem >
                 <Link href="/login">

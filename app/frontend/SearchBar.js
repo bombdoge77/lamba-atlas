@@ -19,14 +19,14 @@ export default function SearchBar(props) {
   return (
     <Paper
       component="form"
-      elevation={0}
+      elevation={1}
       id="paper"
       onSubmit={(e) => sendRequest(e)}
       sx={{
-        ml : 1,
+        ml : 2,
         mr : 0,
         pl : 1,
-
+        width:"100%"
       }}
     >
       <InputBase
@@ -35,8 +35,11 @@ export default function SearchBar(props) {
         inputProps={{ "aria-label": "search posts" }}
         value={query}
         onChange={(e) => setQuery(e.target.value)}
+        sx={{
+          width: 0.85
+        }}
       />
-      <IconButton type="submit" aria-label="search">
+      <IconButton type="submit" aria-label="search" sx={{width:0.1, mr : 1}}>
         <SearchIcon />
       </IconButton>
     </Paper>

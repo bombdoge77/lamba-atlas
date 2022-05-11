@@ -15,6 +15,8 @@ import TextField from "@mui/material/TextField";
 import { useRouter } from "next/router";
 import { isLoggedIn, editProfileRequest, getProfileRequest } from "../frontend/helper/fetchcalls";
 import { Snackbar, Alert } from "@mui/material";
+import HamburgerMenu from "../frontend/HamburgerMenu";
+
 
 var user_test = {
   email: "erikaeriksson@mail.com", //string
@@ -129,20 +131,21 @@ export default function Profile() {
   else {
     return (
     <Box sx={{ display: "flex", flexDirection: "column" }}>
-      <Toolbar sx={{display: "flex", backgroundColor: "primary.light" }}>
+    
+      <Toolbar sx={{display: "flex", backgroundColor: "primary.main",}}>
         <ButtonGroup
-          variant="contained"
-          aria-label="outlined primary button group"
-          sx={{ color: "primary.light", maxWidth:340, width: "100%"}}
+          //variant="contained"
+          //aria-label="outlined primary button group"
+          sx={{ color: "primary.light", width: "100%", height:4}}
         >
-          <Button fullWidth onClick={handleArrowBack}>
-            <ArrowBackIcon />
+          <Button fullWidth onClick={handleArrowBack} variant="text" sx={{color:"black", ml:-4}}>
+            <HamburgerMenu />
           </Button>
-          <Button fullWidth disabled={editMode} onClick={handleEditOpen}>
+          <Button fullWidth disabled={editMode} onClick={handleEditOpen} variant="text" sx={{color:"black"}}>
             <EditIcon />
             Edit
           </Button>
-          <Button fullWidth onClick={handlePosts}>
+          <Button fullWidth onClick={handlePosts} variant="text" sx={{color:"black"}}>
             <ArticleIcon />
             Posts
           </Button>
@@ -175,13 +178,13 @@ export default function Profile() {
               display: "flex",
               flexDirection: "column",
               alignItems: "center",
-              paddingTop: 2,
+              paddingTop: 4,
               paddingBottom: 2,
             }}
           >
             <Avatar
               alt="profile picture"
-              src="/sonic.jpeg"
+              src="/doctoruser.jpg"
               sx={{ width: 150, height: 150, textAlign: "center" }}
             />
             <EditAvatarButton/>

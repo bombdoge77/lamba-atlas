@@ -115,7 +115,21 @@ export async function unstar(db, email, post_id) {
 // category looks like : {bodyCategory : 'Upper extremity', bodyPart : 'Shoulder + upper arm'}
 export async function search_posts(db, text, category) {
 	var posts = db.collection('posts')
-	var result = posts.find({ category : category, title : { $regex : text } })
+
+	if (!text) text = ''
+
+	if (category.bodyCategory == 'all' && category.bodyPart == 'all' && text == '') {
+		var result = await posts.find({})
+	} else if (category.bodyCategory == 'all' && category.bodyPart == 'all') {
+		var result = await posts.find({
+			$or : [ { title : { $regex : text } }, { tags : { $all : [text] } } ]
+		})
+	} else {
+		var result = await posts.find({ 
+			category : category, 
+			$or : [ { title : { $regex : text } }, { tags : { $all : [text] } } ]
+		})
+	}
 	return result.toArray()
 }
 

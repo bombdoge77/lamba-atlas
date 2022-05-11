@@ -20,6 +20,8 @@ export default function ShortPost(props) {
 	const data = props.data
 	const [liked, setLiked] = useState(props.liked)
 
+	const linkPost = () => router.push('/post/'+data._id)
+
 	return(
 		<Container 
 		sx={{
@@ -28,8 +30,8 @@ export default function ShortPost(props) {
 			width : 1
 		}}
 		>
-			<Card sx={{ width : 1 }}>
-		    <CardContent>
+			<Card sx={{ width : 1, cursor : 'pointer' }}>
+		    <CardContent onClick={linkPost}>
 		      <CategoryDisplay sx={{fontSize : 14, my: 1}} primary={false} category={data.category}/>
 		      <Typography variant="h5" component="div" sx={{mt : 1, mb : 2}}>
 		        {data.title}
@@ -48,7 +50,7 @@ export default function ShortPost(props) {
 		    	</IconButton>
 		      <Button 
 		      size="small"
-		      onClick={() => router.push('post'+'/'+data._id)}
+		      onClick={linkPost}
 		      >
 		      	Read More
 		      </Button>
