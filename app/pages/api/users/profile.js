@@ -4,24 +4,26 @@ import { edit_user, get_user_profile, get_user } from '../../../utils/db/users.j
 import { authenticateToken } from './auth.js'
 
 export default async function profileHandler(req, res) {
+  var jwt_encoded = req.headers.authorization
+
+  // check if jwt valid
+  var jwt = authenticateToken(jwt_encoded)
+  if (!jwt) {
+    res.status(401)
+    res.end()
+    return
+  }
+
   if (req.method == 'POST') {
-    await edit(req, res)
+    await edit(req, res, jwt.user)
   } else if (req.method == 'PUT') {
     await get(req, res)
   }
   res.end()
 }
 
-async function edit(req, res) {
-  var jwt_encoded = req.body.jwt
-  var jwt = authenticateToken(jwt_encoded)
-  var email = jwt.user
+async function edit(req, res, email) {
   var user = req.body.payload
-
-  if (jwt == null) {
-    res.status(401)
-    return
-  }
 
   var db = await connect(process.env.DB_NAME)
 
@@ -38,21 +40,17 @@ async function edit(req, res) {
 
 async function get(req, res) {
   //var body = JSON.parse(req._getData())
-  var body = req.body
-  var jwt_encoded = body.jwt
-  var jwt = authenticateToken(jwt_encoded)
-
-  if (jwt == null) {
-    res.status(401)
-    return
-  }
+  
+  var email = req.body.user
 
   var db = await connect(process.env.DB_NAME)
-  
-  var email = jwt.user
   var user_profile = await get_user_profile(db, email)
-
-  res.status(200).json({ payload : { user_profile }})
-
   await disconnect(db)
+
+  if (user_profile) {
+    res.status(200).json({ payload : { user_profile }})
+  } else {
+    res.status(404)
+  }
+
 }

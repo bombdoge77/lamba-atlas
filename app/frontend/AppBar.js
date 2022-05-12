@@ -69,7 +69,7 @@ export default function PrimarySearchAppBar(props) {
           display: "block",
           float: "none",
           backgroundColor:'primary.main',
-          color : 'primary.black'
+          color : 'primary.white'
         }}
         elevation={1}
       >
@@ -107,7 +107,7 @@ export default function PrimarySearchAppBar(props) {
         PaperProps={{
           sx: {
             backgroundColor: "primary.light",
-            color: "black",
+            color: "primary.white",
           },
           boxSizing: "border-box"
         }}

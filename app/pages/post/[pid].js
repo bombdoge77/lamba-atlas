@@ -25,10 +25,14 @@ import NativeSelect from '@mui/material/NativeSelect';
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
 import { useRouter } from 'next/router';
-import { getCommentsRequest, addCommentsRequest, getPostRequest } from '../../frontend/helper/fetchcalls';
+import { getCommentsRequest, addCommentsRequest, getPostRequest, getProfileRequest } from '../../frontend/helper/fetchcalls';
 import { Fragment } from 'react';
 import Authorization from '../../frontend/Authorization';
 import { format } from '../../frontend/helper/categories.js'
+import TextBar from '../../frontend/TextBar.js'
+import SendIcon from '@mui/icons-material/Send';
+import { getUser } from '../../frontend/helper/auth.js'
+import Comment from '../../frontend/Comment.js'
 
 var test_post = {
   title: "this is the title for the post",
@@ -63,38 +67,54 @@ var test_comments = [{_id:'000', body:'vada'},{_id:'001', body:'vada'},{_id:'002
 export default function Post() {
 
   const router = useRouter()
+<<<<<<< HEAD
   const [loading, setLoading] = React.useState(true);
+=======
+  const [isLoading, setLoading] = React.useState(true)
+>>>>>>> c9357f73670920fd5d39ca542cae37dee55bdee3
   const [post, setPost] = React.useState(test_post);
   const [comments, setComments] = React.useState(test_comments);
   const showtags = post.tags ? (post.tags).split(',').map((tag) =>  <Chip key={tag} label={tag}/>) : null;
   //const [rating, setRating] = React.useState(2);
+  const [dispName, setDispName] = React.useState('User')
+  const [spin, setSpin] = React.useState(false)
+
+  React.useEffect(async () => {
+      const res = await getProfileRequest(post.user)
+      if (!res) {
+        setSpin(!spin)
+        return
+      }
+      setDispName(res.payload.user_profile.name)
+  }, [spin])
   
   const handleSubmit = async (event) => {
-    const { pid } = router.query
+    /*const { pid } = router.query
     event.preventDefault()
     const data = new FormData(event.currentTarget)
     data.append('post_id', pid)
     data.append('user','placeholder')
     data.append('is_reply','placeholder')
+    */
+    const data = {
+      post_id : post._id,
+      user : getUser(),
+      is_reply : false,
+      text : event
+    }
 
     var result = await addCommentsRequest(data)
 
     if(result == 200) {
-      var comments = await getCommentsRequest(pid)
+      var comments = await getCommentsRequest(post._id)
       setComments(comments)
     }
   }
 
   function Comments() {
-    const renderedComments = comments.map((comment) => 
-      <ListItem key={comment._id} sx={{display:'block'}}>
-        <Typography>
-          Comment {comment._id}
-        </Typography>
-        <Typography>
-          {comment.body}
-        </Typography>
-      </ListItem>
+    const renderedComments = comments.map((comment) =>
+      
+        <Comment user={comment.user} text={comment.body}/>
     )
     return (
       renderedComments
@@ -114,6 +134,8 @@ export default function Post() {
     }, [router.isReady]);
     return (<>Loading</>)
   }
+
+  if (isLoading) return(<Box>Loading...</Box>)
 
   return(
     <Authorization>

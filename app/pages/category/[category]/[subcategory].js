@@ -39,6 +39,7 @@ export default function Feed(props) {
   const [searchText, setSearch] = useState(null)
   const [isLoading, setLoading] = useState(true)
   const [posts, setPosts] = useState([])
+  const [spin, setSpin] = useState(false)
   const [categoryObj, setCategory] = useState({})
   /*const categoryObj = {
     bodyCategory : category,
@@ -59,9 +60,12 @@ export default function Feed(props) {
     if (! (router.query.category && router.query.subcategory)) return
     console.log(searchText, categoryObj)
     var res = await searchPosts(searchText, categoryObj)
+
+    if (!res) setSpin(!spin)
+      
     setPosts(res)
     setLoading(false)
-  }, [searchText])
+  }, [searchText, spin])
 
   if (isLoading) return (<Box>Loading ...</Box>)
 

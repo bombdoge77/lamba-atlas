@@ -13,6 +13,7 @@ import Button from "@mui/material/Button";
 import ButtonGroup from "@mui/material/ButtonGroup";
 import TextField from "@mui/material/TextField";
 import { useRouter } from "next/router";
+import { getUser } from "../frontend/helper/auth.js";
 import { editProfileRequest, getProfileRequest } from "../frontend/helper/fetchcalls";
 import { Snackbar, Alert } from "@mui/material";
 import HamburgerMenu from "../frontend/HamburgerMenu";

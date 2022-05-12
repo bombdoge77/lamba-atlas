@@ -127,9 +127,11 @@ export default function NewPost() {
         >
           <Alert onClose={handleClose} severity="error"> {submitErrorMsg} </Alert>
         </Snackbar>
+        {/*
         <Typography sx={{textAlign:'center', marginTop: 2, marginBottom:2}}>
           Please enter information about your case here! This rapport will follow the SBAR style.
         </Typography>
+      */}
       </Box>
       <Box component="form" noValidate onSubmit={handleSubmit} sx={{display: "flex", flexDirection: "column", alignItems: "center"}}>
         <List
@@ -137,15 +139,17 @@ export default function NewPost() {
           sx={{ maxWidth: "sm", width: "90%", bgcolor: "background.paper" }}
         >
           <Typography sx={{ mt: 1}} variant="h6" component="div">
-            Titel 
+            Title 
           </Typography>
-          <TextField
-              name="title"
-              label="Add a titel to your new post"
-              variant="filled"
-              fullWidth
-              multiline
-            />
+          <ListItem>
+            <TextField
+                name="title"
+                label="Title of your post"
+                variant="filled"
+                fullWidth
+                multiline
+              />
+          </ListItem>
           <Typography sx={{ mt: 1}} variant="h6" component="div">
             Situation 
           </Typography>
@@ -159,7 +163,7 @@ export default function NewPost() {
               multiline
             />
           </ListItem>
-        <Typography sx={{ mt: 1}} variant="h6" component="div">
+          <Typography sx={{ mt: 1}} variant="h6" component="div">
             Background
           </Typography>
           <ListItem>
@@ -227,7 +231,6 @@ export default function NewPost() {
               multiline
               minRows={2}
               maxRows={8}
-              helperText="Brief information related to the situation"
             />
           </ListItem>
           <ListItem>
@@ -240,12 +243,17 @@ export default function NewPost() {
               multiline
             />
           </ListItem>
+          {/*
           <Typography sx={{ mt: 1,color:'rgba(0, 0, 0, 0.6);', fontSize:'1rem',fontWeight: 400}}  component="div">
             Please add the pictures that are relevant to the case.
           </Typography>
+        */}
+          <Typography sx={{ mt: 1}} variant="h6" component="div">
+            Pictures
+          </Typography>
           <ListItem>
             <ListItemText
-              primary="Pictures pre-operation"
+              primary="Pre-operation"
               primaryTypographyProps={{color:'rgba(0, 0, 0, 0.6);', fontSize:'1rem',fontWeight: 400}}
               secondary={
                           <Button>
@@ -256,7 +264,7 @@ export default function NewPost() {
           </ListItem>
           <ListItem>
             <ListItemText
-              primary="Pictures during operation"
+              primary="During operation"
               primaryTypographyProps={{color:'rgba(0, 0, 0, 0.6);', fontSize:'1rem',fontWeight: 400}}
               secondary={
                           <Button>
@@ -267,7 +275,7 @@ export default function NewPost() {
           </ListItem>
           <ListItem>
             <ListItemText
-              primary="Pictures post-operation"
+              primary="Post-operation"
               primaryTypographyProps={{color:'rgba(0, 0, 0, 0.6);', fontSize:'1rem',fontWeight: 400}}
               secondary={
                           <Button>
@@ -282,7 +290,7 @@ export default function NewPost() {
           <ListItem>
             <TextField
               name="analysis"
-              label="Analysis and considerations of options"
+              label="What is your assessment?"
               variant="filled"
               fullWidth
               multiline
@@ -291,17 +299,16 @@ export default function NewPost() {
             />
           </ListItem>
           <Typography sx={{ mt: 1}} variant="h6" component="div">
-            Recommendation 
+            Question 
           </Typography>
           <ListItem>
             <TextField
               name="recommendation"
-              label="Your question"
+              label="What do you need help with?"
               variant="filled"
               fullWidth
               minRows={2}
               multiline
-              helperText="What you want helpt with"
             />
           </ListItem>
 
@@ -316,16 +323,18 @@ export default function NewPost() {
               groupBy={(option) => option.bodyCategory}
               getOptionLabel={(option) => option.bodyPart}
               sx={{ width: 300 }}
-              renderInput={(params) => <TextField {...params} name="category" label="With categories" />}
+              renderInput={(params) => <TextField {...params} name="category" label="Category" />}
             />
           </ListItem>
 
           <Typography sx={{ mt: 1}} variant="h6" component="div">
             Tags 
           </Typography>
+          {/*
           <Typography sx={{ mt: 1,color:'rgba(0, 0, 0, 0.6);', fontSize:'1rem',fontWeight: 400}}  component="div">
-            Please choose tags that you think relate to your case to help others find the case. Press enter to submit a tag.
+            Tags to help others find your post
           </Typography>
+        */}
           <ListItem>
             <Autocomplete
               multiple
@@ -350,16 +359,18 @@ export default function NewPost() {
           <Typography sx={{ mt: 1}} variant="h6" component="div">
             Consent from patient
           </Typography>
+          {/*
           <Typography sx={{ mt: 1,color:'rgba(0, 0, 0, 0.6);', fontSize:'1rem',fontWeight: 400}}  component="div">
             You must have your patient's consent to use their information in educational purpose. 
             Please make sure your patient have consented by filling our the consentform: [Insert link to consent document].
           </Typography>
+        */}
           <ListItem>
             <FormControlLabel 
               name="consent"
               required
               control={<Checkbox onClick={() => setConsent(!isConsent)} />} 
-              label="I hereby promise I have my patient consent to use their patientdata." 
+              label="The patient has consented to sharing their medical information." 
             />
           </ListItem>
           <Box
