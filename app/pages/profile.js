@@ -14,13 +14,13 @@ import ButtonGroup from "@mui/material/ButtonGroup";
 import TextField from "@mui/material/TextField";
 import { useRouter } from "next/router";
 import { getUser } from "../frontend/helper/auth.js";
-import { editProfileRequest, getProfileRequest } from "../frontend/helper/fetchcalls";
 import { Snackbar, Alert } from "@mui/material";
 import HamburgerMenu from "../frontend/HamburgerMenu";
 import Authorization from "../frontend/Authorization";
 import AppBar from "../frontend/AppBar";
 import CircularProgress from '@mui/material/CircularProgress';
 import { Paper } from "@mui/material";
+import { isLoggedIn, editProfileRequest, getProfileRequest } from "../frontend/helper/fetchcalls";
 
 
 var user_test = {
@@ -35,7 +35,6 @@ var user_test = {
   pass_hash: "123", //string
   //picture?
 };
-
 
 export default function Profile() {
   const router = useRouter()
@@ -75,7 +74,7 @@ export default function Profile() {
 
   function FetchData() {
     React.useEffect(async () => {
-      var data = await getProfileRequest()
+      var data = await getProfileRequest(getUser())
       var user = data.payload.user_profile
       setLoading(false)
       setUser(user)
@@ -168,14 +167,15 @@ export default function Profile() {
             </Snackbar>
           <Box
             component="form" 
+            onSubmit={handleSubmit}
             sx={{
-              backgroundColor: "primary.dark",
+              textAlign: "center",
               display: "flex",
               flexDirection: "column",
               alignItems: "center",
+              paddingTop: 4,
+              paddingBottom: 2,
             }}
-            noValidate 
-            onSubmit={handleSubmit} 
           >
             <Box sx={{ display: "block" }}>
               <Container
