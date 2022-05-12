@@ -67,11 +67,7 @@ var test_comments = [{_id:'000', body:'vada'},{_id:'001', body:'vada'},{_id:'002
 export default function Post() {
 
   const router = useRouter()
-<<<<<<< HEAD
   const [loading, setLoading] = React.useState(true);
-=======
-  const [isLoading, setLoading] = React.useState(true)
->>>>>>> c9357f73670920fd5d39ca542cae37dee55bdee3
   const [post, setPost] = React.useState(test_post);
   const [comments, setComments] = React.useState(test_comments);
   const showtags = post.tags ? (post.tags).split(',').map((tag) =>  <Chip key={tag} label={tag}/>) : null;
