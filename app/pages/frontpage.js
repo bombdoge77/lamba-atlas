@@ -19,6 +19,7 @@ import DashboardButton from '../frontend/DashboardButton.js'
 import HailIcon from '@mui/icons-material/Hail';
 import AirlineSeatLegroomExtraIcon from '@mui/icons-material/AirlineSeatLegroomExtra';
 import AccessibilityIcon from '@mui/icons-material/Accessibility';
+import AllInboxIcon from '@mui/icons-material/AllInbox';
 import { format, category_tree } from '../frontend/helper/categories.js'
 
 const paperspecs = 180;
@@ -62,19 +63,23 @@ export default function FrontPage(props) {
     }
   }, [router.isReady])
 
+  const onSearch = (text) => {
+    router.push(`/category/all/all?search=${text}`)
+  }
+
   if (loading) {
     return <Box>... loading</Box>
   } else if (query == '') {
       return(
         <Box>
-          <AppBar/>
+          <AppBar onSearch={onSearch}/>
           <Toolbar/>
           <Container sx={{padding:2, }}>
             <Grid container spacing={2}>
               <DashboardButton 
               link='/category/all/all' 
-              text='Recent Posts' 
-              IconProp={AccessTimeIcon} 
+              text='All Posts' 
+              IconProp={AllInboxIcon} 
               settings={buttonSettings}
               />
               
@@ -141,7 +146,7 @@ export default function FrontPage(props) {
 
       return(
         <Box>
-          <AppBar/>
+          <AppBar onSearch={onSearch}/>
           <Toolbar/>
           <Container sx={{padding:2, }}>
             <Grid container spacing={2}>

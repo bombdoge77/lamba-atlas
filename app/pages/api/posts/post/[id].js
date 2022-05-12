@@ -4,15 +4,15 @@ import { create_post, edit_post, get_post, remove_post } from '../../../../utils
 import { authenticateToken } from '../../users/auth.js'
 
 export default async function postHandler(req, res) {
-  // var jwt = req.headers.authorization
+  var jwt = req.headers.authorization
 
-  // // check if jwt valid
-  // jwt = authenticateToken(jwt)
-  // if (!jwt) {
-  //   res.status(401)
-  //   res.end()
-  //   return
-  // }
+  // check if jwt valid
+  jwt = authenticateToken(jwt)
+  if (!jwt) {
+    res.status(401)
+    res.end()
+    return
+  }
 
   const id = req.query.id
 

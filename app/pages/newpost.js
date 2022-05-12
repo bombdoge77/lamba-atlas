@@ -16,11 +16,12 @@ import Typography from '@mui/material/Typography';
 import InputAdornment from '@mui/material/InputAdornment';
 import { Autocomplete } from '@mui/material';
 import Checkbox from '@mui/material/Checkbox';
-import { newPostRequest } from '../frontend/helper/fetchcalls';
+import { newPostRequest, isLoggedIn } from '../frontend/helper/fetchcalls';
 import { Snackbar } from '@mui/material';
 import { Alert } from '@mui/material';
 import categories from '../frontend/helper/categories.js'
 import { useRouter } from 'next/router';
+import { useEffect, useState } from 'react'
 
 /** TODO: Kolla in senare
  * Tags
@@ -31,10 +32,22 @@ import { useRouter } from 'next/router';
 export default function NewPost() {
   
   // receivers är lista med alla tags som fyllts i
+  const [isConsent, setConsent] = useState(false)
+  const [isLoading, setLoading] = useState(true)
   const [receivers, setReceivers] = React.useState([])
   const [submitFailed, setSubmitFailed] = React.useState(false)
   const [submitErrorMsg, setSubmitErrorMsg] = React.useState('')
   const router = useRouter()
+
+  useEffect(async () => {
+    var loggedIn = await isLoggedIn()
+    if (!loggedIn) {
+      router.push('login')
+    }
+    else {
+      setLoading(false)
+    }
+  }, [])
 
   const handleClose = () => {
     setSubmitFailed(false);
@@ -92,6 +105,7 @@ export default function NewPost() {
    *  - taggar(tags)
    *  - att patienten har consentat
    */
+  if (isLoading) return(<Box>Loading...</Box>)
 
   return (
     <Box sx={{ display: "flex", flexDirection: "column" }}>
@@ -344,7 +358,7 @@ export default function NewPost() {
             <FormControlLabel 
               name="consent"
               required
-              control={<Checkbox defaultChecked />} 
+              control={<Checkbox onClick={() => setConsent(!isConsent)} />} 
               label="I hereby promise I have my patient consent to use their patientdata." 
             />
           </ListItem>
@@ -357,6 +371,7 @@ export default function NewPost() {
             <Button
               type="submit"
               variant="contained"
+              disabled={!isConsent}
               sx={{ mt: 2, mb: 2 }}
               //onSubmit={handleSubmit}
             >

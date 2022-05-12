@@ -17,6 +17,9 @@ import { editProfileRequest, getProfileRequest } from "../frontend/helper/fetchc
 import { Snackbar, Alert } from "@mui/material";
 import HamburgerMenu from "../frontend/HamburgerMenu";
 import Authorization from "../frontend/Authorization";
+import AppBar from "../frontend/AppBar";
+import CircularProgress from '@mui/material/CircularProgress';
+import { Paper } from "@mui/material";
 
 
 var user_test = {
@@ -76,7 +79,16 @@ export default function Profile() {
       setLoading(false)
       setUser(user)
     });
-    return (<>Loading</>)
+    return (<Box sx={{
+              height: "100%",
+              width: "100%",
+              display: "flex",
+              position: "fixed",
+              alignItems: "center",
+              justifyContent: "center",
+              }}>
+              <CircularProgress color="secondary"/>
+            </Box>)
   }
   
   function SubmitButton() {
@@ -129,25 +141,22 @@ export default function Profile() {
       {loading
         ? <FetchData/>
         : <Box sx={{ display: "flex", flexDirection: "column" }}>
-          <Toolbar sx={{display: "flex", backgroundColor: "primary.main",}}>
-            <ButtonGroup
-              //variant="contained"
-              //aria-label="outlined primary button group"
-              sx={{ color: "primary.light", width: "100%", height:4}}
+        <AppBar/>
+          <Toolbar/>
+          <ButtonGroup
+              sx={{ color: "primary.light", width: "100%", height:45}}
             >
-              <Button fullWidth onClick={handleArrowBack} variant="text" sx={{color:"black", ml:-4}}>
-                <HamburgerMenu />
-              </Button>
-              <Button fullWidth disabled={editMode} onClick={handleEditOpen} variant="text" sx={{color:"black"}}>
+    
+              <Button fullWidth disabled={editMode} onClick={handleEditOpen} variant="contained" sx={{color:"black"}}>
                 <EditIcon />
                 Edit
               </Button>
-              <Button fullWidth onClick={handlePosts} variant="text" sx={{color:"black"}}>
+              <Button fullWidth onClick={handlePosts} variant="contained" sx={{color:"black"}}>
                 <ArticleIcon />
                 Posts
               </Button>
             </ButtonGroup>
-          </Toolbar>
+          
           <Snackbar 
               anchorOrigin={{vertical:'top', horizontal:'center'}} 
               sx={{ top: 50}}  

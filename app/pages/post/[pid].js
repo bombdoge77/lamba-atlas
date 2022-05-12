@@ -28,13 +28,14 @@ import { useRouter } from 'next/router';
 import { getCommentsRequest, addCommentsRequest, getPostRequest } from '../../frontend/helper/fetchcalls';
 import { Fragment } from 'react';
 import Authorization from '../../frontend/Authorization';
+import { format } from '../../frontend/helper/categories.js'
 
 var test_post = {
   title: "this is the title for the post",
   //Situation
   situation: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Morbi tristique senectus et netus et malesuada. Fringilla phasellus faucibus scelerisque eleifend donec pretium vulputate. ", 
   //Background
-  gender: "Femael", 
+  gender: "Female", 
   age: "30", 
   height: "160", 
   weight: "60", 

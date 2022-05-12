@@ -7,7 +7,7 @@ export default async function postHandler(req, res) {
   var jwt = req.headers.authorization
 
   // check if jwt valid
-  jwt = true//authenticateToken(jwt)
+  jwt = authenticateToken(jwt)
   if (!jwt) {
     res.status(401)
     res.end()
