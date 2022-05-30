@@ -76,7 +76,7 @@ export default function Post() {
   const [spin, setSpin] = React.useState(false)
 
   React.useEffect(async () => {
-      const res = await getProfileRequest(getUser())
+      const res = await getProfileRequest(post.user)
       if (!res) {
         setSpin(!spin)
         return
