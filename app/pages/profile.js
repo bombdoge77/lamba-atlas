@@ -14,12 +14,13 @@ import ButtonGroup from "@mui/material/ButtonGroup";
 import TextField from "@mui/material/TextField";
 import { useRouter } from "next/router";
 import { getUser } from "../frontend/helper/auth.js";
-import { isLoggedIn, editProfileRequest, getProfileRequest } from "../frontend/helper/fetchcalls";
 import { Snackbar, Alert } from "@mui/material";
 import HamburgerMenu from "../frontend/HamburgerMenu";
+import Authorization from "../frontend/Authorization";
 import AppBar from "../frontend/AppBar";
 import CircularProgress from '@mui/material/CircularProgress';
 import { Paper } from "@mui/material";
+import { isLoggedIn, editProfileRequest, getProfileRequest } from "../frontend/helper/fetchcalls";
 
 
 var user_test = {
@@ -69,6 +70,25 @@ export default function Profile() {
 
   const handlePosts = () => {
     // Go to feed and show posts for this user
+  }
+
+  function FetchData() {
+    React.useEffect(async () => {
+      var data = await getProfileRequest(getUser())
+      var user = data.payload.user_profile
+      setLoading(false)
+      setUser(user)
+    });
+    return (<Box sx={{
+              height: "100%",
+              width: "100%",
+              display: "flex",
+              position: "fixed",
+              alignItems: "center",
+              justifyContent: "center",
+              }}>
+              <CircularProgress color="secondary"/>
+            </Box>)
   }
   
   function SubmitButton() {
@@ -149,6 +169,7 @@ export default function Profile() {
   }
   else {
     return (
+    <Authorization>
     <Box sx={{ display: "flex", flexDirection: "column" }}>
     <AppBar onSearch={onSearch}/>
       <Toolbar/>
@@ -295,6 +316,7 @@ export default function Profile() {
           </Paper>
         <SubmitButton/>
       </Box>
-    </Box> );
+    </Box>
+    </Authorization> );
   }
 }

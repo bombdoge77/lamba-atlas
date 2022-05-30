@@ -1,3 +1,4 @@
+
 import * as React from 'react';
 import AppBar from "../../frontend/AppBar";
 import Toolbar from "@mui/material/Toolbar";
@@ -75,7 +76,7 @@ export default function Post() {
   const [spin, setSpin] = React.useState(false)
 
   React.useEffect(async () => {
-      const res = await getProfileRequest(post.user)
+      const res = await getProfileRequest(getUser())
       if (!res) {
         setSpin(!spin)
         return
@@ -335,7 +336,6 @@ export default function Post() {
                   if you like.
                 </Typography>
               </CardContent>
-
               <CardActions disableSpacing>
               <IconButton aria-label="add to favorites">
               <Rating
