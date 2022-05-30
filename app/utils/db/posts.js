@@ -132,7 +132,7 @@ export async function search_posts(db, text, category) {
 			$or : [ { title : { $regex : text, $options : options } }, { tags : { $regex : text, $options : options } } ]
 		})
 	}
-	return result.toArray()
+	return await result.toArray()
 }
 
 export async function upvote_post(db, post_id, email) {

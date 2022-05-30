@@ -129,6 +129,10 @@ export default function Profile() {
     }
   }, []);
 
+  const onSearch = (text) => {
+    router.push(`/category/all/all?search=${text}`)
+  }
+
   if(loading) {
     return (
       <Box sx={{
@@ -146,17 +150,17 @@ export default function Profile() {
   else {
     return (
     <Box sx={{ display: "flex", flexDirection: "column" }}>
-    <AppBar/>
+    <AppBar onSearch={onSearch}/>
       <Toolbar/>
       <ButtonGroup
           sx={{ color: "primary.light", width: "100%", height:45}}
         >
 
-          <Button fullWidth disabled={editMode} onClick={handleEditOpen} variant="contained" sx={{color:"black"}}>
+          <Button fullWidth disabled={editMode} onClick={handleEditOpen} variant="contained" sx={{color:"white"}}>
             <EditIcon />
             Edit
           </Button>
-          <Button fullWidth onClick={handlePosts} variant="contained" sx={{color:"black"}}>
+          <Button fullWidth onClick={handlePosts} variant="contained" sx={{color:"white"}}>
             <ArticleIcon />
             Posts
           </Button>
@@ -173,7 +177,7 @@ export default function Profile() {
       <Box
         component="form" 
         sx={{
-          backgroundColor: "primary.dark",
+          backgroundColor: "primary.light",
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
@@ -201,7 +205,7 @@ export default function Profile() {
             <EditAvatarButton/>
           </Container>
         </Box>
-        <Paper elevation={10} sx={{ mt:2, width:'80%', height:'100%', justifyContent: 'center',}}>
+        <Paper elevation={10} sx={{ mt:2, mb : 8, width:'80%', height:'100%', justifyContent: 'center',}}>
           <List>
             <ListItem>
               <TextField

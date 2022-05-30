@@ -72,7 +72,7 @@ export default function NewPost() {
       const response = await newPostRequest(data)
 
       if(response == 200) {
-        router.push('feed')
+        router.push('/category/all/all?search='+data.get('title'))
       }
       else {
         setSubmitErrorMsg('Network Error')

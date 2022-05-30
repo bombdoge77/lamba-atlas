@@ -207,6 +207,6 @@ export async function searchPosts(text, category) {
       category: category,
     })
   })
-  .then((res) => {return res.ok ? res.json() : null})
+  .then((res) => {return res.ok ? res.json() : res.status})
   return response
 }

@@ -48,24 +48,58 @@ export default function Feed(props) {
   
   useEffect(async () => {
     if (router.isReady) {
-      setSearch(router.query.search ? router.query.search : '')
-      setCategory({
+      var category = {
         bodyCategory : router.query.category,
         bodyPart : router.query.subcategory
-      })
-    }
-  }, [router.isReady])
+      }
 
-  useEffect(async () => {
-    if (! (router.query.category && router.query.subcategory)) return
-    console.log(searchText, categoryObj)
+      var search = (searchText != null) ? searchText : router.query.search
+
+      if (!searchText) setSearch(search)
+
+      setCategory(category)
+
+      var res = await searchPosts(search, category)
+
+      if (typeof(res) != 'number') {
+        setPosts(res)
+        setLoading(false) 
+      }
+    }
+  }, [router.isReady, searchText])
+
+  /*useEffect(async () => {
+    console.log('here!')
+    if(categoryObj === {}) return
+    if (!isLoading) {
+      console.log('not loading')
+      return
+    }
+    
+    if (! (router.query.category && router.query.subcategory)) {
+      setSpin(!spin)
+      return
+    }
+
+    if (!categoryObj) {
+      setSpin(!spin)
+      return
+    }
+
+    if (!router.isReady) {
+      setSpin(!spin)
+      return
+    }
+    
     var res = await searchPosts(searchText, categoryObj)
 
-    if (!res) setSpin(!spin)
-      
-    setPosts(res)
-    setLoading(false)
-  }, [searchText, spin])
+    if (typeof(res) != 'number') {
+      setPosts(res)
+      console.log(res)
+      console.log(posts)
+      setLoading(false) 
+    }
+  }, [searchText])*/
 
   if (isLoading) return (<Box>Loading ...</Box>)
 

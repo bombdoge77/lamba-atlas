@@ -127,11 +127,15 @@ export default function Post() {
     }
   }, [router.isReady]);
 
+  const onSearch = (text) => {
+    router.push(`/category/all/all?search=${text}`)
+  }
+
   if (isLoading) return(<Box>Loading...</Box>)
 
   return(
     <Box sx={{ display: "flex", flexDirection: "column" }}>
-      <AppBar/>
+      <AppBar onSearch={onSearch}/>
       <Toolbar/>
       <Container sx={{ height:'100%', width:'100%',}}>
         <Paper elevation={7} sx={{ mt:2, width:1, height:'100%', justifyContent: 'center',}}>

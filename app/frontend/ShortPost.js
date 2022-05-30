@@ -30,7 +30,7 @@ export default function ShortPost(props) {
 			width : 1
 		}}
 		>
-			<Card sx={{ width : 1, cursor : 'pointer' }}>
+			<Card elevation={2} sx={{ width : 1, cursor : 'pointer' }}>
 		    <CardContent onClick={linkPost}>
 		      <CategoryDisplay sx={{fontSize : 14, my: 1}} primary={false} category={data.category}/>
 		      <Typography variant="h5" component="div" sx={{mt : 1, mb : 2}}>

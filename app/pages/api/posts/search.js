@@ -32,6 +32,9 @@ async function search(req, res) {
   const { text, category } = req.body
   var result = await search_posts(db, text, category)
   res.json(result)
-  res.status(200)
+
+  if (result) res.status(200)
+
+  if (!result) res.status(204)
   await disconnect()
 }
