@@ -33,6 +33,7 @@ import TextBar from '../../frontend/TextBar.js'
 import SendIcon from '@mui/icons-material/Send';
 import { getUser } from '../../frontend/helper/auth.js'
 import Comment from '../../frontend/Comment.js'
+import Authorization from '../../frontend/Authorization.js'
 
 var test_post = {
   title: "this is the title for the post",
@@ -135,6 +136,7 @@ export default function Post() {
   if (isLoading) return(<Box>Loading...</Box>)
 
   return(
+    <Authorization>
     <Box sx={{ display: "flex", flexDirection: "column" }}>
       <AppBar onSearch={onSearch}/>
       <Toolbar/>
@@ -250,7 +252,7 @@ export default function Post() {
                 </Typography>
               </ListItem>
               <Typography sx={{ mt: 2}} variant="h6" component="div">
-                Recommendation (question)
+                Question
               </Typography>
               <ListItem>
                 <Typography variant="subtitle3" component="div">
@@ -371,4 +373,5 @@ export default function Post() {
       />
 
     </Box>
+    </Authorization>
   ); }
